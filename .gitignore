@@ -6,9 +6,13 @@ yarn.lock
 # Python virtual environments (if using Python for validation)
 venv/
 .venv/
+env/
+ENV/
 __pycache__/
 *.py[cod]
 *$py.class
+*.so
+.Python
 
 # IDE and editor files
 .vscode/
@@ -18,20 +22,31 @@ __pycache__/
 *~
 .DS_Store
 
-# Environment files
+# Environment files and secrets (NEVER commit these)
 .env
 .env.local
 .env.*.local
+*.key
+*.pem
+*.secret
+secrets.json
+credentials.json
+config.local.json
 
 # Build outputs
 dist/
 build/
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # Temporary files
 tmp/
 temp/
+.tmp/
 *.tmp
+.cache/
 
 # OS generated files
 Thumbs.db
@@ -43,11 +58,17 @@ Thumbs.db
 *.bak
 *.orig
 
-# Testing
+# Testing and coverage
 .coverage
 htmlcov/
 .pytest_cache/
 .tox/
+coverage/
+.nyc_output/
+*.lcov
+test-marketplace/
+*-test-marketplace/
+*.test.md
 
 # Local development
 .local/
@@ -55,8 +76,3 @@ local-plugins/
 
 # CI/CD
 .github/workflows/*.local.yml
-
-
-# Draft docs
-QUICK_START.md
-SETUP_GUIDE.md
