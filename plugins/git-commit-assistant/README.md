@@ -42,10 +42,10 @@ Git Commit Assistant is a comprehensive Claude Code plugin that helps you create
 
 ```bash
 # Add the OpenPlugins marketplace
-/plugin_marketplace_add https://github.com/dhofheinz/open-plugins
+/plugin marketplace add https://github.com/dhofheinz/open-plugins
 
 # Install the plugin
-/plugin_install git-commit-assistant@open-plugins
+/plugin install git-commit-assistant@open-plugins
 
 # Restart Claude Code
 # (Close and reopen your terminal session)
@@ -58,10 +58,10 @@ Git Commit Assistant is a comprehensive Claude Code plugin that helps you create
 git clone https://github.com/dhofheinz/open-plugins.git
 
 # Add local marketplace
-/plugin_marketplace_add ./open-plugins
+/plugin marketplace add ./open-plugins
 
 # Install plugin
-/plugin_install git-commit-assistant@open-plugins
+/plugin install git-commit-assistant@open-plugins
 ```
 
 ### Verification
@@ -70,7 +70,7 @@ After installation, verify the plugin is working:
 
 ```bash
 # Check installed plugins
-/plugin_list
+/plugin list
 
 # Try the commit command
 /commit --help
@@ -593,10 +593,10 @@ An atomic commit is a single, focused commit that:
 **Solution**:
 ```bash
 # Check if plugin is installed
-/plugin_list
+/plugin list
 
 # If not installed, install it
-/plugin_install git-commit-assistant@open-plugins
+/plugin install git-commit-assistant@open-plugins
 
 # Restart Claude Code
 ```
