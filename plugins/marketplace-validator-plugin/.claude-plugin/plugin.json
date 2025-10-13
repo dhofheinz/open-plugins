@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Comprehensive validation for Claude Code marketplaces and plugins with quality scoring, security scanning, and automated checks",
   "author": {
-    "name": "OpenPlugins Team",
-    "email": "maintainers@openplugins.dev",
+    "name": "Daniel Hofheinz",
+    "email": "daniel@danielhofheinz.com",
     "url": "https://github.com/dhofheinz/open-plugins"
   },
   "license": "MIT",

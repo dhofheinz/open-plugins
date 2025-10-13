@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Intelligent git commit helper with semantic commit message generation, change analysis, and atomic commit guidance using conventional commits format",
   "author": {
-    "name": "OpenPlugins Team",
-    "email": "maintainers@openplugins.dev",
+    "name": "Daniel Hofheinz",
+    "email": "daniel@danielhofheinz.com",
     "url": "https://github.com/dhofheinz/open-plugins"
   },
   "license": "MIT",

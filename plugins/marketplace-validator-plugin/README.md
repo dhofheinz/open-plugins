@@ -159,7 +159,7 @@ Metadata:
 ✅ Name: marketplace-validator-plugin (valid format)
 ✅ Version: 1.0.0 (valid semver)
 ✅ Description: "Comprehensive validation..." (138 chars)
-✅ Author: OpenPlugins Team
+✅ Author: Daniel Hofheinz
 ✅ License: MIT
 ✅ Keywords: 6 keywords (good)
 ✅ Repository: https://github.com/dhofheinz/open-plugins
@@ -647,6 +647,6 @@ MIT License - see [LICENSE](./LICENSE) file for details.
 
 ---
 
-**Made with ❤️ by the OpenPlugins Team**
+**Made with ❤️ by the Daniel Hofheinz**
 
 *Ensuring quality in the Claude Code plugin ecosystem*

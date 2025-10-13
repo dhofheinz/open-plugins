@@ -806,7 +806,7 @@ Contributions are welcome! This plugin is part of the OpenPlugins project.
 
 MIT License
 
-Copyright (c) 2025 OpenPlugins Team
+Copyright (c) 2025 Daniel Hofheinz
 
 See [LICENSE](LICENSE) file for full license text.
 

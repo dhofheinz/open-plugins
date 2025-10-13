@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Generate production-ready Claude Code plugin structures for OpenPlugins marketplace with guided interactive setup",
   "author": {
-    "name": "OpenPlugins Team",
-    "email": "maintainers@openplugins.dev",
+    "name": "Daniel Hofheinz",
+    "email": "daniel@danielhofheinz.com",
     "url": "https://github.com/dhofheinz/open-plugins"
   },
   "license": "MIT",
