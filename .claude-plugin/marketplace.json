@@ -1,0 +1,129 @@
+{
+  "name": "open-plugins",
+  "owner": {
+    "name": "Daniel Hofheinz",
+    "email": "daniel@danielhofheinz.com",
+    "url": "https://github.com/dhofheinz"
+  },
+  "description": "AI-curated marketplace of high-quality, open-source Claude Code plugins. Features productivity tools, development utilities, and specialized agents for extending Claude Code capabilities.",
+  "metadata": {
+    "description": "OpenPlugins is a public marketplace dedicated to fostering a vibrant ecosystem of open-source Claude Code plugins. We curate high-quality plugins across categories including development tools, testing utilities, documentation generators, deployment automation, and specialized agents.",
+    "homepage": "https://github.com/dhofheinz/open-plugins",
+    "repository": "https://github.com/dhofheinz/open-plugins",
+    "keywords": [
+      "claude-code",
+      "plugins",
+      "open-source",
+      "community",
+      "productivity",
+      "development-tools",
+      "automation",
+      "agents",
+      "marketplace"
+    ],
+    "license": "MIT",
+    "maintainers": [
+      {
+        "name": "OpenPlugins Team",
+        "email": "maintainers@openplugins.dev"
+      }
+    ],
+    "social": {
+      "discussions": "https://github.com/dhofheinz/open-plugins/discussions",
+      "issues": "https://github.com/dhofheinz/open-plugins/issues"
+    }
+  },
+  "plugins": [
+    {
+      "name": "plugin-quickstart-generator",
+      "version": "1.0.0",
+      "description": "Generate production-ready Claude Code plugin structures for OpenPlugins marketplace with guided interactive setup",
+      "author": {
+        "name": "OpenPlugins Team",
+        "email": "maintainers@openplugins.dev",
+        "url": "https://github.com/dhofheinz/open-plugins"
+      },
+      "source": "./plugins/plugin-quickstart-generator",
+      "license": "MIT",
+      "keywords": [
+        "scaffolding",
+        "generator",
+        "plugin-development",
+        "quickstart",
+        "template",
+        "marketplace"
+      ],
+      "category": "development",
+      "homepage": "https://github.com/dhofheinz/open-plugins/tree/main/plugins/plugin-quickstart-generator",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/dhofheinz/open-plugins"
+      }
+    },
+    {
+      "name": "marketplace-validator-plugin",
+      "version": "1.0.0",
+      "description": "Comprehensive validation for Claude Code marketplaces and plugins with quality scoring, security scanning, and automated checks",
+      "author": {
+        "name": "OpenPlugins Team",
+        "email": "maintainers@openplugins.dev",
+        "url": "https://github.com/dhofheinz/open-plugins"
+      },
+      "source": "./plugins/marketplace-validator-plugin",
+      "license": "MIT",
+      "keywords": [
+        "validation",
+        "quality-assurance",
+        "marketplace",
+        "plugin-validation",
+        "security",
+        "linting"
+      ],
+      "category": "quality",
+      "homepage": "https://github.com/dhofheinz/open-plugins/tree/main/plugins/marketplace-validator-plugin",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/dhofheinz/open-plugins"
+      }
+    },
+    {
+      "name": "git-commit-assistant",
+      "version": "1.0.0",
+      "description": "Intelligent git commit helper with semantic commit message generation, change analysis, and atomic commit guidance using conventional commits format",
+      "author": {
+        "name": "OpenPlugins Team",
+        "email": "maintainers@openplugins.dev",
+        "url": "https://github.com/dhofheinz/open-plugins"
+      },
+      "source": "./plugins/git-commit-assistant",
+      "license": "MIT",
+      "keywords": [
+        "git",
+        "commits",
+        "productivity",
+        "semantic-commits",
+        "conventional-commits",
+        "automation"
+      ],
+      "category": "productivity",
+      "homepage": "https://github.com/dhofheinz/open-plugins/tree/main/plugins/git-commit-assistant",
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/dhofheinz/open-plugins"
+      }
+    }
+  ],
+  "categories": [
+    "development",
+    "testing",
+    "deployment",
+    "documentation",
+    "security",
+    "database",
+    "monitoring",
+    "productivity",
+    "quality",
+    "collaboration"
+  ],
+  "version": "1.0.0"
+}

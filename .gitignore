@@ -1,0 +1,62 @@
+# Node modules (if using Node.js for validation scripts)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Python virtual environments (if using Python for validation)
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Build outputs
+dist/
+build/
+*.log
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# OS generated files
+Thumbs.db
+.Spotlight-V100
+.Trashes
+
+# Backup files
+*.backup
+*.bak
+*.orig
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+
+# Local development
+.local/
+local-plugins/
+
+# CI/CD
+.github/workflows/*.local.yml
+
+
+# Draft docs
+QUICK_START.md
+SETUP_GUIDE.md

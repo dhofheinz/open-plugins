@@ -1,0 +1,24 @@
+{
+  "PostToolUse": [
+    {
+      "matcher": "Write.*marketplace\\.json|Edit.*marketplace\\.json",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "${CLAUDE_PLUGIN_ROOT}/scripts/auto-validate-marketplace.sh",
+          "args": []
+        }
+      ]
+    },
+    {
+      "matcher": "Write.*plugin\\.json|Edit.*plugin\\.json",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "${CLAUDE_PLUGIN_ROOT}/scripts/auto-validate-plugin.sh",
+          "args": []
+        }
+      ]
+    }
+  ]
+}

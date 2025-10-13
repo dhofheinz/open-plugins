@@ -1,0 +1,24 @@
+{
+  "name": "plugin-quickstart-generator",
+  "version": "1.0.0",
+  "description": "Generate production-ready Claude Code plugin structures for OpenPlugins marketplace with guided interactive setup",
+  "author": {
+    "name": "OpenPlugins Team",
+    "email": "maintainers@openplugins.dev",
+    "url": "https://github.com/dhofheinz/open-plugins"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dhofheinz/open-plugins"
+  },
+  "homepage": "https://github.com/dhofheinz/open-plugins/tree/main/plugins/plugin-quickstart-generator",
+  "keywords": [
+    "scaffolding",
+    "generator",
+    "plugin-development",
+    "quickstart",
+    "template",
+    "marketplace"
+  ]
+}
