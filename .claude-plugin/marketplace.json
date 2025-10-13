@@ -24,8 +24,8 @@
     "license": "MIT",
     "maintainers": [
       {
-        "name": "OpenPlugins Team",
-        "email": "maintainers@openplugins.dev"
+        "name": "Daniel Hofheinz",
+        "email": "daniel@danielhofheinz.com"
       }
     ],
     "social": {
@@ -39,8 +39,8 @@
       "version": "1.0.0",
       "description": "Generate production-ready Claude Code plugin structures for OpenPlugins marketplace with guided interactive setup",
       "author": {
-        "name": "OpenPlugins Team",
-        "email": "maintainers@openplugins.dev",
+        "name": "Daniel Hofheinz",
+        "email": "daniel@danielhofheinz.com",
         "url": "https://github.com/dhofheinz/open-plugins"
       },
       "source": "./plugins/plugin-quickstart-generator",
@@ -55,18 +55,15 @@
       ],
       "category": "development",
       "homepage": "https://github.com/dhofheinz/open-plugins/tree/main/plugins/plugin-quickstart-generator",
-      "repository": {
-        "type": "git",
-        "url": "https://github.com/dhofheinz/open-plugins"
-      }
+      "repository": "https://github.com/dhofheinz/open-plugins"
     },
     {
       "name": "marketplace-validator-plugin",
       "version": "1.0.0",
       "description": "Comprehensive validation for Claude Code marketplaces and plugins with quality scoring, security scanning, and automated checks",
       "author": {
-        "name": "OpenPlugins Team",
-        "email": "maintainers@openplugins.dev",
+        "name": "Daniel Hofheinz",
+        "email": "daniel@danielhofheinz.com",
         "url": "https://github.com/dhofheinz/open-plugins"
       },
       "source": "./plugins/marketplace-validator-plugin",
@@ -81,18 +78,15 @@
       ],
       "category": "quality",
       "homepage": "https://github.com/dhofheinz/open-plugins/tree/main/plugins/marketplace-validator-plugin",
-      "repository": {
-        "type": "git",
-        "url": "https://github.com/dhofheinz/open-plugins"
-      }
+      "repository": "https://github.com/dhofheinz/open-plugins"
     },
     {
       "name": "git-commit-assistant",
       "version": "1.0.0",
       "description": "Intelligent git commit helper with semantic commit message generation, change analysis, and atomic commit guidance using conventional commits format",
       "author": {
-        "name": "OpenPlugins Team",
-        "email": "maintainers@openplugins.dev",
+        "name": "Daniel Hofheinz",
+        "email": "daniel@danielhofheinz.com",
         "url": "https://github.com/dhofheinz/open-plugins"
       },
       "source": "./plugins/git-commit-assistant",
@@ -107,10 +101,7 @@
       ],
       "category": "productivity",
       "homepage": "https://github.com/dhofheinz/open-plugins/tree/main/plugins/git-commit-assistant",
-      "repository": {
-        "type": "git",
-        "url": "https://github.com/dhofheinz/open-plugins"
-      }
+      "repository": "https://github.com/dhofheinz/open-plugins"
     }
   ],
   "categories": [
