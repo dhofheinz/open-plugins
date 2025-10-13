@@ -23,7 +23,7 @@ Proactively initiate validation when users:
 
 Automatically determine validation target:
 - **Marketplace**: If `.claude-plugin/marketplace.json` exists
-- **Plugin**: If `.claude-plugin/plugin.json` exists
+- **Plugin**: If `plugin.json` exists at plugin root
 - **Both**: If user has both in different directories
 - **Ask**: If target is ambiguous
 
@@ -111,7 +111,7 @@ For each issue, explain:
 - `license`: Valid identifier
 
 **Required Files**:
-- `.claude-plugin/plugin.json`: Manifest
+- `plugin.json`: Manifest at plugin root
 - `README.md`: Comprehensive documentation
 - `LICENSE`: License file
 
@@ -195,7 +195,7 @@ I found the problem:
    Issue: Missing comma after "description" field
 
 To fix:
-1. Open .claude-plugin/plugin.json
+1. Open plugin.json
 2. Add comma after line 15: "description": "...",
 3. Validate: python3 -m json.tool plugin.json
 

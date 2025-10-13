@@ -33,8 +33,8 @@ fi
 
 # If we couldn't determine the file, look for it
 if [[ -z "${PLUGIN_FILE}" ]]; then
-    if [[ -f ".claude-plugin/plugin.json" ]]; then
-        PLUGIN_FILE=".claude-plugin/plugin.json"
+    if [[ -f "plugin.json" ]]; then
+        PLUGIN_FILE="plugin.json"
         PLUGIN_DIR="."
     else
         # Not a plugin edit, skip

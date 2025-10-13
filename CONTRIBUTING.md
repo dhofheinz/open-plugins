@@ -47,7 +47,7 @@ Consider other marketplaces if your plugin is:
 
 Your plugin repository MUST include:
 
-1. **Plugin Manifest** (`.claude-plugin/plugin.json`)
+1. **Plugin Manifest** (`plugin.json` at plugin root)
    ```json
    {
      "name": "plugin-name",

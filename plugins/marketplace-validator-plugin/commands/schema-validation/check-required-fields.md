@@ -14,7 +14,7 @@ Verify all required fields are present and non-empty in plugin or marketplace co
    ```
    IF type not specified:
      Auto-detect based on path structure:
-       - Has .claude-plugin/plugin.json → plugin
+       - Has plugin.json → plugin
        - Has marketplace.json or .claude-plugin/marketplace.json → marketplace
        - Otherwise → error
    ```
@@ -22,8 +22,7 @@ Verify all required fields are present and non-empty in plugin or marketplace co
 2. **Locate Configuration File**
    ```
    For plugin:
-     Check: <path>/.claude-plugin/plugin.json
-     OR: <path>/plugin.json
+     Check: <path>/plugin.json
 
    For marketplace:
      Check: <path>/marketplace.json
@@ -115,7 +114,7 @@ Verify all required fields are present and non-empty in plugin or marketplace co
 ```
 ✅ Required Fields Validation: PASS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Target: .claude-plugin/plugin.json
+Target: plugin.json
 Type: plugin
 
 Required Fields (5/5):
@@ -139,7 +138,7 @@ Warnings: 1 (non-blocking)
 ```
 ❌ Required Fields Validation: FAIL
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Target: .claude-plugin/plugin.json
+Target: plugin.json
 Type: plugin
 
 Required Fields (3/5):

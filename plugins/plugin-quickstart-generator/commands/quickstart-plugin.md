@@ -81,8 +81,7 @@ Create the following directory structure in the current working directory:
 
 ```
 <plugin-name>/
-├── .claude-plugin/
-│   └── plugin.json
+├── plugin.json                # At plugin root
 ├── commands/
 │   └── example.md
 ├── agents/                    # Only if user requested agent
@@ -95,7 +94,7 @@ Create the following directory structure in the current working directory:
 
 ### 4. Generate plugin.json
 
-Create `.claude-plugin/plugin.json` with complete metadata:
+Create `plugin.json` at the plugin root with complete metadata:
 
 ```json
 {
@@ -673,7 +672,7 @@ Provide detailed next steps:
 📁 Test Marketplace: ./<plugin-name>-test-marketplace/
 
 📦 Generated Files:
-  ✅ .claude-plugin/plugin.json - Complete metadata
+  ✅ plugin.json - Complete metadata at plugin root
   ✅ commands/example.md - Template command
   <If agent>✅ agents/example-agent.md - Specialized agent</If agent>
   ✅ README.md - Comprehensive documentation

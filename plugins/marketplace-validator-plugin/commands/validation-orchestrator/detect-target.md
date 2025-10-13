@@ -19,7 +19,7 @@ bash .scripts/target-detector.sh "$TARGET_PATH"
 
 The detection script will:
 1. Check for `.claude-plugin/marketplace.json` → **Marketplace**
-2. Check for `.claude-plugin/plugin.json` → **Plugin**
+2. Check for `plugin.json` → **Plugin**
 3. Check for both → **Multi-target**
 4. Check for neither → **Unknown**
 

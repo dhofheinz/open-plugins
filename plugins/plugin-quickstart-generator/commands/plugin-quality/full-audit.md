@@ -23,7 +23,7 @@ Check directory structure compliance:
 ```
 
 **Checks**:
-- ✅ `.claude-plugin/plugin.json` exists
+- ✅ `plugin.json` exists at plugin root
 - ✅ `README.md` exists and not empty
 - ✅ `LICENSE` file exists
 - ✅ `commands/` directory exists
@@ -37,7 +37,7 @@ Check directory structure compliance:
 
 Validate plugin.json completeness:
 ```bash
-python3 -m json.tool "{plugin_path}/.claude-plugin/plugin.json"
+python3 -m json.tool "{plugin_path}/plugin.json"
 ```
 
 **Checks**:
@@ -246,7 +246,7 @@ Provide comprehensive report with:
 ## Error Handling
 
 - **Plugin not found** → Check path and plugin name
-- **Invalid plugin structure** → Must have .claude-plugin/plugin.json
+- **Invalid plugin structure** → Must have plugin.json at plugin root
 - **Permission errors** → Check file permissions
 - **Script execution fails** → Report specific script and error
 

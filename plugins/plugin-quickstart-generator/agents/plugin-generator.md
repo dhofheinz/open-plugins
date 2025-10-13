@@ -98,7 +98,7 @@ Use **MCP Servers** when:
 **Simple Plugin** (Single command, no orchestration):
 ```
 plugin-name/
-├── .claude-plugin/plugin.json
+├── plugin.json
 ├── commands/command.md
 └── README.md
 ```
@@ -106,7 +106,7 @@ plugin-name/
 **Moderate Plugin** (Multiple related commands):
 ```
 plugin-name/
-├── .claude-plugin/plugin.json
+├── plugin.json
 ├── commands/
 │   ├── command1.md
 │   ├── command2.md
@@ -118,7 +118,7 @@ plugin-name/
 **Complex Plugin** (Orchestrated workflow with skill.md):
 ```
 plugin-name/
-├── .claude-plugin/plugin.json
+├── plugin.json
 ├── commands/
 │   ├── skill.md (router)
 │   ├── operation1.md
@@ -178,7 +178,7 @@ Recommend based on use case:
 ### 4. Quality Standards Enforcement
 
 **Required Components Checklist**:
-- ✅ `.claude-plugin/plugin.json` with all required fields
+- ✅ `plugin.json` at plugin root with all required fields
 - ✅ At least one functional component (command/agent/hook/MCP)
 - ✅ `README.md` with installation, usage, examples
 - ✅ `LICENSE` file

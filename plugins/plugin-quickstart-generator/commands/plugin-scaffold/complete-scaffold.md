@@ -61,7 +61,7 @@ mkdir -p {name}/hooks      # if with_hooks:true
 
 ### Step 3: Generate plugin.json
 
-Create `.claude-plugin/plugin.json` with complete metadata:
+Create `plugin.json` at the plugin root with complete metadata:
 
 ```json
 {
@@ -282,7 +282,7 @@ This is a sample command. Replace with your actual implementation.
 Run structure validation:
 ```bash
 # Check all required files exist
-test -f {name}/.claude-plugin/plugin.json && echo "✅ plugin.json" || echo "❌ plugin.json missing"
+test -f {name}/plugin.json && echo "✅ plugin.json" || echo "❌ plugin.json missing"
 test -f {name}/README.md && echo "✅ README.md" || echo "✅ README.md" || echo "❌ README.md missing"
 test -f {name}/LICENSE && echo "✅ LICENSE" || echo "❌ LICENSE missing"
 test -f {name}/CHANGELOG.md && echo "✅ CHANGELOG.md" || echo "❌ CHANGELOG.md missing"
@@ -391,7 +391,7 @@ Before submission, ensure:
 cd {name}
 
 # Validate plugin.json
-python3 -m json.tool .claude-plugin/plugin.json
+python3 -m json.tool plugin.json
 
 # Check file structure
 ls -la

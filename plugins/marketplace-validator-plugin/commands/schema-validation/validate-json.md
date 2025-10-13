@@ -47,7 +47,7 @@ Validate JSON file syntax with multi-backend support (jq + python3 fallback).
 
 ```bash
 # Basic JSON validation
-/schema-validation json file:.claude-plugin/plugin.json
+/schema-validation json file:plugin.json
 
 # Verbose validation with details
 /schema-validation json file:marketplace.json verbose:true
@@ -68,7 +68,7 @@ Validate JSON file syntax with multi-backend support (jq + python3 fallback).
 
 **Success**:
 ```
-✅ Valid JSON: .claude-plugin/plugin.json
+✅ Valid JSON: plugin.json
 Backend: jq
 ```
 

@@ -19,7 +19,7 @@ Generate production-ready Claude Code plugin structures for OpenPlugins marketpl
 ### What Gets Generated
 
 Every generated plugin includes:
-- ✅ Complete `.claude-plugin/plugin.json` manifest with all metadata
+- ✅ Complete `plugin.json` manifest at plugin root with all metadata
 - ✅ Template command with frontmatter and usage examples
 - ✅ Optional specialist agent with comprehensive system prompt
 - ✅ Professional README with installation, usage, and troubleshooting sections
@@ -208,8 +208,7 @@ For users who want to accept most defaults, the process is streamlined while sti
 
 ```
 <plugin-name>/
-├── .claude-plugin/
-│   └── plugin.json              # Complete manifest with metadata
+├── plugin.json                  # Complete manifest with metadata (at plugin root)
 ├── commands/
 │   └── example.md               # Template command with frontmatter
 ├── agents/                      # Only if agent requested
@@ -299,7 +298,7 @@ marketplace.json with:
 cd <plugin-name>
 
 # Check plugin.json
-cat .claude-plugin/plugin.json | python3 -m json.tool
+cat plugin.json | python3 -m json.tool
 
 # Review command template
 cat commands/example.md
@@ -560,8 +559,7 @@ testing, python, pytest, automation, tdd
 
 ```
 plugin-quickstart-generator/
-├── .claude-plugin/
-│   └── plugin.json
+├── plugin.json
 ├── commands/
 │   └── quickstart-plugin.md
 ├── agents/

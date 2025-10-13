@@ -94,7 +94,7 @@ mkdir test-marketplace/.claude-plugin
 The marketplace uses a **mono-repository pattern** where:
 - Each plugin is self-contained in `plugins/<plugin-name>/`
 - Plugins reference their local path via `"source": "./plugins/plugin-name"`
-- Each plugin has its own `.claude-plugin/plugin.json` manifest
+- Each plugin has its own `plugin.json` manifest at the plugin root
 - Plugins can be independently developed and tested
 
 ### Plugin Architecture
@@ -163,7 +163,7 @@ Standard categories (choose ONE per plugin):
 ```
 
 ### Plugin Manifest (plugin.json)
-Each plugin must have `.claude-plugin/plugin.json`:
+Each plugin must have `plugin.json` at the plugin root:
 ```json
 {
   "name": "plugin-name",
@@ -315,7 +315,7 @@ Comprehensive marketplace and plugin validation.
 
 ### "Plugin not found" after marketplace update
 - Verify plugin source path is correct (relative paths must be `./plugins/name`)
-- Check plugin has valid `.claude-plugin/plugin.json`
+- Check plugin has valid `plugin.json` at the plugin root
 - Ensure plugin directory structure is correct
 - Try removing and re-adding marketplace: `/plugin marketplace remove open-plugins && /plugin marketplace add ./`
 
@@ -333,8 +333,8 @@ Comprehensive marketplace and plugin validation.
 
 ### Local marketplace testing fails
 - Use absolute paths or `./` relative paths in test marketplace
-- Ensure `.claude-plugin` directory exists in both marketplace and plugin
-- Verify plugin.json has all required fields
+- Ensure `.claude-plugin` directory exists in marketplace (contains marketplace.json)
+- Verify plugin.json exists at plugin root with all required fields
 - Check marketplace.json `plugins` array syntax
 
 ## Security Considerations

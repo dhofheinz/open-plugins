@@ -18,7 +18,7 @@ source "${SCRIPT_DIR}/validate-lib.sh"
 
 # Configuration
 PLUGIN_DIR="${1:-.}"
-PLUGIN_FILE="${PLUGIN_DIR}/.claude-plugin/plugin.json"
+PLUGIN_FILE="${PLUGIN_DIR}/plugin.json"
 CHECKS_PASSED=0
 CHECKS_FAILED=0
 
@@ -33,7 +33,7 @@ main() {
         ((CHECKS_PASSED++))
     else
         echo "FAIL ❌"
-        echo "   .claude-plugin/plugin.json not found"
+        echo "   plugin.json not found"
         ((CHECKS_FAILED++))
     fi
 

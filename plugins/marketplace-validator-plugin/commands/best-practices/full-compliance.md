@@ -23,14 +23,14 @@ This operation validates all four best practice categories:
    ```
    Parse $ARGUMENTS to extract path parameter
    Detect if path is plugin or marketplace:
-   - Plugin: Has .claude-plugin/plugin.json
+   - Plugin: Has plugin.json
    - Marketplace: Has .claude-plugin/marketplace.json
    ```
 
 2. **Load Metadata**
    ```
    IF plugin:
-     Read .claude-plugin/plugin.json
+     Read plugin.json
      Extract: name, version, keywords, category
    ELSE IF marketplace:
      Read .claude-plugin/marketplace.json
@@ -131,7 +131,7 @@ ERROR: Invalid path or not a plugin/marketplace
 Path: <provided-path>
 
 The path must contain either:
-- .claude-plugin/plugin.json (for plugins)
+- plugin.json (for plugins)
 - .claude-plugin/marketplace.json (for marketplaces)
 
 Check the path and try again.
@@ -142,7 +142,7 @@ Check the path and try again.
 ERROR: Metadata file not found
 
 Expected one of:
-- .claude-plugin/plugin.json
+- plugin.json
 - .claude-plugin/marketplace.json
 
 This does not appear to be a valid Claude Code plugin or marketplace.

@@ -13,7 +13,7 @@ Validate format compliance for semver, URLs, email addresses, and naming convent
 1. **Locate Configuration File**
    ```
    Auto-detect or use specified type:
-     Plugin: .claude-plugin/plugin.json
+     Plugin: plugin.json
      Marketplace: marketplace.json or .claude-plugin/marketplace.json
    ```
 
@@ -103,7 +103,7 @@ Validate format compliance for semver, URLs, email addresses, and naming convent
 ```
 ✅ Format Validation: PASS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Target: .claude-plugin/plugin.json
+Target: plugin.json
 Type: plugin
 
 Format Checks (7/7):
@@ -122,7 +122,7 @@ Status: PASS
 ```
 ❌ Format Validation: FAIL
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Target: .claude-plugin/plugin.json
+Target: plugin.json
 Type: plugin
 
 Format Checks (4/7):

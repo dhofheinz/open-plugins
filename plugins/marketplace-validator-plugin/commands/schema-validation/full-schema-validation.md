@@ -15,12 +15,12 @@ Execute complete schema validation workflow: JSON syntax → Required fields →
    ```
    IF type not specified:
      Auto-detect based on path structure:
-       - Has .claude-plugin/plugin.json → plugin
+       - Has plugin.json at root → plugin
        - Has marketplace.json → marketplace
        - Otherwise → error
 
    Locate configuration file:
-     Plugin: <path>/.claude-plugin/plugin.json
+     Plugin: <path>/plugin.json
      Marketplace: <path>/marketplace.json or <path>/.claude-plugin/marketplace.json
    ```
 
@@ -156,7 +156,7 @@ This operation is the primary entry point for complete schema validation and is 
 FULL SCHEMA VALIDATION
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Target: .claude-plugin/plugin.json
+Target: plugin.json
 Type: plugin
 Mode: Standard
 
@@ -200,7 +200,7 @@ Quality Score: 95/100 ⭐⭐⭐⭐⭐
 FULL SCHEMA VALIDATION
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Target: .claude-plugin/plugin.json
+Target: plugin.json
 Type: plugin
 Mode: Standard
 

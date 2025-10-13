@@ -48,7 +48,7 @@ Validate LICENSE file presence, format, and consistency with plugin metadata.
 
 2. **Read Plugin Metadata**
    ```
-   Read .claude-plugin/plugin.json
+   Read plugin.json
    Extract license field value
    Store expected license type for comparison
    ```

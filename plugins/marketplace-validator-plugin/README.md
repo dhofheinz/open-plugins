@@ -146,7 +146,7 @@ Comprehensive plugin validation with structure, metadata, and component checks.
 🔍 Validating Plugin: marketplace-validator-plugin
 
 Structure:
-✅ .claude-plugin/plugin.json exists
+✅ plugin.json exists at plugin root
 ✅ plugin.json schema valid
 ✅ Commands directory present (3 commands)
 ✅ Agents directory present (1 agent)
@@ -386,7 +386,7 @@ Final Score: max(0, Base - Deductions)
 - `license`: Valid identifier
 
 #### Required Files
-- `.claude-plugin/plugin.json`: Plugin manifest
+- `plugin.json`: Plugin manifest at plugin root
 - `README.md`: Comprehensive documentation (>500 bytes)
 - `LICENSE`: License file
 

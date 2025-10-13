@@ -14,7 +14,7 @@ You are a quick validation specialist. Your task is to rapidly validate a market
 
 Determine if the target is a marketplace or plugin:
 - If `target/.claude-plugin/marketplace.json` exists: It's a marketplace
-- If `target/.claude-plugin/plugin.json` exists: It's a plugin
+- If `target/plugin.json` exists: It's a plugin
 - If neither: Error - not a valid target
 
 ### 2. Run Quick Validation

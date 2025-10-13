@@ -28,7 +28,7 @@ Parse the first word of `$ARGUMENTS` to determine which operation to execute:
 
 ```bash
 # Validate JSON syntax
-/schema-validation json file:.claude-plugin/plugin.json
+/schema-validation json file:plugin.json
 
 # Check required fields
 /schema-validation fields path:. type:plugin

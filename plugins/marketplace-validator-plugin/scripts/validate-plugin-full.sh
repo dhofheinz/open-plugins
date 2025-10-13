@@ -24,7 +24,7 @@ source "${SCRIPT_DIR}/validate-lib.sh"
 # ====================
 
 PLUGIN_DIR="${1:-.}"
-PLUGIN_FILE="${PLUGIN_DIR}/.claude-plugin/plugin.json"
+PLUGIN_FILE="${PLUGIN_DIR}/plugin.json"
 ERRORS=0
 WARNINGS=0
 MISSING_RECOMMENDED=0

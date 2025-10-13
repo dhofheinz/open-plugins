@@ -55,7 +55,7 @@ description: Suggest architectural patterns based on plugin complexity and requi
 **Structure**:
 ```
 plugin-name/
-├── .claude-plugin/plugin.json
+├── plugin.json
 ├── commands/
 │   └── command.md
 └── README.md
@@ -85,7 +85,7 @@ plugin-name/
 **Structure**:
 ```
 plugin-name/
-├── .claude-plugin/plugin.json
+├── plugin.json
 ├── commands/
 │   ├── operation1.md
 │   ├── operation2.md
@@ -117,7 +117,7 @@ plugin-name/
 **Structure**:
 ```
 plugin-name/
-├── .claude-plugin/plugin.json
+├── plugin.json
 ├── commands/
 │   ├── skill.md (router)
 │   ├── operation1.md
@@ -150,7 +150,7 @@ plugin-name/
 **Structure**:
 ```
 plugin-name/
-├── .claude-plugin/plugin.json
+├── plugin.json
 ├── commands/
 │   ├── skill.md (if orchestrated)
 │   ├── operation1.md
@@ -184,7 +184,7 @@ plugin-name/
 **Structure**:
 ```
 plugin-name/
-├── .claude-plugin/plugin.json
+├── plugin.json
 ├── commands/
 │   └── {command files}
 ├── agents/
@@ -214,7 +214,7 @@ plugin-name/
 **Structure**:
 ```
 plugin-name/
-├── .claude-plugin/plugin.json
+├── plugin.json
 ├── commands/
 │   ├── skill.md
 │   ├── {operations}

@@ -60,7 +60,7 @@ detect_target() {
 
     # Detect manifest files
     local marketplace_json="${path}/.claude-plugin/marketplace.json"
-    local plugin_json="${path}/.claude-plugin/plugin.json"
+    local plugin_json="${path}/plugin.json"
 
     local has_marketplace=false
     local has_plugin=false

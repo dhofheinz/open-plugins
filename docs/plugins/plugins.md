@@ -22,7 +22,7 @@ mkdir my-first-plugin
 cd my-first-plugin
 ```
 
-3. Create plugin manifest (`.claude-plugin/plugin.json`):
+3. Create plugin manifest (`plugin.json`):
 ```json
 {
   "name": "my-first-plugin",
@@ -74,8 +74,7 @@ claude
 
 ```
 my-first-plugin/
-├── .claude-plugin/
-│   └── plugin.json          # Plugin metadata
+├── plugin.json               # Plugin metadata (required)
 ├── commands/                 # Custom slash commands (optional)
 │   └── hello.md
 ├── agents/                   # Custom agents (optional)
@@ -377,7 +376,7 @@ Complete plugin manifest with all options:
 ### To GitHub
 
 1. Create repository for your plugin
-2. Add `.claude-plugin/plugin.json`
+2. Add `plugin.json` at the plugin root
 3. Add plugin components (commands, agents, hooks)
 4. Push to GitHub
 5. Users can install with: `/plugin install github-user/repo-name`
@@ -541,8 +540,7 @@ Auto-run checks after file changes:
 ### PR Review Plugin
 ```
 pr-review-plugin/
-├── .claude-plugin/
-│   └── plugin.json
+├── plugin.json
 ├── commands/
 │   ├── review-pr.md
 │   └── review-security.md
@@ -553,8 +551,7 @@ pr-review-plugin/
 ### Testing Plugin
 ```
 testing-plugin/
-├── .claude-plugin/
-│   └── plugin.json
+├── plugin.json
 ├── commands/
 │   ├── generate-tests.md
 │   └── run-coverage.md
@@ -565,8 +562,7 @@ testing-plugin/
 ### DevOps Plugin
 ```
 devops-plugin/
-├── .claude-plugin/
-│   └── plugin.json
+├── plugin.json
 ├── commands/
 │   ├── deploy.md
 │   └── rollback.md

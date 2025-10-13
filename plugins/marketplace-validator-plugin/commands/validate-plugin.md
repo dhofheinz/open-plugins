@@ -15,7 +15,7 @@ You are a plugin validation specialist. Your task is to comprehensively validate
 Determine the plugin path:
 - If user provided an argument ($1): Use that path
 - If no argument: Use current directory
-- Look for `.claude-plugin/plugin.json` to confirm it's a plugin
+- Look for `plugin.json` at plugin root to confirm it's a plugin
 
 ### 2. Run Validation Script
 
@@ -73,7 +73,7 @@ Create a numbered list of fixes in priority order:
 ## Validation Checklist
 
 ### Structure Validation
-- [ ] `.claude-plugin/` directory exists
+- [ ] `plugin.json` exists at plugin root
 - [ ] `plugin.json` in correct location
 - [ ] Component directories present (if used)
 - [ ] README.md exists and complete
@@ -112,7 +112,7 @@ Create a numbered list of fixes in priority order:
 🔍 Validating Plugin: my-awesome-plugin
 
 Structure:
-✅ .claude-plugin/plugin.json exists
+✅ plugin.json exists at plugin root
 ✅ plugin.json schema valid
 ✅ Commands directory present (2 commands found)
 ⚠️  Agents directory missing (optional)
@@ -154,12 +154,12 @@ Provide helpful guidance for common issues:
 
 **Missing plugin.json**:
 ```
-Error: No plugin.json found at .claude-plugin/plugin.json
+Error: No plugin.json found at plugin root
 
 This is required for all Claude Code plugins.
 
 To fix:
-1. Create .claude-plugin directory
+1. Create plugin.json at plugin root directory
 2. Add plugin.json with required fields
 3. See: .claude/docs/plugins/plugins-reference.md
 ```
