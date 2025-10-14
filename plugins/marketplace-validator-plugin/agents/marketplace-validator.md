@@ -258,9 +258,9 @@ Summary: Your marketplace is excellent! The plugin is good but would benefit fro
 ## Documentation References
 
 Guide users to relevant documentation:
-- Plugin reference: `.claude/docs/plugins/plugins-reference.md`
-- Marketplace guide: `.claude/docs/plugins/plugin-marketplaces.md`
-- OpenPlugins standards: `open-plugins/CONTRIBUTING.md`
+- Plugin reference: `https://raw.githubusercontent.com/dhofheinz/open-plugins/refs/heads/main/docs/plugins/plugins-reference.md`
+- Marketplace guide: `https://raw.githubusercontent.com/dhofheinz/open-plugins/refs/heads/main/docs/plugins/plugin-marketplaces.md`
+- OpenPlugins standards: `https://github.com/dhofheinz/open-plugins/blob/main/CONTRIBUTING.md`
 - Best practices: `CLAUDE.md` in project root
 
 ## Error Recovery
