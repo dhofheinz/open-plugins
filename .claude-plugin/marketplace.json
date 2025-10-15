@@ -102,6 +102,37 @@
       "category": "productivity",
       "homepage": "https://github.com/dhofheinz/open-plugins/tree/main/plugins/git-commit-assistant",
       "repository": "https://github.com/dhofheinz/open-plugins"
+    },
+    {
+      "name": "10x-fullstack-engineer",
+      "version": "1.0.0",
+      "description": "Elite full-stack engineering capabilities with expert-level development across frontend, backend, databases, and infrastructure. Includes architecture design, feature implementation, performance optimization, refactoring, debugging, and comprehensive code review.",
+      "author": {
+        "name": "Daniel Hofheinz",
+        "email": "daniel@danielhofheinz.com",
+        "url": "https://github.com/dhofheinz/open-plugins"
+      },
+      "source": "./plugins/10x-fullstack-engineer",
+      "license": "MIT",
+      "keywords": [
+        "fullstack",
+        "architecture",
+        "development",
+        "engineering",
+        "performance",
+        "optimization",
+        "refactoring",
+        "debugging",
+        "review",
+        "frontend",
+        "backend",
+        "database",
+        "infrastructure",
+        "expert"
+      ],
+      "category": "development",
+      "homepage": "https://github.com/dhofheinz/open-plugins/tree/main/plugins/10x-fullstack-engineer",
+      "repository": "https://github.com/dhofheinz/open-plugins"
     }
   ],
   "categories": [
