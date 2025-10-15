@@ -1,0 +1,33 @@
+{
+  "name": "10x-fullstack-engineer",
+  "version": "1.0.0",
+  "description": "Elite full-stack engineering capabilities with expert-level development across frontend, backend, databases, and infrastructure. Includes architecture design, feature implementation, performance optimization, refactoring, debugging, and comprehensive code review.",
+  "author": {
+    "name": "Daniel Hofheinz",
+    "email": "daniel@danielhofheinz.com",
+    "url": "https://github.com/dhofheinz/open-plugins"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dhofheinz/open-plugins"
+  },
+  "homepage": "https://github.com/dhofheinz/open-plugins/tree/main/plugins/10x-fullstack-engineer#readme",
+  "keywords": [
+    "fullstack",
+    "architecture",
+    "development",
+    "engineering",
+    "performance",
+    "optimization",
+    "refactoring",
+    "debugging",
+    "review",
+    "frontend",
+    "backend",
+    "database",
+    "infrastructure",
+    "expert",
+    "10x"
+  ]
+}
