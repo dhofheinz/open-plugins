@@ -119,7 +119,7 @@ Accessibility audit for inclusive design:
 ### Basic Usage
 
 ```bash
-/review <operation> scope:"<what-to-review>" [depth:"<level>"] [focus:"<area>"]
+/10x-fullstack-engineer:review <operation> scope:"<what-to-review>" [depth:"<level>"] [focus:"<area>"]
 ```
 
 ### Parameters
@@ -143,7 +143,7 @@ Accessibility audit for inclusive design:
 
 #### Comprehensive Feature Review
 ```bash
-/review full scope:"authentication feature" depth:"deep"
+/10x-fullstack-engineer:review full scope:"authentication feature" depth:"deep"
 ```
 Reviews all security, performance, quality, testing, and documentation aspects of the auth feature.
 
@@ -151,7 +151,7 @@ Reviews all security, performance, quality, testing, and documentation aspects o
 
 #### Security Audit for Critical Module
 ```bash
-/review security scope:"payment processing module" depth:"deep"
+/10x-fullstack-engineer:review security scope:"payment processing module" depth:"deep"
 ```
 Deep security audit focusing on OWASP Top 10, PCI DSS considerations, and vulnerability scanning.
 
@@ -159,7 +159,7 @@ Deep security audit focusing on OWASP Top 10, PCI DSS considerations, and vulner
 
 #### Performance Analysis
 ```bash
-/review performance scope:"dashboard rendering and data loading" depth:"standard"
+/10x-fullstack-engineer:review performance scope:"dashboard rendering and data loading" depth:"standard"
 ```
 Analyzes database queries, rendering optimization, bundle size, and API call efficiency.
 
@@ -167,7 +167,7 @@ Analyzes database queries, rendering optimization, bundle size, and API call eff
 
 #### Code Quality Check
 ```bash
-/review quality scope:"src/utils and src/helpers" depth:"quick"
+/10x-fullstack-engineer:review quality scope:"src/utils and src/helpers" depth:"quick"
 ```
 Quick scan for code organization, duplication, naming, and obvious quality issues.
 
@@ -175,7 +175,7 @@ Quick scan for code organization, duplication, naming, and obvious quality issue
 
 #### Pull Request Review
 ```bash
-/review pr scope:"PR #456 - Add user permissions" depth:"standard"
+/10x-fullstack-engineer:review pr scope:"PR #456 - Add user permissions" depth:"standard"
 ```
 Reviews PR changes with git integration, assesses impact, checks tests, and provides GitHub-compatible feedback.
 
@@ -183,7 +183,7 @@ Reviews PR changes with git integration, assesses impact, checks tests, and prov
 
 #### Accessibility Compliance
 ```bash
-/review accessibility scope:"checkout flow components" depth:"deep" level:"AA"
+/10x-fullstack-engineer:review accessibility scope:"checkout flow components" depth:"deep" level:"AA"
 ```
 Comprehensive WCAG 2.1 Level AA compliance review with screen reader testing recommendations.
 
@@ -191,7 +191,7 @@ Comprehensive WCAG 2.1 Level AA compliance review with screen reader testing rec
 
 #### Quick Security Scan
 ```bash
-/review security scope:"recent changes in API layer" depth:"quick"
+/10x-fullstack-engineer:review security scope:"recent changes in API layer" depth:"quick"
 ```
 Fast security scan for obvious vulnerabilities in recent changes.
 
@@ -199,7 +199,7 @@ Fast security scan for obvious vulnerabilities in recent changes.
 
 #### Performance Hot Spot
 ```bash
-/review performance scope:"UserList component" depth:"standard" focus:"rendering and memory"
+/10x-fullstack-engineer:review performance scope:"UserList component" depth:"standard" focus:"rendering and memory"
 ```
 Standard performance review with extra focus on rendering performance and memory leaks.
 
@@ -351,46 +351,46 @@ All review operations produce structured feedback:
 ### Pre-Merge PR Review
 ```bash
 # 1. Standard PR review
-/review pr scope:"PR #123" depth:"standard"
+/10x-fullstack-engineer:review pr scope:"PR #123" depth:"standard"
 
 # 2. If security-sensitive changes detected, follow up with:
-/review security scope:"payment module changes" depth:"deep"
+/10x-fullstack-engineer:review security scope:"payment module changes" depth:"deep"
 
 # 3. If performance-critical changes, analyze:
-/review performance scope:"database query changes" depth:"standard"
+/10x-fullstack-engineer:review performance scope:"database query changes" depth:"standard"
 ```
 
 ### Pre-Production Audit
 ```bash
 # 1. Comprehensive review of feature
-/review full scope:"new checkout feature" depth:"deep"
+/10x-fullstack-engineer:review full scope:"new checkout feature" depth:"deep"
 
 # 2. Dedicated security audit
-/review security scope:"checkout feature" depth:"deep"
+/10x-fullstack-engineer:review security scope:"checkout feature" depth:"deep"
 
 # 3. Accessibility compliance (if user-facing)
-/review accessibility scope:"checkout UI" depth:"deep" level:"AA"
+/10x-fullstack-engineer:review accessibility scope:"checkout UI" depth:"deep" level:"AA"
 ```
 
 ### Technical Debt Assessment
 ```bash
 # 1. Quality review to identify debt
-/review quality scope:"legacy auth module" depth:"deep"
+/10x-fullstack-engineer:review quality scope:"legacy auth module" depth:"deep"
 
 # 2. Performance assessment
-/review performance scope:"legacy auth module" depth:"standard"
+/10x-fullstack-engineer:review performance scope:"legacy auth module" depth:"standard"
 
 # 3. Security review (critical for old code)
-/review security scope:"legacy auth module" depth:"deep"
+/10x-fullstack-engineer:review security scope:"legacy auth module" depth:"deep"
 ```
 
 ### Quick Daily Reviews
 ```bash
 # Quick review of recent changes
-/review quality scope:"today's commits" depth:"quick"
+/10x-fullstack-engineer:review quality scope:"today's commits" depth:"quick"
 
 # Fast security scan
-/review security scope:"API changes today" depth:"quick"
+/10x-fullstack-engineer:review security scope:"API changes today" depth:"quick"
 ```
 
 ## Integration with 10x-fullstack-engineer Agent
@@ -451,7 +451,7 @@ Reviews recommend testing approaches:
 ### Adding Focus Areas
 ```bash
 # Add custom focus to any review
-/review full scope:"API layer" depth:"standard" focus:"error handling and logging"
+/10x-fullstack-engineer:review full scope:"API layer" depth:"standard" focus:"error handling and logging"
 ```
 
 ### Adjusting Depth
@@ -463,13 +463,13 @@ Reviews recommend testing approaches:
 For complex reviews, run multiple operations:
 ```bash
 # 1. Full review for baseline
-/review full scope:"feature" depth:"standard"
+/10x-fullstack-engineer:review full scope:"feature" depth:"standard"
 
 # 2. Deep dive on specific concern
-/review security scope:"feature auth logic" depth:"deep"
+/10x-fullstack-engineer:review security scope:"feature auth logic" depth:"deep"
 
 # 3. Performance analysis
-/review performance scope:"feature data loading" depth:"standard"
+/10x-fullstack-engineer:review performance scope:"feature data loading" depth:"standard"
 ```
 
 ## Tools & Resources
@@ -493,32 +493,32 @@ For complex reviews, run multiple operations:
 **Solution**: Break into smaller reviews
 ```bash
 # Instead of:
-/review full scope:"entire application" depth:"deep"
+/10x-fullstack-engineer:review full scope:"entire application" depth:"deep"
 
 # Do:
-/review full scope:"authentication module" depth:"deep"
-/review full scope:"payment module" depth:"deep"
-/review full scope:"user management" depth:"deep"
+/10x-fullstack-engineer:review full scope:"authentication module" depth:"deep"
+/10x-fullstack-engineer:review full scope:"payment module" depth:"deep"
+/10x-fullstack-engineer:review full scope:"user management" depth:"deep"
 ```
 
 ### "Not enough context provided"
 **Solution**: Be more specific about scope
 ```bash
 # Instead of:
-/review security scope:"code" depth:"standard"
+/10x-fullstack-engineer:review security scope:"code" depth:"standard"
 
 # Do:
-/review security scope:"src/auth module - JWT validation and session management" depth:"standard"
+/10x-fullstack-engineer:review security scope:"src/auth module - JWT validation and session management" depth:"standard"
 ```
 
 ### "Need faster reviews"
 **Solution**: Use quick depth for initial pass
 ```bash
 # Quick pass first
-/review quality scope:"new feature" depth:"quick"
+/10x-fullstack-engineer:review quality scope:"new feature" depth:"quick"
 
 # Then deep dive on issues found
-/review security scope:"authentication logic" depth:"deep"
+/10x-fullstack-engineer:review security scope:"authentication logic" depth:"deep"
 ```
 
 ## Contributing

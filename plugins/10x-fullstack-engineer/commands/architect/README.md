@@ -73,7 +73,7 @@ scale:"expected-load"         (optional) Expected load, user count, data volume,
 
 **Example**:
 ```bash
-/architect design requirements:"real-time notification system with WebSockets, push notifications, and email delivery" scale:"10,000 concurrent users" constraints:"must integrate with existing REST API, AWS infrastructure"
+/10x-fullstack-engineer:architect design requirements:"real-time notification system with WebSockets, push notifications, and email delivery" scale:"10,000 concurrent users" constraints:"must integrate with existing REST API, AWS infrastructure"
 ```
 
 ---
@@ -113,7 +113,7 @@ depth:"shallow|deep"          (optional) Review depth - "shallow" for quick asse
 
 **Example**:
 ```bash
-/architect review focus:"security" depth:"deep"
+/10x-fullstack-engineer:architect review focus:"security" depth:"deep"
 ```
 
 ---
@@ -155,7 +155,7 @@ status:"status"               (optional) Decision status - "proposed", "accepted
 
 **Example**:
 ```bash
-/architect adr decision:"use PostgreSQL with JSONB for flexible schema" context:"need relational integrity plus document flexibility" alternatives:"MongoDB, DynamoDB, MySQL" status:"accepted"
+/10x-fullstack-engineer:architect adr decision:"use PostgreSQL with JSONB for flexible schema" context:"need relational integrity plus document flexibility" alternatives:"MongoDB, DynamoDB, MySQL" status:"accepted"
 ```
 
 ---
@@ -207,7 +207,7 @@ baseline:"reference"          (optional) Baseline for comparison - ADR number, d
 
 **Example**:
 ```bash
-/architect assess baseline:"previous"
+/10x-fullstack-engineer:architect assess baseline:"previous"
 ```
 
 ---
@@ -314,57 +314,57 @@ python3 ./.scripts/complexity-metrics.py [path] [--format json|text]
 
 ```bash
 # 1. Design architecture for new feature
-/architect design requirements:"multi-tenant SaaS platform with real-time collaboration, file storage, and analytics" scale:"enterprise-level, 100k+ users" constraints:"TypeScript, Node.js, PostgreSQL, horizontal scaling"
+/10x-fullstack-engineer:architectdesign requirements:"multi-tenant SaaS platform with real-time collaboration, file storage, and analytics" scale:"enterprise-level, 100k+ users" constraints:"TypeScript, Node.js, PostgreSQL, horizontal scaling"
 
 # 2. Document key architectural decisions
-/architect adr decision:"use PostgreSQL with row-level security for multi-tenancy" alternatives:"separate databases per tenant, schema-based isolation" status:"accepted"
+/10x-fullstack-engineer:architectadr decision:"use PostgreSQL with row-level security for multi-tenancy" alternatives:"separate databases per tenant, schema-based isolation" status:"accepted"
 
-/architect adr decision:"implement CQRS pattern for read-heavy analytics" alternatives:"standard CRUD, event sourcing, materialized views" status:"accepted"
+/10x-fullstack-engineer:architectadr decision:"implement CQRS pattern for read-heavy analytics" alternatives:"standard CRUD, event sourcing, materialized views" status:"accepted"
 
 # 3. Assess baseline architecture health
-/architect assess
+/10x-fullstack-engineer:architectassess
 
 # 4. Review specific component security
-/architect review path:"src/services/auth" focus:"security" depth:"deep"
+/10x-fullstack-engineer:architectreview path:"src/services/auth" focus:"security" depth:"deep"
 ```
 
 ### Quarterly Architecture Review
 
 ```bash
 # Run comprehensive assessment against last quarter
-/architect assess baseline:"2024-01-15"
+/10x-fullstack-engineer:architectassess baseline:"2024-01-15"
 
 # Focus on areas that degraded
-/architect review focus:"performance" depth:"deep"
+/10x-fullstack-engineer:architectreview focus:"performance" depth:"deep"
 
 # Document improvement initiatives
-/architect adr decision:"implement Redis caching layer to improve performance" context:"assessment showed performance degradation, response times increased 40%" status:"accepted"
+/10x-fullstack-engineer:architectadr decision:"implement Redis caching layer to improve performance" context:"assessment showed performance degradation, response times increased 40%" status:"accepted"
 ```
 
 ### Pre-Production Architecture Validation
 
 ```bash
 # Comprehensive review before launch
-/architect review focus:"all" depth:"deep"
+/10x-fullstack-engineer:architectreview focus:"all" depth:"deep"
 
 # Security audit
-/architect review focus:"security" depth:"deep"
+/10x-fullstack-engineer:architectreview focus:"security" depth:"deep"
 
 # Performance validation
-/architect review focus:"performance" depth:"deep"
+/10x-fullstack-engineer:architectreview focus:"performance" depth:"deep"
 
 # Document production readiness decisions
-/architect adr decision:"deploy with blue-green strategy for zero-downtime releases" alternatives:"rolling deployment, canary releases" status:"accepted"
+/10x-fullstack-engineer:architectadr decision:"deploy with blue-green strategy for zero-downtime releases" alternatives:"rolling deployment, canary releases" status:"accepted"
 ```
 
 ### Technical Debt Assessment
 
 ```bash
 # Assess technical debt
-/architect assess focus:"tech-debt"
+/10x-fullstack-engineer:architectassess focus:"tech-debt"
 
 # Review code quality
-/architect review focus:"maintainability" depth:"deep"
+/10x-fullstack-engineer:architectreview focus:"maintainability" depth:"deep"
 
 # Run complexity analysis
 python3 .scripts/complexity-metrics.py . --format json
@@ -377,17 +377,17 @@ python3 .scripts/complexity-metrics.py . --format json
 
 ```bash
 # Document existing system design
-/architect design requirements:"document existing order processing system" scope:"backend" constraints:"Node.js, PostgreSQL, AWS, existing production system"
+/10x-fullstack-engineer:architectdesign requirements:"document existing order processing system" scope:"backend" constraints:"Node.js, PostgreSQL, AWS, existing production system"
 
 # Create ADRs for historical decisions
-/architect adr decision:"chose microservices architecture for order processing" context:"monolith scalability limitations" alternatives:"modular monolith, serverless" status:"accepted"
+/10x-fullstack-engineer:architectadr decision:"chose microservices architecture for order processing" context:"monolith scalability limitations" alternatives:"modular monolith, serverless" status:"accepted"
 
 # Generate architecture diagrams
 ./.scripts/diagram-generator.sh microservices --title "Order Processing Architecture"
 ./.scripts/diagram-generator.sh database --title "Order Database Architecture"
 
 # Baseline current health
-/architect assess
+/10x-fullstack-engineer:architectassess
 ```
 
 ---
@@ -399,7 +399,7 @@ python3 .scripts/complexity-metrics.py . --format json
 The Architecture skill integrates seamlessly with other development workflows:
 
 **Design Phase**:
-- `/architect design` → Design system architecture
+- `/10x-fullstack-engineer:architect design` → Design system architecture
 - Document decisions with `/architect adr`
 - Generate diagrams with `diagram-generator.sh`
 
@@ -409,16 +409,16 @@ The Architecture skill integrates seamlessly with other development workflows:
 - Validate dependencies with `analyze-dependencies.sh`
 
 **Testing Phase**:
-- `/architect review focus:"performance"` for performance validation
-- `/architect assess` for quality gates
+- `/10x-fullstack-engineer:architect review focus:"performance"` for performance validation
+- `/10x-fullstack-engineer:architect assess` for quality gates
 
 **Deployment Phase**:
-- `/architect review focus:"security"` before production
+- `/10x-fullstack-engineer:architect review focus:"security"` before production
 - Document deployment decisions with `/architect adr`
 
 **Maintenance Phase**:
 - Quarterly `/architect assess` against baseline
-- `/architect review focus:"tech-debt"` for refactoring planning
+- `/10x-fullstack-engineer:architect review focus:"tech-debt"` for refactoring planning
 - Update ADRs when superseding decisions
 
 ### With Agent System
@@ -441,16 +441,16 @@ Integrate architecture operations into your development lifecycle:
 **Sprint Planning**:
 ```bash
 # Review technical debt before planning
-/architect assess focus:"tech-debt"
+/10x-fullstack-engineer:architectassess focus:"tech-debt"
 
 # Design new features architecturally
-/architect design requirements:"sprint feature description"
+/10x-fullstack-engineer:architectdesign requirements:"sprint feature description"
 ```
 
 **Code Review**:
 ```bash
 # Review new components
-/architect review path:"src/new-component" depth:"shallow"
+/10x-fullstack-engineer:architectreview path:"src/new-component" depth:"shallow"
 
 # Check complexity
 python3 .scripts/complexity-metrics.py src/new-component
@@ -459,20 +459,20 @@ python3 .scripts/complexity-metrics.py src/new-component
 **Release Process**:
 ```bash
 # Pre-release validation
-/architect review focus:"security" depth:"deep"
-/architect review focus:"performance" depth:"shallow"
+/10x-fullstack-engineer:architectreview focus:"security" depth:"deep"
+/10x-fullstack-engineer:architectreview focus:"performance" depth:"shallow"
 
 # Document release decisions
-/architect adr decision:"release decision"
+/10x-fullstack-engineer:architectadr decision:"release decision"
 ```
 
 **Quarterly Reviews**:
 ```bash
 # Comprehensive health assessment
-/architect assess baseline:"previous"
+/10x-fullstack-engineer:architectassess baseline:"previous"
 
 # Trend analysis and planning
-/architect review focus:"all" depth:"deep"
+/10x-fullstack-engineer:architectreview focus:"all" depth:"deep"
 ```
 
 ---
@@ -553,36 +553,36 @@ python3 .scripts/complexity-metrics.py src/new-component
 
 **New Project Setup**:
 ```bash
-/architect design requirements:"project description" constraints:"tech stack"
-/architect adr decision:"technology choices"
+/10x-fullstack-engineer:architectdesign requirements:"project description" constraints:"tech stack"
+/10x-fullstack-engineer:architectadr decision:"technology choices"
 ./.scripts/diagram-generator.sh layered --title "Project Architecture"
-/architect assess  # Establish baseline
+/10x-fullstack-engineer:architectassess  # Establish baseline
 ```
 
 **Pre-Production Checklist**:
 ```bash
-/architect review focus:"security" depth:"deep"
-/architect review focus:"performance" depth:"deep"
-/architect assess
+/10x-fullstack-engineer:architectreview focus:"security" depth:"deep"
+/10x-fullstack-engineer:architectreview focus:"performance" depth:"deep"
+/10x-fullstack-engineer:architectassess
 ./.scripts/analyze-dependencies.sh . json
 ```
 
 **Technical Debt Paydown**:
 ```bash
-/architect assess focus:"tech-debt"
+/10x-fullstack-engineer:architectassess focus:"tech-debt"
 python3 .scripts/complexity-metrics.py . --format json
-/architect review focus:"maintainability" depth:"deep"
+/10x-fullstack-engineer:architectreview focus:"maintainability" depth:"deep"
 # Address top recommendations
-/architect assess baseline:"previous"  # Verify improvement
+/10x-fullstack-engineer:architectassess baseline:"previous"  # Verify improvement
 ```
 
 **Architecture Modernization**:
 ```bash
-/architect review focus:"all" depth:"deep"  # Understand current state
-/architect design requirements:"modernization goals" constraints:"existing system"
-/architect adr decision:"modernization approach"
+/10x-fullstack-engineer:architectreview focus:"all" depth:"deep"  # Understand current state
+/10x-fullstack-engineer:architectdesign requirements:"modernization goals" constraints:"existing system"
+/10x-fullstack-engineer:architectadr decision:"modernization approach"
 # Implement incrementally
-/architect assess baseline:"pre-modernization"  # Track progress
+/10x-fullstack-engineer:architectassess baseline:"pre-modernization"  # Track progress
 ```
 
 ---
@@ -603,7 +603,7 @@ architect/
 └── README.md                          # This file
 ```
 
-**Note**: Only `skill.md` is directly invokable via `/architect`. Sub-operations are instruction modules read and executed by the router.
+**Note**: Only `skill.md` is directly invokable via `/10x-fullstack-engineer:architect`. Sub-operations are instruction modules read and executed by the router.
 
 ---
 

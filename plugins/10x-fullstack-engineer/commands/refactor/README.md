@@ -30,7 +30,7 @@ The refactor skill provides systematic, safety-first refactoring operations that
 ### Basic Syntax
 
 ```bash
-/refactor <operation> <parameters>
+/10x-fullstack-engineer:refactor <operation> <parameters>
 ```
 
 ### Parameter Format
@@ -38,9 +38,9 @@ The refactor skill provides systematic, safety-first refactoring operations that
 All operations use key:value parameter format:
 
 ```bash
-/refactor analyze scope:"src/" metrics:"complexity,duplication" depth:"detailed"
-/refactor extract scope:"UserService.ts" type:"method" target:"validateEmail"
-/refactor patterns scope:"services/" pattern:"dependency-injection"
+/10x-fullstack-engineer:refactor analyze scope:"src/" metrics:"complexity,duplication" depth:"detailed"
+/10x-fullstack-engineer:refactor extract scope:"UserService.ts" type:"method" target:"validateEmail"
+/10x-fullstack-engineer:refactor patterns scope:"services/" pattern:"dependency-injection"
 ```
 
 ## Operations Guide
@@ -63,7 +63,7 @@ Identify refactoring opportunities through comprehensive code analysis.
 **Example:**
 
 ```bash
-/refactor analyze scope:"src/components" metrics:"complexity,duplication,coverage" depth:"detailed"
+/10x-fullstack-engineer:refactor analyze scope:"src/components" metrics:"complexity,duplication,coverage" depth:"detailed"
 ```
 
 **What it measures:**
@@ -98,13 +98,13 @@ Extract code into smaller, focused units to reduce complexity.
 
 ```bash
 # Extract long method
-/refactor extract scope:"UserService.ts" type:"method" target:"validateAndCreateUser" reason:"reduce complexity"
+/10x-fullstack-engineer:refactor extract scope:"UserService.ts" type:"method" target:"validateAndCreateUser" reason:"reduce complexity"
 
 # Extract reusable component
-/refactor extract scope:"UserProfile.tsx" type:"component" target:"ProfileHeader" reason:"reusability"
+/10x-fullstack-engineer:refactor extract scope:"UserProfile.tsx" type:"component" target:"ProfileHeader" reason:"reusability"
 
 # Extract shared utility
-/refactor extract scope:"formatters.js" type:"utility" target:"formatDate" reason:"used in multiple places"
+/10x-fullstack-engineer:refactor extract scope:"formatters.js" type:"utility" target:"formatDate" reason:"used in multiple places"
 ```
 
 **When to extract:**
@@ -169,13 +169,13 @@ Introduce proven design patterns to solve recurring design problems.
 
 ```bash
 # Eliminate complex switch statement
-/refactor patterns scope:"PaymentProcessor.ts" pattern:"strategy" reason:"eliminate switch statement"
+/10x-fullstack-engineer:refactor patterns scope:"PaymentProcessor.ts" pattern:"strategy" reason:"eliminate switch statement"
 
 # Improve testability
-/refactor patterns scope:"services/" pattern:"dependency-injection" reason:"improve testability"
+/10x-fullstack-engineer:refactor patterns scope:"services/" pattern:"dependency-injection" reason:"improve testability"
 
 # Decouple event handling
-/refactor patterns scope:"UserService.ts" pattern:"observer" reason:"loose coupling"
+/10x-fullstack-engineer:refactor patterns scope:"UserService.ts" pattern:"observer" reason:"loose coupling"
 ```
 
 **Pattern Selection Guide:**
@@ -235,16 +235,16 @@ Improve TypeScript type safety by eliminating 'any', adding types, and enabling 
 
 ```bash
 # Add missing types
-/refactor types scope:"utils/helpers.js" strategy:"add-types"
+/10x-fullstack-engineer:refactor types scope:"utils/helpers.js" strategy:"add-types"
 
 # Eliminate all 'any' types
-/refactor types scope:"api/" strategy:"eliminate-any" strict:"true"
+/10x-fullstack-engineer:refactor types scope:"api/" strategy:"eliminate-any" strict:"true"
 
 # Migrate JavaScript to TypeScript
-/refactor types scope:"src/legacy/" strategy:"migrate-to-ts"
+/10x-fullstack-engineer:refactor types scope:"src/legacy/" strategy:"migrate-to-ts"
 
 # Add generics for reusability
-/refactor types scope:"Repository.ts" strategy:"add-generics"
+/10x-fullstack-engineer:refactor types scope:"Repository.ts" strategy:"add-generics"
 ```
 
 **Type Safety Improvements:**
@@ -299,13 +299,13 @@ Detect and eliminate code duplication through extraction, parameterization, or t
 
 ```bash
 # Find and eliminate duplicates
-/refactor duplicate scope:"src/validators" threshold:"80" strategy:"extract-function"
+/10x-fullstack-engineer:refactor duplicate scope:"src/validators" threshold:"80" strategy:"extract-function"
 
 # Find exact duplicates only
-/refactor duplicate scope:"src/components" threshold:"100"
+/10x-fullstack-engineer:refactor duplicate scope:"src/components" threshold:"100"
 
 # Use parameterization
-/refactor duplicate scope:"formatters.ts" strategy:"parameterize"
+/10x-fullstack-engineer:refactor duplicate scope:"formatters.ts" strategy:"parameterize"
 ```
 
 **Duplication Metrics:**
@@ -365,16 +365,16 @@ Update legacy code patterns to modern JavaScript/TypeScript standards.
 
 ```bash
 # Modernize callback hell
-/refactor modernize scope:"legacy-api/" targets:"callbacks-to-async" compatibility:"node14+"
+/10x-fullstack-engineer:refactor modernize scope:"legacy-api/" targets:"callbacks-to-async" compatibility:"node14+"
 
 # Update all legacy patterns
-/refactor modernize scope:"src/old/" targets:"var-to-const,prototypes-to-classes,commonjs-to-esm"
+/10x-fullstack-engineer:refactor modernize scope:"src/old/" targets:"var-to-const,prototypes-to-classes,commonjs-to-esm"
 
 # Remove jQuery dependency
-/refactor modernize scope:"public/js/" targets:"jquery-to-vanilla"
+/10x-fullstack-engineer:refactor modernize scope:"public/js/" targets:"jquery-to-vanilla"
 
 # Convert to React hooks
-/refactor modernize scope:"components/" targets:"classes-to-hooks"
+/10x-fullstack-engineer:refactor modernize scope:"components/" targets:"classes-to-hooks"
 ```
 
 **Modernization Impact:**
@@ -526,16 +526,16 @@ Verifies test coverage before refactoring.
 
 ```bash
 # 1. Analyze complexity
-/refactor analyze scope:"UserService.ts" metrics:"complexity"
+/10x-fullstack-engineer:refactor analyze scope:"UserService.ts" metrics:"complexity"
 
 # 2. Identify function with complexity >10
 # Result: validateAndCreateUser() has complexity 18
 
 # 3. Extract methods
-/refactor extract scope:"UserService.ts" type:"method" target:"validateAndCreateUser"
+/10x-fullstack-engineer:refactor extract scope:"UserService.ts" type:"method" target:"validateAndCreateUser"
 
 # 4. Verify improvement
-/refactor analyze scope:"UserService.ts" metrics:"complexity"
+/10x-fullstack-engineer:refactor analyze scope:"UserService.ts" metrics:"complexity"
 # Result: Complexity reduced from 18 to 3
 ```
 
@@ -543,16 +543,16 @@ Verifies test coverage before refactoring.
 
 ```bash
 # 1. Detect duplication
-/refactor duplicate scope:"src/components" threshold:"80"
+/10x-fullstack-engineer:refactor duplicate scope:"src/components" threshold:"80"
 
 # 2. Review duplicate blocks
 # Result: Validation logic duplicated in 5 files
 
 # 3. Extract to shared utility
-/refactor duplicate scope:"src/components" strategy:"extract-function"
+/10x-fullstack-engineer:refactor duplicate scope:"src/components" strategy:"extract-function"
 
 # 4. Verify elimination
-/refactor duplicate scope:"src/components" threshold:"80"
+/10x-fullstack-engineer:refactor duplicate scope:"src/components" threshold:"80"
 # Result: Duplication reduced from 6.6% to 1.1%
 ```
 
@@ -560,16 +560,16 @@ Verifies test coverage before refactoring.
 
 ```bash
 # 1. Identify legacy patterns
-/refactor analyze scope:"src/legacy/" metrics:"all"
+/10x-fullstack-engineer:refactor analyze scope:"src/legacy/" metrics:"all"
 
 # 2. Modernize callbacks to async/await
-/refactor modernize scope:"src/legacy/" targets:"callbacks-to-async"
+/10x-fullstack-engineer:refactor modernize scope:"src/legacy/" targets:"callbacks-to-async"
 
 # 3. Update var to const/let
-/refactor modernize scope:"src/legacy/" targets:"var-to-const"
+/10x-fullstack-engineer:refactor modernize scope:"src/legacy/" targets:"var-to-const"
 
 # 4. Convert to ES modules
-/refactor modernize scope:"src/legacy/" targets:"commonjs-to-esm"
+/10x-fullstack-engineer:refactor modernize scope:"src/legacy/" targets:"commonjs-to-esm"
 
 # 5. Verify all tests pass
 npm test
@@ -644,7 +644,7 @@ The agent applies **SOLID principles**, **DRY**, **YAGNI**, and follows the **Bo
 **Solution:**
 ```bash
 # 1. Check current coverage
-/refactor analyze scope:"UserService.ts" metrics:"coverage"
+/10x-fullstack-engineer:refactor analyze scope:"UserService.ts" metrics:"coverage"
 
 # 2. Add tests before refactoring
 # Write tests for the code you're about to refactor
@@ -653,7 +653,7 @@ The agent applies **SOLID principles**, **DRY**, **YAGNI**, and follows the **Bo
 npm test -- --coverage
 
 # 4. Retry refactoring
-/refactor extract scope:"UserService.ts" type:"method" target:"validateUser"
+/10x-fullstack-engineer:refactor extract scope:"UserService.ts" type:"method" target:"validateUser"
 ```
 
 ### Issue: "Uncommitted changes detected"
@@ -671,7 +671,7 @@ git commit -m "chore: prepare for refactoring"
 git checkout -b refactor/improve-user-service
 
 # 4. Retry refactoring
-/refactor extract scope:"UserService.ts" type:"method" target:"validateUser"
+/10x-fullstack-engineer:refactor extract scope:"UserService.ts" type:"method" target:"validateUser"
 ```
 
 ### Issue: "Too many duplicates found"
@@ -679,16 +679,16 @@ git checkout -b refactor/improve-user-service
 **Solution:**
 ```bash
 # 1. Increase threshold to focus on exact duplicates
-/refactor duplicate scope:"src/" threshold:"95"
+/10x-fullstack-engineer:refactor duplicate scope:"src/" threshold:"95"
 
 # 2. Tackle highest impact duplicates first
 # Extract most duplicated code blocks
 
 # 3. Gradually lower threshold
-/refactor duplicate scope:"src/" threshold:"85"
+/10x-fullstack-engineer:refactor duplicate scope:"src/" threshold:"85"
 
 # 4. Continue until <3% duplication
-/refactor duplicate scope:"src/" threshold:"80"
+/10x-fullstack-engineer:refactor duplicate scope:"src/" threshold:"80"
 ```
 
 ## Examples
@@ -699,7 +699,7 @@ git checkout -b refactor/improve-user-service
 # Session: Refactor UserService for better maintainability
 
 # Step 1: Analyze current state
-/refactor analyze scope:"src/services/UserService.ts" depth:"detailed"
+/10x-fullstack-engineer:refactor analyze scope:"src/services/UserService.ts" depth:"detailed"
 # Results:
 # - Complexity: 18 (CRITICAL)
 # - Duplication: 6.6% (HIGH)
@@ -713,23 +713,23 @@ npm test -- --coverage
 # Coverage: 78% ✓
 
 # Step 4: Extract complex method
-/refactor extract scope:"src/services/UserService.ts" type:"method" target:"validateAndCreateUser"
+/10x-fullstack-engineer:refactor extract scope:"src/services/UserService.ts" type:"method" target:"validateAndCreateUser"
 # Complexity: 18 → 3 (83% improvement)
 
 # Step 5: Introduce dependency injection pattern
-/refactor patterns scope:"src/services/UserService.ts" pattern:"dependency-injection"
+/10x-fullstack-engineer:refactor patterns scope:"src/services/UserService.ts" pattern:"dependency-injection"
 # Testability: Greatly improved
 
 # Step 6: Eliminate duplicate validation
-/refactor duplicate scope:"src/services/" threshold:"80" strategy:"extract-function"
+/10x-fullstack-engineer:refactor duplicate scope:"src/services/" threshold:"80" strategy:"extract-function"
 # Duplication: 6.6% → 1.1% (87.5% improvement)
 
 # Step 7: Strengthen types
-/refactor types scope:"src/services/UserService.ts" strategy:"eliminate-any"
+/10x-fullstack-engineer:refactor types scope:"src/services/UserService.ts" strategy:"eliminate-any"
 # Type safety: 100% (0 'any' types remaining)
 
 # Step 8: Final analysis
-/refactor analyze scope:"src/services/UserService.ts" depth:"detailed"
+/10x-fullstack-engineer:refactor analyze scope:"src/services/UserService.ts" depth:"detailed"
 # Results:
 # - Complexity: 3 (EXCELLENT)
 # - Duplication: 1.1% (EXCELLENT)

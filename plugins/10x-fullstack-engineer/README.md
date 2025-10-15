@@ -103,7 +103,7 @@ The plugin follows a **skill-based architecture** where each skill is a self-con
 
 ## Skills Overview
 
-### 🏗️ `/architect` - System Architecture & Design
+### 🏗️ `/10x-fullstack-engineer:architect` - System Architecture & Design
 
 **Purpose**: Design, review, document, and assess system architecture with industry best practices.
 
@@ -122,16 +122,16 @@ The plugin follows a **skill-based architecture** where each skill is a self-con
 
 **Example**:
 ```bash
-/architect design requirements:"real-time notification system" scale:"10k concurrent users" constraints:"AWS, TypeScript"
-/architect adr decision:"use PostgreSQL with row-level security for multi-tenancy" status:"accepted"
-/architect assess baseline:"previous"
+/10x-fullstack-engineer:architect design requirements:"real-time notification system" scale:"10k concurrent users" constraints:"AWS, TypeScript"
+/10x-fullstack-engineer:architect adr decision:"use PostgreSQL with row-level security for multi-tenancy" status:"accepted"
+/10x-fullstack-engineer:architect assess baseline:"previous"
 ```
 
 [Full Documentation →](/commands/architect/README.md)
 
 ---
 
-### ⚙️ `/feature` - Full-Stack Feature Implementation
+### ⚙️ `/10x-fullstack-engineer:feature` - Full-Stack Feature Implementation
 
 **Purpose**: Implement production-ready features across all stack layers with comprehensive quality standards.
 
@@ -153,16 +153,16 @@ The plugin follows a **skill-based architecture** where each skill is a self-con
 
 **Example**:
 ```bash
-/feature implement description:"blog post management with rich text editor" tests:"comprehensive"
-/feature backend description:"REST API for product search with filters" validation:"strict"
-/feature frontend description:"admin dashboard with charts" framework:"react"
+/10x-fullstack-engineer:feature implement description:"blog post management with rich text editor" tests:"comprehensive"
+/10x-fullstack-engineer:feature backend description:"REST API for product search with filters" validation:"strict"
+/10x-fullstack-engineer:feature frontend description:"admin dashboard with charts" framework:"react"
 ```
 
 [Full Documentation →](commands/feature/README.md)
 
 ---
 
-### 🐛 `/debug` - Comprehensive Debugging Toolkit
+### 🐛 `/10x-fullstack-engineer:debug` - Comprehensive Debugging Toolkit
 
 **Purpose**: Systematic debugging across all layers with root cause analysis and permanent fixes.
 
@@ -184,16 +184,16 @@ The plugin follows a **skill-based architecture** where each skill is a self-con
 
 **Example**:
 ```bash
-/debug diagnose issue:"500 errors on checkout" environment:"production" logs:"logs/app.log"
-/debug reproduce issue:"payment webhook fails intermittently"
-/debug fix issue:"race condition in order processing" root_cause:"missing transaction lock"
+/10x-fullstack-engineer:debug diagnose issue:"500 errors on checkout" environment:"production" logs:"logs/app.log"
+/10x-fullstack-engineer:debug reproduce issue:"payment webhook fails intermittently"
+/10x-fullstack-engineer:debug fix issue:"race condition in order processing" root_cause:"missing transaction lock"
 ```
 
 [Full Documentation →](commands/debug/README.md)
 
 ---
 
-### ⚡ `/optimize` - Performance Optimization
+### ⚡ `/10x-fullstack-engineer:optimize` - Performance Optimization
 
 **Purpose**: Comprehensive performance optimization across database, backend, frontend, and infrastructure.
 
@@ -214,17 +214,17 @@ The plugin follows a **skill-based architecture** where each skill is a self-con
 
 **Example**:
 ```bash
-/optimize analyze target:"production app" scope:all
-/optimize database target:queries threshold:200ms
-/optimize frontend target:all framework:react
-/optimize benchmark type:load duration:300s concurrency:100
+/10x-fullstack-engineer:optimize analyze target:"production app" scope:all
+/10x-fullstack-engineer:optimize database target:queries threshold:200ms
+/10x-fullstack-engineer:optimize frontend target:all framework:react
+/10x-fullstack-engineer:optimize benchmark type:load duration:300s concurrency:100
 ```
 
 [Full Documentation →](commands/optimize/README.md)
 
 ---
 
-### 🔧 `/refactor` - Code Refactoring
+### 🔧 `/10x-fullstack-engineer:refactor` - Code Refactoring
 
 **Purpose**: Improve code quality, maintainability, and architecture without changing external behavior.
 
@@ -245,17 +245,17 @@ The plugin follows a **skill-based architecture** where each skill is a self-con
 
 **Example**:
 ```bash
-/refactor analyze scope:"src/" metrics:"complexity,duplication" depth:"detailed"
-/refactor extract scope:"UserService.ts" type:"method" target:"validateUser"
-/refactor patterns scope:"PaymentProcessor.ts" pattern:"strategy"
-/refactor modernize scope:"legacy/" targets:"callbacks-to-async,var-to-const"
+/10x-fullstack-engineer:refactor analyze scope:"src/" metrics:"complexity,duplication" depth:"detailed"
+/10x-fullstack-engineer:refactor extract scope:"UserService.ts" type:"method" target:"validateUser"
+/10x-fullstack-engineer:refactor patterns scope:"PaymentProcessor.ts" pattern:"strategy"
+/10x-fullstack-engineer:refactor modernize scope:"legacy/" targets:"callbacks-to-async,var-to-const"
 ```
 
 [Full Documentation →](commands/refactor/README.md)
 
 ---
 
-### 🔍 `/review` - Code Review System
+### 🔍 `/10x-fullstack-engineer:review` - Code Review System
 
 **Purpose**: Multi-category code review with structured, actionable feedback across security, performance, and quality.
 
@@ -276,10 +276,10 @@ The plugin follows a **skill-based architecture** where each skill is a self-con
 
 **Example**:
 ```bash
-/review full scope:"authentication feature" depth:"deep"
-/review security scope:"payment module" depth:"deep"
-/review pr scope:"PR #456" depth:"standard"
-/review accessibility scope:"checkout flow" depth:"deep" level:"AA"
+/10x-fullstack-engineer:review full scope:"authentication feature" depth:"deep"
+/10x-fullstack-engineer:review security scope:"payment module" depth:"deep"
+/10x-fullstack-engineer:review pr scope:"PR #456" depth:"standard"
+/10x-fullstack-engineer:review accessibility scope:"checkout flow" depth:"deep" level:"AA"
 ```
 
 [Full Documentation →](commands/review/README.md)
@@ -294,23 +294,23 @@ The true power of this plugin emerges from integrating skills across the develop
 
 ```bash
 # Phase 1: Design
-/architect design requirements:"user authentication with OAuth and 2FA"
-/architect adr decision:"use PostgreSQL for session storage" status:"accepted"
+/10x-fullstack-engineer:architect design requirements:"user authentication with OAuth and 2FA"
+/10x-fullstack-engineer:architect adr decision:"use PostgreSQL for session storage" status:"accepted"
 
 # Phase 2: Implementation
-/feature implement description:"OAuth authentication with 2FA" tests:"comprehensive"
+/10x-fullstack-engineer:feature implement description:"OAuth authentication with 2FA" tests:"comprehensive"
 
 # Phase 3: Quality Assurance
-/review security scope:"authentication module" depth:"deep"
-/review quality scope:"authentication module" depth:"standard"
+/10x-fullstack-engineer:review security scope:"authentication module" depth:"deep"
+/10x-fullstack-engineer:review quality scope:"authentication module" depth:"standard"
 
 # Phase 4: Optimization
-/optimize analyze target:"auth endpoints" scope:backend
-/optimize backend target:api endpoints:"/auth/*"
+/10x-fullstack-engineer:optimize analyze target:"auth endpoints" scope:backend
+/10x-fullstack-engineer:optimize backend target:api endpoints:"/auth/*"
 
 # Phase 5: Final Validation
-/architect assess
-/review full scope:"authentication system" depth:"deep"
+/10x-fullstack-engineer:architect assess
+/10x-fullstack-engineer:review full scope:"authentication system" depth:"deep"
 ```
 
 **Result**: Production-ready authentication system with comprehensive security, performance optimization, and quality validation.
@@ -321,24 +321,24 @@ The true power of this plugin emerges from integrating skills across the develop
 
 ```bash
 # Phase 1: Diagnosis
-/debug diagnose issue:"dashboard slow with 1000+ users" environment:"production"
-/debug analyze-logs path:"logs/app.log" pattern:"slow" timeframe:"last-24h"
+/10x-fullstack-engineer:debug diagnose issue:"dashboard slow with 1000+ users" environment:"production"
+/10x-fullstack-engineer:debug analyze-logs path:"logs/app.log" pattern:"slow" timeframe:"last-24h"
 
 # Phase 2: Analysis
-/optimize analyze target:"dashboard" scope:all metrics:"baseline"
-/debug performance component:"dashboard-api" metric:"response-time"
+/10x-fullstack-engineer:optimize analyze target:"dashboard" scope:all metrics:"baseline"
+/10x-fullstack-engineer:debug performance component:"dashboard-api" metric:"response-time"
 
 # Phase 3: Optimization
-/optimize database target:queries context:"dashboard queries" threshold:200ms
-/optimize backend target:api endpoints:"/api/dashboard/*"
-/optimize frontend target:rendering pages:"dashboard"
+/10x-fullstack-engineer:optimize database target:queries context:"dashboard queries" threshold:200ms
+/10x-fullstack-engineer:optimize backend target:api endpoints:"/api/dashboard/*"
+/10x-fullstack-engineer:optimize frontend target:rendering pages:"dashboard"
 
 # Phase 4: Verification
-/optimize benchmark type:load baseline:"pre-optimization" duration:300s
-/review performance scope:"dashboard" depth:"standard"
+/10x-fullstack-engineer:optimize benchmark type:load baseline:"pre-optimization" duration:300s
+/10x-fullstack-engineer:review performance scope:"dashboard" depth:"standard"
 
 # Phase 5: Documentation
-/architect adr decision:"implement Redis caching for dashboard" status:"accepted"
+/10x-fullstack-engineer:architect adr decision:"implement Redis caching for dashboard" status:"accepted"
 ```
 
 **Result**: 70-95% performance improvement with permanent fixes and monitoring.
@@ -349,25 +349,25 @@ The true power of this plugin emerges from integrating skills across the develop
 
 ```bash
 # Phase 1: Assessment
-/architect assess focus:"tech-debt"
-/refactor analyze scope:"src/" metrics:"complexity,duplication,coverage"
+/10x-fullstack-engineer:architect assess focus:"tech-debt"
+/10x-fullstack-engineer:refactor analyze scope:"src/" metrics:"complexity,duplication,coverage"
 
 # Phase 2: Planning
-/architect review focus:"maintainability" depth:"deep"
+/10x-fullstack-engineer:architect review focus:"maintainability" depth:"deep"
 # Identify top 10 refactoring opportunities
 
 # Phase 3: Refactoring
-/refactor extract scope:"UserService.ts" type:"method" target:"complex methods"
-/refactor duplicate scope:"src/" threshold:80 strategy:"extract-function"
-/refactor patterns scope:"services/" pattern:"dependency-injection"
-/refactor modernize scope:"legacy/" targets:"callbacks-to-async"
+/10x-fullstack-engineer:refactor extract scope:"UserService.ts" type:"method" target:"complex methods"
+/10x-fullstack-engineer:refactor duplicate scope:"src/" threshold:80 strategy:"extract-function"
+/10x-fullstack-engineer:refactor patterns scope:"services/" pattern:"dependency-injection"
+/10x-fullstack-engineer:refactor modernize scope:"legacy/" targets:"callbacks-to-async"
 
 # Phase 4: Type Safety
-/refactor types scope:"src/" strategy:"eliminate-any" strict:true
+/10x-fullstack-engineer:refactor types scope:"src/" strategy:"eliminate-any" strict:true
 
 # Phase 5: Validation
-/review quality scope:"refactored modules" depth:"deep"
-/architect assess baseline:"pre-refactoring"
+/10x-fullstack-engineer:review quality scope:"refactored modules" depth:"deep"
+/10x-fullstack-engineer:architect assess baseline:"pre-refactoring"
 ```
 
 **Result**: 60-80% complexity reduction, <3% duplication, 95%+ type coverage.
@@ -378,23 +378,23 @@ The true power of this plugin emerges from integrating skills across the develop
 
 ```bash
 # Comprehensive security audit
-/review security scope:"entire application" depth:"deep"
-/architect review focus:"security" depth:"deep"
+/10x-fullstack-engineer:review security scope:"entire application" depth:"deep"
+/10x-fullstack-engineer:architect review focus:"security" depth:"deep"
 
 # Performance validation
-/review performance scope:"critical paths" depth:"deep"
-/optimize benchmark type:all duration:600s concurrency:200
+/10x-fullstack-engineer:review performance scope:"critical paths" depth:"deep"
+/10x-fullstack-engineer:optimize benchmark type:all duration:600s concurrency:200
 
 # Architecture health
-/architect assess
-/architect review focus:"all" depth:"deep"
+/10x-fullstack-engineer:architect assess
+/10x-fullstack-engineer:architect review focus:"all" depth:"deep"
 
 # Quality gates
-/review full scope:"production code" depth:"deep"
-/refactor analyze scope:"src/" metrics:"all"
+/10x-fullstack-engineer:review full scope:"production code" depth:"deep"
+/10x-fullstack-engineer:refactor analyze scope:"src/" metrics:"all"
 
 # Final checks
-/debug diagnose issue:"any production warnings" environment:"staging"
+/10x-fullstack-engineer:debug diagnose issue:"any production warnings" environment:"staging"
 ```
 
 **Result**: Comprehensive production readiness validation across all dimensions.
@@ -405,29 +405,29 @@ The true power of this plugin emerges from integrating skills across the develop
 
 ```bash
 # Phase 1: Understanding
-/architect review focus:"all" depth:"deep"
-/refactor analyze scope:"legacy/" metrics:"all" depth:"detailed"
+/10x-fullstack-engineer:architect review focus:"all" depth:"deep"
+/10x-fullstack-engineer:refactor analyze scope:"legacy/" metrics:"all" depth:"detailed"
 
 # Phase 2: Architecture Design
-/architect design requirements:"modernize to microservices" constraints:"gradual migration"
-/architect adr decision:"strangler pattern for migration" status:"accepted"
+/10x-fullstack-engineer:architect design requirements:"modernize to microservices" constraints:"gradual migration"
+/10x-fullstack-engineer:architect adr decision:"strangler pattern for migration" status:"accepted"
 
 # Phase 3: Incremental Refactoring
-/refactor modernize scope:"src/" targets:"callbacks-to-async,var-to-const"
-/refactor types scope:"src/" strategy:"migrate-to-ts"
-/refactor patterns scope:"services/" pattern:"dependency-injection"
+/10x-fullstack-engineer:refactor modernize scope:"src/" targets:"callbacks-to-async,var-to-const"
+/10x-fullstack-engineer:refactor types scope:"src/" strategy:"migrate-to-ts"
+/10x-fullstack-engineer:refactor patterns scope:"services/" pattern:"dependency-injection"
 
 # Phase 4: Testing & Security
-/review security scope:"migrated code" depth:"deep"
-/feature integrate feature:"modernized services" scope:"e2e"
+/10x-fullstack-engineer:review security scope:"migrated code" depth:"deep"
+/10x-fullstack-engineer:feature integrate feature:"modernized services" scope:"e2e"
 
 # Phase 5: Optimization
-/optimize analyze target:"modernized system" scope:all
-/optimize infrastructure target:all environment:production
+/10x-fullstack-engineer:optimize analyze target:"modernized system" scope:all
+/10x-fullstack-engineer:optimize infrastructure target:all environment:production
 
 # Phase 6: Validation
-/architect assess baseline:"legacy-baseline"
-/review full scope:"modernized system" depth:"deep"
+/10x-fullstack-engineer:architect assess baseline:"legacy-baseline"
+/10x-fullstack-engineer:review full scope:"modernized system" depth:"deep"
 ```
 
 **Result**: Modernized system with 40-60% performance improvement, reduced technical debt, improved maintainability.
@@ -523,36 +523,36 @@ All skills enforce production-grade quality standards:
 
 **Start with Architecture**:
 ```bash
-/architect design → /architect adr → /feature implement
+/10x-fullstack-engineer:architect design → /10x-fullstack-engineer:architect adr → /10x-fullstack-engineer:feature implement
 ```
 
 **Continuous Quality**:
 ```bash
-/review quality → /refactor → /review quality
+/10x-fullstack-engineer:review quality → /10x-fullstack-engineer:refactor → /10x-fullstack-engineer:review quality
 ```
 
 **Performance First**:
 ```bash
-/optimize analyze → /optimize [layer] → /optimize benchmark
+/10x-fullstack-engineer:optimize analyze → /10x-fullstack-engineer:optimize [layer] → /10x-fullstack-engineer:optimize benchmark
 ```
 
 **Debug Systematically**:
 ```bash
-/debug diagnose → /debug reproduce → /debug fix
+/10x-fullstack-engineer:debug diagnose → /10x-fullstack-engineer:debug reproduce → /10x-fullstack-engineer:debug fix
 ```
 
 ### When to Use Each Skill
 
 | Scenario | Primary Skill | Supporting Skills |
 |----------|---------------|-------------------|
-| New Project | `/architect design` | `/architect adr`, `/feature scaffold` |
-| New Feature | `/feature implement` | `/architect design`, `/review quality` |
-| Bug Fixing | `/debug diagnose` | `/debug reproduce`, `/debug fix` |
-| Slow Performance | `/optimize analyze` | `/debug performance`, `/optimize [layer]` |
-| Code Quality Issues | `/refactor analyze` | `/refactor [operation]`, `/review quality` |
-| Security Audit | `/review security` | `/architect review`, `/refactor patterns` |
-| Technical Debt | `/architect assess` | `/refactor analyze`, `/refactor [operations]` |
-| Pre-Production | `/review full` | `/architect review`, `/optimize benchmark` |
+| New Project | `/10x-fullstack-engineer:architect design` | `/10x-fullstack-engineer:architect adr`, `/10x-fullstack-engineer:feature scaffold` |
+| New Feature | `/10x-fullstack-engineer:feature implement` | `/10x-fullstack-engineer:architect design`, `/10x-fullstack-engineer:review quality` |
+| Bug Fixing | `/10x-fullstack-engineer:debug diagnose` | `/10x-fullstack-engineer:debug reproduce`, `/10x-fullstack-engineer:debug fix` |
+| Slow Performance | `/10x-fullstack-engineer:optimize analyze` | `/10x-fullstack-engineer:debug performance`, `/10x-fullstack-engineer:optimize [layer]` |
+| Code Quality Issues | `/10x-fullstack-engineer:refactor analyze` | `/10x-fullstack-engineer:refactor [operation]`, `/10x-fullstack-engineer:review quality` |
+| Security Audit | `/10x-fullstack-engineer:review security` | `/10x-fullstack-engineer:architect review`, `/10x-fullstack-engineer:refactor patterns` |
+| Technical Debt | `/10x-fullstack-engineer:architect assess` | `/10x-fullstack-engineer:refactor analyze`, `/10x-fullstack-engineer:refactor [operations]` |
+| Pre-Production | `/10x-fullstack-engineer:review full` | `/10x-fullstack-engineer:architect review`, `/10x-fullstack-engineer:optimize benchmark` |
 
 ### Skill Integration Patterns
 
@@ -586,25 +586,25 @@ Combine multiple skills in single workflow for maximum efficiency:
 
 ```bash
 # Complete feature development with quality gates
-/architect design requirements:"..." && \
-/feature implement description:"..." && \
-/review quality scope:"new feature" && \
-/optimize analyze target:"new feature" && \
-/architect adr decision:"key decisions"
+/10x-fullstack-engineer:architect design requirements:"..." && \
+/10x-fullstack-engineer:feature implement description:"..." && \
+/10x-fullstack-engineer:review quality scope:"new feature" && \
+/10x-fullstack-engineer:optimize analyze target:"new feature" && \
+/10x-fullstack-engineer:architect adr decision:"key decisions"
 
 # Performance optimization cycle
-/debug performance component:"..." && \
-/optimize analyze target:"..." && \
-/optimize [layer] target:"..." && \
-/optimize benchmark type:load baseline:"pre-opt" && \
-/review performance scope:"optimized code"
+/10x-fullstack-engineer:debug performance component:"..." && \
+/10x-fullstack-engineer:optimize analyze target:"..." && \
+/10x-fullstack-engineer:optimize [layer] target:"..." && \
+/10x-fullstack-engineer:optimize benchmark type:load baseline:"pre-opt" && \
+/10x-fullstack-engineer:review performance scope:"optimized code"
 
 # Refactoring sprint
-/architect assess focus:"tech-debt" && \
-/refactor analyze scope:"..." metrics:"all" && \
-/refactor [multiple operations] && \
-/review quality scope:"refactored code" && \
-/architect assess baseline:"pre-refactoring"
+/10x-fullstack-engineer:architect assess focus:"tech-debt" && \
+/10x-fullstack-engineer:refactor analyze scope:"..." metrics:"all" && \
+/10x-fullstack-engineer:refactor [multiple operations] && \
+/10x-fullstack-engineer:review quality scope:"refactored code" && \
+/10x-fullstack-engineer:architect assess baseline:"pre-refactoring"
 ```
 
 ### Utility Script Integration
@@ -634,15 +634,15 @@ Create project-specific workflows by chaining skills:
 
 ```bash
 # Daily development workflow
-alias dev-start="/review quality scope:'recent changes' depth:quick"
-alias dev-commit="/review security scope:'staged files' depth:quick && /review quality scope:'staged files' depth:quick"
-alias dev-pr="/review pr scope:'current PR' depth:standard"
+alias dev-start="/10x-fullstack-engineer:review quality scope:'recent changes' depth:quick"
+alias dev-commit="/10x-fullstack-engineer:review security scope:'staged files' depth:quick && /10x-fullstack-engineer:review quality scope:'staged files' depth:quick"
+alias dev-pr="/10x-fullstack-engineer:review pr scope:'current PR' depth:standard"
 
 # Weekly maintenance
-alias weekly-review="/architect assess baseline:'previous' && /refactor analyze scope:'src/' metrics:'all'"
+alias weekly-review="/10x-fullstack-engineer:architect assess baseline:'previous' && /10x-fullstack-engineer:refactor analyze scope:'src/' metrics:'all'"
 
 # Release validation
-alias pre-release="/review security depth:deep && /review performance depth:deep && /optimize benchmark type:all && /architect assess"
+alias pre-release="/10x-fullstack-engineer:review security depth:deep && /10x-fullstack-engineer:review performance depth:deep && /10x-fullstack-engineer:optimize benchmark type:all && /10x-fullstack-engineer:architect assess"
 ```
 
 ---
@@ -653,7 +653,7 @@ alias pre-release="/review security depth:deep && /review performance depth:deep
 
 **Skill Not Found**:
 - Verify skill is installed: `/plugin list`
-- Check skill name: Use `/architect`, not `/architecture`
+- Check skill name: Use `/10x-fullstack-engineer:architect`, not `/10x-fullstack-engineer:architecture`
 - Ensure plugin enabled: `/plugin enable 10x-fullstack-engineer`
 
 **Parameter Errors**:

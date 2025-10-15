@@ -14,7 +14,7 @@ Implement a feature across all layers (database, backend, frontend, integration)
 
 **Usage:**
 ```bash
-/feature implement description:"user authentication with OAuth and 2FA" tests:"comprehensive"
+/10x-fullstack-engineer:feature implement description:"user authentication with OAuth and 2FA" tests:"comprehensive"
 ```
 
 **Parameters:**
@@ -37,7 +37,7 @@ Implement database migrations, models, schemas, indexes, and validation for a fe
 
 **Usage:**
 ```bash
-/feature database description:"user profiles table with indexes" migration:"add_user_profiles"
+/10x-fullstack-engineer:feature database description:"user profiles table with indexes" migration:"add_user_profiles"
 ```
 
 **Parameters:**
@@ -63,7 +63,7 @@ Implement repositories, services, API endpoints, validation, and tests for a fea
 
 **Usage:**
 ```bash
-/feature backend description:"REST API for product search with filters" validation:"strict"
+/10x-fullstack-engineer:feature backend description:"REST API for product search with filters" validation:"strict"
 ```
 
 **Parameters:**
@@ -91,7 +91,7 @@ Implement components, state management, API integration, and tests for a feature
 
 **Usage:**
 ```bash
-/feature frontend description:"product catalog with infinite scroll and filters" framework:"react"
+/10x-fullstack-engineer:feature frontend description:"product catalog with infinite scroll and filters" framework:"react"
 ```
 
 **Parameters:**
@@ -120,7 +120,7 @@ Complete integration testing, performance optimization, security hardening, and 
 
 **Usage:**
 ```bash
-/feature integrate feature:"authentication flow" scope:"E2E tests and performance"
+/10x-fullstack-engineer:feature integrate feature:"authentication flow" scope:"E2E tests and performance"
 ```
 
 **Parameters:**
@@ -140,7 +140,7 @@ Scaffold feature structure and boilerplate across all layers.
 
 **Usage:**
 ```bash
-/feature scaffold name:"notification-system" layers:"database,backend,frontend"
+/10x-fullstack-engineer:feature scaffold name:"notification-system" layers:"database,backend,frontend"
 ```
 
 **Parameters:**
@@ -305,7 +305,7 @@ Generates complete boilerplate structure:
 
 ```bash
 # Full-stack implementation
-/feature implement description:"blog post management with rich text editor, categories, tags, and draft/publish workflow"
+/10x-fullstack-engineer:feature implement description:"blog post management with rich text editor, categories, tags, and draft/publish workflow"
 
 # What you get:
 # - Database: posts, categories, tags tables with relationships
@@ -319,28 +319,28 @@ Generates complete boilerplate structure:
 
 ```bash
 # Backend only
-/feature backend description:"Add bulk operations API for products (bulk delete, bulk update status, bulk export)"
+/10x-fullstack-engineer:feature backend description:"Add bulk operations API for products (bulk delete, bulk update status, bulk export)"
 ```
 
 ### 3. Build New UI Screen
 
 ```bash
 # Frontend only
-/feature frontend description:"Admin dashboard with charts showing sales, users, and revenue metrics" framework:"react" state:"zustand"
+/10x-fullstack-engineer:feature frontend description:"Admin dashboard with charts showing sales, users, and revenue metrics" framework:"react" state:"zustand"
 ```
 
 ### 4. Optimize Existing Feature
 
 ```bash
 # Integration & polish
-/feature integrate feature:"product catalog" scope:"performance and E2E tests"
+/10x-fullstack-engineer:feature integrate feature:"product catalog" scope:"performance and E2E tests"
 ```
 
 ### 5. Quick Feature Scaffolding
 
 ```bash
 # Generate boilerplate
-/feature scaffold name:"email-notifications" layers:"database,backend"
+/10x-fullstack-engineer:feature scaffold name:"email-notifications" layers:"database,backend"
 
 # Then customize the generated files
 ```

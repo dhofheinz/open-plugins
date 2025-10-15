@@ -14,7 +14,7 @@ Performs systematic diagnosis across all layers of the application stack to iden
 
 **Usage:**
 ```bash
-/debug diagnose issue:"Users getting 500 errors on file upload" environment:"production" logs:"logs/app.log"
+/10x-fullstack-engineer:debug diagnose issue:"Users getting 500 errors on file upload" environment:"production" logs:"logs/app.log"
 ```
 
 **Parameters:**
@@ -47,7 +47,7 @@ Develops reliable strategies to reproduce issues consistently, creating test cas
 
 **Usage:**
 ```bash
-/debug reproduce issue:"Payment webhook fails intermittently" environment:"staging" data:"sample-webhook-payload.json"
+/10x-fullstack-engineer:debug reproduce issue:"Payment webhook fails intermittently" environment:"staging" data:"sample-webhook-payload.json"
 ```
 
 **Parameters:**
@@ -81,7 +81,7 @@ Implements targeted fixes with comprehensive verification, safeguards, and preve
 
 **Usage:**
 ```bash
-/debug fix issue:"Race condition in order processing" root_cause:"Missing transaction lock" verification:"run-integration-tests"
+/10x-fullstack-engineer:debug fix issue:"Race condition in order processing" root_cause:"Missing transaction lock" verification:"run-integration-tests"
 ```
 
 **Parameters:**
@@ -124,7 +124,7 @@ Performs deep log analysis with pattern detection, timeline correlation, and ano
 
 **Usage:**
 ```bash
-/debug analyze-logs path:"logs/application.log" pattern:"ERROR.*timeout" timeframe:"last-24h"
+/10x-fullstack-engineer:debug analyze-logs path:"logs/application.log" pattern:"ERROR.*timeout" timeframe:"last-24h"
 ```
 
 **Parameters:**
@@ -170,7 +170,7 @@ Debugs performance issues through profiling, bottleneck identification, and targ
 
 **Usage:**
 ```bash
-/debug performance component:"api-endpoint:/orders" metric:"response-time" threshold:"200ms"
+/10x-fullstack-engineer:debug performance component:"api-endpoint:/orders" metric:"response-time" threshold:"200ms"
 ```
 
 **Parameters:**
@@ -219,7 +219,7 @@ Detects memory leaks, analyzes memory usage patterns, and optimizes memory consu
 
 **Usage:**
 ```bash
-/debug memory component:"background-worker" symptom:"growing-heap" duration:"6h"
+/10x-fullstack-engineer:debug memory component:"background-worker" symptom:"growing-heap" duration:"6h"
 ```
 
 **Parameters:**
@@ -322,58 +322,58 @@ The debug skill includes three utility scripts in `.scripts/` directory:
 
 ```bash
 # Step 1: Diagnose the issue
-/debug diagnose issue:"500 errors on checkout" environment:"production" logs:"logs/app.log"
+/10x-fullstack-engineer:debug diagnose issue:"500 errors on checkout" environment:"production" logs:"logs/app.log"
 
 # Step 2: Analyze logs for patterns
-/debug analyze-logs path:"logs/app.log" pattern:"checkout.*ERROR" timeframe:"last-1h"
+/10x-fullstack-engineer:debug analyze-logs path:"logs/app.log" pattern:"checkout.*ERROR" timeframe:"last-1h"
 
 # Step 3: Reproduce locally
-/debug reproduce issue:"Checkout fails with 500" environment:"staging" data:"test-checkout.json"
+/10x-fullstack-engineer:debug reproduce issue:"Checkout fails with 500" environment:"staging" data:"test-checkout.json"
 
 # Step 4: Implement fix
-/debug fix issue:"Database timeout on checkout" root_cause:"Missing connection pool configuration"
+/10x-fullstack-engineer:debug fix issue:"Database timeout on checkout" root_cause:"Missing connection pool configuration"
 ```
 
 ### Workflow 2: Performance Degradation
 
 ```bash
 # Step 1: Profile performance
-/debug performance component:"api-endpoint:/checkout" metric:"response-time" threshold:"500ms"
+/10x-fullstack-engineer:debug performance component:"api-endpoint:/checkout" metric:"response-time" threshold:"500ms"
 
 # Step 2: Analyze slow queries
-/debug analyze-logs path:"logs/postgresql.log" pattern:"duration:.*[0-9]{4,}"
+/10x-fullstack-engineer:debug analyze-logs path:"logs/postgresql.log" pattern:"duration:.*[0-9]{4,}"
 
 # Step 3: Implement optimization
-/debug fix issue:"Slow checkout API" root_cause:"N+1 query on order items"
+/10x-fullstack-engineer:debug fix issue:"Slow checkout API" root_cause:"N+1 query on order items"
 ```
 
 ### Workflow 3: Memory Leak Investigation
 
 ```bash
 # Step 1: Diagnose memory symptoms
-/debug diagnose issue:"Memory grows over time" environment:"production"
+/10x-fullstack-engineer:debug diagnose issue:"Memory grows over time" environment:"production"
 
 # Step 2: Profile memory usage
-/debug memory component:"background-processor" symptom:"growing-heap" duration:"1h"
+/10x-fullstack-engineer:debug memory component:"background-processor" symptom:"growing-heap" duration:"1h"
 
 # Step 3: Implement fix
-/debug fix issue:"Memory leak in event handlers" root_cause:"Event listeners not removed"
+/10x-fullstack-engineer:debug fix issue:"Memory leak in event handlers" root_cause:"Event listeners not removed"
 ```
 
 ### Workflow 4: Intermittent Failure
 
 ```bash
 # Step 1: Reproduce reliably
-/debug reproduce issue:"Random payment failures" environment:"staging"
+/10x-fullstack-engineer:debug reproduce issue:"Random payment failures" environment:"staging"
 
 # Step 2: Diagnose with reproduction
-/debug diagnose issue:"Payment webhook fails intermittently" reproduction:"steps-from-reproduce"
+/10x-fullstack-engineer:debug diagnose issue:"Payment webhook fails intermittently" reproduction:"steps-from-reproduce"
 
 # Step 3: Analyze timing
-/debug analyze-logs path:"logs/webhooks.log" pattern:"payment.*fail" context:10
+/10x-fullstack-engineer:debug analyze-logs path:"logs/webhooks.log" pattern:"payment.*fail" context:10
 
 # Step 4: Fix race condition
-/debug fix issue:"Race condition in webhook handler" root_cause:"Concurrent webhook processing"
+/10x-fullstack-engineer:debug fix issue:"Race condition in webhook handler" root_cause:"Concurrent webhook processing"
 ```
 
 ---

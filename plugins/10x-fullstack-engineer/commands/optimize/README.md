@@ -4,7 +4,7 @@ Comprehensive performance optimization across database, backend, frontend, and i
 
 ## Overview
 
-The `/optimize` skill provides systematic performance optimization capabilities covering all layers of a modern web application. It identifies bottlenecks, implements optimizations, and measures improvements across:
+The `/10x-fullstack-engineer:optimize` skill provides systematic performance optimization capabilities covering all layers of a modern web application. It identifies bottlenecks, implements optimizations, and measures improvements across:
 
 - **Database**: Query optimization, indexing, connection pooling, caching
 - **Backend**: API performance, algorithm efficiency, concurrency, caching
@@ -21,7 +21,7 @@ Performs deep analysis across all application layers, establishes baseline metri
 
 **Usage**:
 ```bash
-/optimize analyze target:"production app" scope:all metrics:"baseline"
+/10x-fullstack-engineer:optimize analyze target:"production app" scope:all metrics:"baseline"
 ```
 
 **Parameters**:
@@ -54,7 +54,7 @@ Optimizes slow queries, adds missing indexes, fixes N+1 problems, and improves c
 
 **Usage**:
 ```bash
-/optimize database target:queries context:"slow SELECT statements" threshold:500ms
+/10x-fullstack-engineer:optimize database target:queries context:"slow SELECT statements" threshold:500ms
 ```
 
 **Parameters**:
@@ -85,7 +85,7 @@ Optimizes API response times, algorithm complexity, caching strategies, and conc
 
 **Usage**:
 ```bash
-/optimize backend target:api endpoints:"/api/users,/api/products" load_profile:high
+/10x-fullstack-engineer:optimize backend target:api endpoints:"/api/users,/api/products" load_profile:high
 ```
 
 **Parameters**:
@@ -119,7 +119,7 @@ Reduces bundle size, optimizes rendering performance, improves Web Vitals, and o
 
 **Usage**:
 ```bash
-/optimize frontend target:all pages:"checkout,dashboard" framework:react
+/10x-fullstack-engineer:optimize frontend target:all pages:"checkout,dashboard" framework:react
 ```
 
 **Parameters**:
@@ -155,7 +155,7 @@ Optimizes auto-scaling, CDN configuration, resource allocation, deployment strat
 
 **Usage**:
 ```bash
-/optimize infrastructure target:scaling environment:production provider:aws
+/10x-fullstack-engineer:optimize infrastructure target:scaling environment:production provider:aws
 ```
 
 **Parameters**:
@@ -190,7 +190,7 @@ Performs load testing, rendering benchmarks, database query benchmarks, and dete
 
 **Usage**:
 ```bash
-/optimize benchmark type:load baseline:"v1.2.0" duration:300s concurrency:100
+/10x-fullstack-engineer:optimize benchmark type:load baseline:"v1.2.0" duration:300s concurrency:100
 ```
 
 **Parameters**:
@@ -223,87 +223,87 @@ Performs load testing, rendering benchmarks, database query benchmarks, and dete
 
 ```bash
 # Step 1: Analyze overall performance
-/optimize analyze target:"production app" scope:all metrics:"baseline"
+/10x-fullstack-engineer:optimize analyze target:"production app" scope:all metrics:"baseline"
 
 # Step 2: Optimize based on analysis priorities
-/optimize database target:all context:"queries from analysis" threshold:200ms
-/optimize backend target:api endpoints:"/api/search,/api/feed" priority:high
-/optimize frontend target:all pages:"checkout,dashboard" framework:react
+/10x-fullstack-engineer:optimize database target:all context:"queries from analysis" threshold:200ms
+/10x-fullstack-engineer:optimize backend target:api endpoints:"/api/search,/api/feed" priority:high
+/10x-fullstack-engineer:optimize frontend target:all pages:"checkout,dashboard" framework:react
 
 # Step 3: Benchmark improvements
-/optimize benchmark type:all baseline:"pre-optimization" duration:600s
+/10x-fullstack-engineer:optimize benchmark type:all baseline:"pre-optimization" duration:600s
 
 # Step 4: Optimize infrastructure for efficiency
-/optimize infrastructure target:costs environment:production budget_constraint:true
+/10x-fullstack-engineer:optimize infrastructure target:costs environment:production budget_constraint:true
 ```
 
 ### 2. Frontend Performance Sprint
 
 ```bash
 # Analyze frontend baseline
-/optimize analyze target:"web app" scope:frontend metrics:"baseline"
+/10x-fullstack-engineer:optimize analyze target:"web app" scope:frontend metrics:"baseline"
 
 # Optimize bundles and rendering
-/optimize frontend target:bundles pages:"home,dashboard,profile" framework:react
-/optimize frontend target:rendering pages:"dashboard" framework:react
+/10x-fullstack-engineer:optimize frontend target:bundles pages:"home,dashboard,profile" framework:react
+/10x-fullstack-engineer:optimize frontend target:rendering pages:"dashboard" framework:react
 
 # Optimize assets
-/optimize frontend target:images pages:"home,product"
-/optimize frontend target:fonts pages:"all"
+/10x-fullstack-engineer:optimize frontend target:images pages:"home,product"
+/10x-fullstack-engineer:optimize frontend target:fonts pages:"all"
 
 # Benchmark results
-/optimize benchmark type:rendering baseline:"pre-sprint" duration:60s
+/10x-fullstack-engineer:optimize benchmark type:rendering baseline:"pre-sprint" duration:60s
 ```
 
 ### 3. Backend API Performance
 
 ```bash
 # Analyze backend performance
-/optimize analyze target:"REST API" scope:backend metrics:"baseline"
+/10x-fullstack-engineer:optimize analyze target:"REST API" scope:backend metrics:"baseline"
 
 # Fix slow queries first
-/optimize database target:queries threshold:200ms context:"from analysis"
+/10x-fullstack-engineer:optimize database target:queries threshold:200ms context:"from analysis"
 
 # Optimize API layer
-/optimize backend target:api endpoints:"/api/users,/api/posts" load_profile:high
+/10x-fullstack-engineer:optimize backend target:api endpoints:"/api/users,/api/posts" load_profile:high
 
 # Add caching
-/optimize backend target:caching endpoints:"/api/users,/api/posts"
+/10x-fullstack-engineer:optimize backend target:caching endpoints:"/api/users,/api/posts"
 
 # Benchmark under load
-/optimize benchmark type:load baseline:"pre-optimization" duration:300s concurrency:200
+/10x-fullstack-engineer:optimize benchmark type:load baseline:"pre-optimization" duration:300s concurrency:200
 ```
 
 ### 4. Cost Optimization
 
 ```bash
 # Analyze infrastructure costs
-/optimize analyze target:"production" scope:infrastructure metrics:"baseline"
+/10x-fullstack-engineer:optimize analyze target:"production" scope:infrastructure metrics:"baseline"
 
 # Right-size resources
-/optimize infrastructure target:resources environment:production budget_constraint:true
+/10x-fullstack-engineer:optimize infrastructure target:resources environment:production budget_constraint:true
 
 # Optimize scaling
-/optimize infrastructure target:scaling environment:production
+/10x-fullstack-engineer:optimize infrastructure target:scaling environment:production
 
 # Configure CDN to reduce bandwidth
-/optimize infrastructure target:cdn environment:production
+/10x-fullstack-engineer:optimize infrastructure target:cdn environment:production
 
 # Optimize storage costs
-/optimize infrastructure target:costs environment:production budget_constraint:true
+/10x-fullstack-engineer:optimize infrastructure target:costs environment:production budget_constraint:true
 ```
 
 ### 5. Regression Testing
 
 ```bash
 # Save baseline before changes
-/optimize benchmark type:all baseline:"v1.5.0" duration:300s
+/10x-fullstack-engineer:optimize benchmark type:all baseline:"v1.5.0" duration:300s
 
 # After implementing changes, compare
-/optimize benchmark type:all baseline:"v1.5.0" duration:300s
+/10x-fullstack-engineer:optimize benchmark type:all baseline:"v1.5.0" duration:300s
 
 # Analyze specific regressions
-/optimize analyze target:"changed endpoints" scope:backend metrics:"compare" baseline:"v1.5.0"
+/10x-fullstack-engineer:optimize analyze target:"changed endpoints" scope:backend metrics:"compare" baseline:"v1.5.0"
 ```
 
 ---
