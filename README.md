@@ -1,7 +1,7 @@
 # OpenPlugins - Community Claude Code Marketplace
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Plugins](https://img.shields.io/badge/plugins-3-blue.svg)](https://github.com/dhofheinz/open-plugins)
+[![Plugins](https://img.shields.io/badge/plugins-4-blue.svg)](https://github.com/dhofheinz/open-plugins)
 [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
 **OpenPlugins** is a AI-curated marketplace of high-quality, open-source plugins for [Claude Code](https://docs.claude.com/en/docs/claude-code). Our mission is to foster a vibrant ecosystem of productivity tools, development utilities, and specialized agents that extend Claude Code's capabilities.
