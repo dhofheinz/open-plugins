@@ -59,18 +59,31 @@ List all plugins in the marketplace:
 
 ## Featured Plugins
 
-> Note: OpenPlugins is newly launched. Featured plugins will be showcased here as the community grows.
+### Development Tools
 
-<!--
-Placeholder for featured plugins section:
+- **10x-fullstack-engineer** - Elite full-stack engineering with expert capabilities across frontend, backend, databases, and infrastructure
+  ```bash
+  /plugin install 10x-fullstack-engineer@open-plugins
+  ```
 
-### Essential Tools
-- **plugin-name** - Brief description
-- **plugin-name** - Brief description
+- **plugin-quickstart-generator** - Generate production-ready plugin structures with guided interactive setup
+  ```bash
+  /plugin install plugin-quickstart-generator@open-plugins
+  ```
 
-### Popular Utilities
-- **plugin-name** - Brief description
--->
+### Productivity
+
+- **git-commit-assistant** - Intelligent git helper with semantic commit messages and atomic commit guidance
+  ```bash
+  /plugin install git-commit-assistant@open-plugins
+  ```
+
+### Quality Assurance
+
+- **marketplace-validator-plugin** - Comprehensive validation with quality scoring and security scanning
+  ```bash
+  /plugin install marketplace-validator-plugin@open-plugins
+  ```
 
 ## Plugin Quality Standards
 
