@@ -1,0 +1,60 @@
+{
+  "name": "afk-mode",
+  "version": "1.0.0",
+  "description": "AFK (Away From Keyboard) mode with tiered tool access, session recording, and autonomous planning support",
+  "author": {
+    "name": "danie"
+  },
+  "license": "MIT",
+  "keywords": ["afk", "away", "planning", "autonomous", "workflow", "session", "productivity"],
+  "repository": "https://github.com/dhofheinz/open-plugins/tree/main/plugins/afk-mode",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/session-start.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/pre-tool-use.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/post-tool-use.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/stop.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
