@@ -13,12 +13,15 @@ Advanced "Away From Keyboard" mode for Claude Code with tiered tool access, sess
 
 ## Installation
 
-### Via Local Marketplace
+### Via OpenPlugins Marketplace
 
 ```bash
-# From your project root
-/plugin_marketplace_add ./plugins
-/plugin_install afk-mode@plugins
+# Add the marketplace (one-time)
+/plugin_marketplace_add https://github.com/dhofheinz/open-plugins
+
+# Install the plugin
+/plugin_install afk-mode@open-plugins
+
 # Restart Claude Code
 ```
 
