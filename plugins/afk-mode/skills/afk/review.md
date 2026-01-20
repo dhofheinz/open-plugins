@@ -1,3 +1,9 @@
+---
+description: Review planning documents and session logs from AFK sessions
+user-invocable: false
+allowed-tools: Bash(*), Read
+---
+
 # Review AFK Session
 
 Review planning documents and session logs from AFK sessions.

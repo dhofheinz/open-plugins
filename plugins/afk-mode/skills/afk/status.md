@@ -1,3 +1,9 @@
+---
+description: Check current AFK mode status and session statistics
+user-invocable: false
+allowed-tools: Bash(*)
+---
+
 # AFK Mode Status
 
 Check current AFK mode status and session statistics.

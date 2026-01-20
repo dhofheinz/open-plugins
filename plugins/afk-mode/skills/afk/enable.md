@@ -1,3 +1,9 @@
+---
+description: Enable AFK mode with specified tier and optional message
+user-invocable: false
+allowed-tools: Bash(*)
+---
+
 # Enable AFK Mode
 
 Enable AFK mode with the specified tier and optional custom message.

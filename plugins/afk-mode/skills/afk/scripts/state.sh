@@ -7,6 +7,13 @@
 
 set -e
 
+# Check for jq dependency
+if ! command -v jq &> /dev/null; then
+    echo "Error: jq is required but not installed." >&2
+    echo "Install with: brew install jq (macOS) or apt install jq (Linux)" >&2
+    exit 1
+fi
+
 STATE_DIR="$HOME/.claude/afk-mode"
 STATE_FILE="$STATE_DIR/state.json"
 SESSIONS_DIR="$STATE_DIR/sessions"

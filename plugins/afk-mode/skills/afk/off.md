@@ -1,3 +1,9 @@
+---
+description: Disable AFK mode and resume normal operation
+user-invocable: false
+allowed-tools: Bash(*), Read
+---
+
 # Disable AFK Mode
 
 Disable AFK mode and resume normal operation.
