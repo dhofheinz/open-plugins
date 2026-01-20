@@ -1,0 +1,17 @@
+{
+  "name": "spec-refine",
+  "version": "1.0.0",
+  "description": "Iterative specification refinement for large features. Creates detailed What (requirements) and How (implementation) specs through automated codebase research loops followed by human-in-loop review.",
+  "author": {
+    "name": "AgentSmith"
+  },
+  "license": "MIT",
+  "keywords": [
+    "specification",
+    "requirements",
+    "planning",
+    "tickets",
+    "brownfield",
+    "iterative"
+  ]
+}
