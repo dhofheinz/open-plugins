@@ -99,10 +99,11 @@ The marketplace uses a **mono-repository pattern** where:
 
 ### Plugin Architecture
 Plugins in this marketplace follow the **skill-based architecture**:
-- `skill.md` files act as routers/orchestrators
+- `SKILL.md` files act as routers/orchestrators
 - Sub-commands provide specific operations (hidden from slash command list)
 - Skills parse `$ARGUMENTS` and route to appropriate sub-commands
-- Example: `/commit-analysis analyze` routes to `commands/commit-analysis/analyze-changes.md`
+- Skills can be in `commands/` or `skills/` directories
+- Example: `/afk enable` routes to `skills/afk/enable.md`
 
 ### Validation Architecture
 The validator plugin uses **layered validation**:

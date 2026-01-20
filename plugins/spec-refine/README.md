@@ -2,19 +2,14 @@
 
 Iterative specification refinement for large features in brownfield projects. Creates detailed **What** (requirements) and **How** (implementation) specs through automated codebase research loops followed by human-in-loop review.
 
-## Installation
+### Via OpenPlugins Marketplace
 
 ```bash
-# Add marketplace containing this plugin
-/plugin_marketplace_add <marketplace-url>
+# Add the marketplace (one-time)
+/plugin_marketplace_add https://github.com/dhofheinz/open-plugins
 
 # Install the plugin
-/plugin_install spec-refine@<marketplace-name>
-```
-
-Or for local development:
-```bash
-cc --plugin-dir ./plugins/spec-refine
+/plugin_install spec-refine@open-plugins
 ```
 
 ## Usage
