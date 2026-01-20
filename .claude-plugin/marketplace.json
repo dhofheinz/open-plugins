@@ -133,6 +133,49 @@
       "category": "development",
       "homepage": "https://github.com/dhofheinz/open-plugins/tree/main/plugins/10x-fullstack-engineer",
       "repository": "https://github.com/dhofheinz/open-plugins"
+    },
+    {
+      "name": "afk-mode",
+      "version": "1.0.0",
+      "description": "AFK (Away From Keyboard) mode with tiered tool access, session recording, and autonomous planning support",
+      "author": {
+        "name": "danie"
+      },
+      "source": "./plugins/afk-mode",
+      "license": "MIT",
+      "keywords": [
+        "afk",
+        "away",
+        "planning",
+        "autonomous",
+        "workflow",
+        "session",
+        "productivity"
+      ],
+      "category": "productivity",
+      "homepage": "https://github.com/dhofheinz/open-plugins/tree/main/plugins/afk-mode",
+      "repository": "https://github.com/dhofheinz/open-plugins"
+    },
+    {
+      "name": "spec-refine",
+      "version": "1.0.0",
+      "description": "Iterative specification refinement for large features. Creates detailed What (requirements) and How (implementation) specs through automated codebase research loops followed by human-in-loop review.",
+      "author": {
+        "name": "AgentSmith"
+      },
+      "source": "./plugins/spec-refine",
+      "license": "MIT",
+      "keywords": [
+        "specification",
+        "requirements",
+        "planning",
+        "tickets",
+        "brownfield",
+        "iterative"
+      ],
+      "category": "development",
+      "homepage": "https://github.com/dhofheinz/open-plugins/tree/main/plugins/spec-refine",
+      "repository": "https://github.com/dhofheinz/open-plugins"
     }
   ],
   "categories": [
