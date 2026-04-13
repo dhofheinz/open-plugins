@@ -176,6 +176,36 @@
       "category": "development",
       "homepage": "https://github.com/dhofheinz/open-plugins/tree/main/plugins/spec-refine",
       "repository": "https://github.com/dhofheinz/open-plugins"
+    },
+    {
+      "name": "refinery",
+      "version": "1.0.0",
+      "description": "Unified specification refinement plugin. Single entry point for all spec operations: greenfield architecture pipelines (principles, design, stack, spec, plan), feature spec creation, iterative convergence loops, quality reviews, drift detection, finalization, and dispatch-compatible ticket decomposition. Treats specifications as typed nodes in an artifact graph with first-class confidence and evidence.",
+      "author": {
+        "name": "Daniel Hofheinz",
+        "email": "daniel@danielhofheinz.com",
+        "url": "https://github.com/dhofheinz"
+      },
+      "source": "./plugins/refinery",
+      "license": "MIT",
+      "keywords": [
+        "specification",
+        "requirements",
+        "refinement",
+        "architecture",
+        "EARS",
+        "Given-When-Then",
+        "iterative",
+        "convergence",
+        "drift-detection",
+        "tickets",
+        "dispatch-compatible",
+        "documentation",
+        "planning"
+      ],
+      "category": "development",
+      "homepage": "https://github.com/dhofheinz/open-plugins/tree/main/plugins/refinery",
+      "repository": "https://github.com/dhofheinz/open-plugins"
     }
   ],
   "categories": [

@@ -1,0 +1,48 @@
+{
+  "name": "refinery",
+  "version": "1.0.0",
+  "description": "Unified specification refinement plugin. Single entry point for all spec operations: greenfield architecture pipelines (principles → design → stack → spec → plan), feature spec creation, iterative convergence loops, quality reviews, drift detection, finalization, and dispatch-compatible ticket decomposition. Treats specifications as typed nodes in an artifact graph with first-class confidence and evidence.",
+  "author": {
+    "name": "Daniel Hofheinz",
+    "email": "daniel@danielhofheinz.com",
+    "url": "https://github.com/dhofheinz"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/dhofheinz/open-plugins",
+  "homepage": "https://github.com/dhofheinz/open-plugins/tree/main/plugins/refinery",
+  "keywords": [
+    "specification",
+    "requirements",
+    "refinement",
+    "architecture",
+    "EARS",
+    "Given-When-Then",
+    "iterative",
+    "convergence",
+    "drift-detection",
+    "tickets",
+    "dispatch-compatible",
+    "documentation",
+    "planning"
+  ],
+  "userConfig": {
+    "working_directory": {
+      "type": "directory",
+      "title": "Working directory",
+      "description": "Default working directory for Refinery artifacts (relative to project root). Defaults to docs/refinery/ if unset. Override per-invocation with --output-dir flag.",
+      "sensitive": false
+    },
+    "spec_writer_model": {
+      "type": "string",
+      "title": "Spec writer model",
+      "description": "Model alias used by the spec-writer agent (sonnet, opus, haiku, or full model ID). Spec authoring is the highest-stakes operation; defaults to opus. Set to sonnet for faster/cheaper synthesis if your specs are smaller in scope.",
+      "sensitive": false
+    },
+    "specialist_model": {
+      "type": "string",
+      "title": "Specialist agents model",
+      "description": "Model alias used by the four specialist agents (spec-critic, spec-scribe, code-archaeologist, requirements-interviewer, ticket-architect). Defaults to sonnet. These are pattern-matching/editing roles that don't need the deepest model.",
+      "sensitive": false
+    }
+  }
+}

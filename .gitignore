@@ -76,3 +76,5 @@ local-plugins/
 
 # CI/CD
 .github/workflows/*.local.yml
+
+docs/specs/
