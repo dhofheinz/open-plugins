@@ -28,16 +28,18 @@ readonly STRICT="${3:-false}"
 # ====================
 
 # Plugin required fields
+# Per plugins-reference, only `name` is required in plugin.json. All other
+# metadata is optional but recommended for discoverability / quality.
 PLUGIN_REQUIRED_FIELDS=(
     "name"
-    "version"
-    "description"
-    "author"
-    "license"
 )
 
 # Plugin recommended fields
 PLUGIN_RECOMMENDED_FIELDS=(
+    "version"
+    "description"
+    "author"
+    "license"
     "repository"
     "homepage"
     "keywords"
@@ -45,20 +47,23 @@ PLUGIN_RECOMMENDED_FIELDS=(
 )
 
 # Marketplace required fields
+# Per plugin-marketplaces: name, owner (with owner.name), plugins. owner.email
+# is optional.
 MARKETPLACE_REQUIRED_FIELDS=(
     "name"
     "owner"
     "owner.name"
-    "owner.email"
     "plugins"
 )
 
 # Marketplace recommended fields
 MARKETPLACE_RECOMMENDED_FIELDS=(
-    "version"
+    "owner.email"
     "metadata.description"
+    "metadata.version"
     "metadata.homepage"
     "metadata.repository"
+    "metadata.pluginRoot"
 )
 
 # ====================

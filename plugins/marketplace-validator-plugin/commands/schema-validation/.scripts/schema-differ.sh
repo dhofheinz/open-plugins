@@ -34,12 +34,14 @@ validate_plugin_entry() {
     local has_errors=0
     local has_warnings=0
 
-    # Extract fields using json_get would be complex here, so use jq/python inline
-    local name version source description author keywords license
+    # Extract fields. Note: `source` may be a string OR an object, so we
+    # extract raw JSON for source and detect the type at validation time.
+    local name version source source_type description author keywords license
 
     name=$(echo "${entry_json}" | jq -r '.name // empty' 2>/dev/null || echo "")
     version=$(echo "${entry_json}" | jq -r '.version // empty' 2>/dev/null || echo "")
-    source=$(echo "${entry_json}" | jq -r '.source // empty' 2>/dev/null || echo "")
+    source=$(echo "${entry_json}" | jq -c '.source // empty' 2>/dev/null || echo "")
+    source_type=$(echo "${entry_json}" | jq -r '.source | type' 2>/dev/null || echo "null")
     description=$(echo "${entry_json}" | jq -r '.description // empty' 2>/dev/null || echo "")
     author=$(echo "${entry_json}" | jq -r '.author // empty' 2>/dev/null || echo "")
     keywords=$(echo "${entry_json}" | jq -r '.keywords // empty' 2>/dev/null || echo "")
@@ -48,8 +50,8 @@ validate_plugin_entry() {
     echo ""
     print_section "Entry ${index}: ${name:-<unnamed>}"
 
-    # Required fields
-    echo "  Required (3):"
+    # Required fields (per plugin-marketplaces spec: name + source only)
+    echo "  Required (2):"
 
     # name (required, lowercase-hyphen)
     if [[ -z "${name}" ]]; then
@@ -63,24 +65,52 @@ validate_plugin_entry() {
         print_success "  name: \"${name}\""
     fi
 
-    # source (required, valid format)
-    if [[ -z "${source}" ]]; then
+    # source (required, string relative path OR object with valid source type)
+    if [[ -z "${source}" || "${source_type}" == "null" ]]; then
         print_error "  source: Missing (REQUIRED)"
         ((has_errors++))
-    elif ! validate_source_format "${source}"; then
-        print_error "  source: \"${source}\" - Invalid format"
-        print_info "       Valid: ./path, github:user/repo, https://url"
-        ((has_errors++))
+    elif [[ "${source_type}" == "string" ]]; then
+        # Strip surrounding quotes from jq -c output
+        local source_str="${source%\"}"
+        source_str="${source_str#\"}"
+        if [[ "${source_str}" == ./* ]]; then
+            print_success "  source: \"${source_str}\" (relative path)"
+        elif [[ "${source_str}" == github:* ]]; then
+            print_warning "  source: \"${source_str}\" - legacy github: shorthand"
+            print_info "       Migrate to: {\"source\": \"github\", \"repo\": \"owner/repo\"}"
+            ((has_warnings++))
+        elif [[ "${source_str}" =~ ^https?:// ]]; then
+            print_warning "  source: \"${source_str}\" - legacy URL string"
+            print_info "       Migrate to: {\"source\": \"url\", \"url\": \"...\"}"
+            ((has_warnings++))
+        else
+            print_error "  source: \"${source_str}\" - Invalid format"
+            print_info "       Valid string: ./relative/path"
+            print_info "       Valid object: {\"source\": \"github\"|\"url\"|\"git-subdir\"|\"npm\", ...}"
+            ((has_errors++))
+        fi
+    elif [[ "${source_type}" == "object" ]]; then
+        if ! validate_source_object "${source}"; then
+            print_error "  source: Invalid source object"
+            ((has_errors++))
+        else
+            local src_kind
+            src_kind=$(echo "${source}" | jq -r '.source // empty' 2>/dev/null || echo "")
+            print_success "  source: ${src_kind} object"
+        fi
     else
-        print_success "  source: \"${source}\""
+        print_error "  source: Invalid type '${source_type}' (must be string or object)"
+        ((has_errors++))
     fi
 
-    # description (required, non-empty)
+    echo ""
+    echo "  Recommended (5):"
+
+    # description (recommended but strongly encouraged)
     if [[ -z "${description}" ]]; then
-        print_error "  description: Missing (REQUIRED)"
-        ((has_errors++))
+        print_warning "  description: Missing"
+        ((has_warnings++))
     else
-        # Truncate for display
         local desc_display="${description}"
         if [[ ${#description} -gt 50 ]]; then
             desc_display="${description:0:47}..."
@@ -88,12 +118,9 @@ validate_plugin_entry() {
         print_success "  description: \"${desc_display}\""
     fi
 
-    echo ""
-    echo "  Recommended (4):"
-
-    # version (recommended, semver)
+    # version (recommended, semver; can also live in plugin.json)
     if [[ -z "${version}" ]]; then
-        print_warning "  version: Missing"
+        print_warning "  version: Missing (can be set in plugin.json instead)"
         ((has_warnings++))
     elif ! validate_semver "${version}"; then
         print_warning "  version: \"${version}\" - Invalid semver"

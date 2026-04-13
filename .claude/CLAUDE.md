@@ -154,7 +154,7 @@ Standard categories (choose ONE per plugin):
       "version": "MAJOR.MINOR.PATCH",
       "description": "50-200 character description",
       "author": { "name": "", "email": "", "url": "" },
-      "source": "./plugins/plugin-name" or "github:user/repo",
+      "source": "./plugins/plugin-name" or {"source":"github","repo":"owner/repo"},
       "license": "MIT | Apache-2.0 | GPL-3.0",
       "keywords": ["3-7", "searchable", "terms"],
       "category": "one-of-standard-categories"
@@ -164,7 +164,8 @@ Standard categories (choose ONE per plugin):
 ```
 
 ### Plugin Manifest (plugin.json)
-Each plugin must have `plugin.json` at the plugin root:
+Each plugin must have `plugin.json` inside its `.claude-plugin/` directory
+(i.e. `plugins/<name>/.claude-plugin/plugin.json`):
 ```json
 {
   "name": "plugin-name",
@@ -172,11 +173,17 @@ Each plugin must have `plugin.json` at the plugin root:
   "description": "Plugin purpose",
   "author": { "name": "", "email": "" },
   "license": "MIT",
-  "repository": { "type": "git", "url": "" },
+  "repository": "https://github.com/owner/repo",
   "homepage": "https://...",
   "keywords": ["relevant", "terms"]
 }
 ```
+
+Notes:
+- `repository` must be a **string URL**. The legacy `{"type": "git", "url": "..."}`
+  object form is rejected by the current Claude Code validator.
+- `userConfig` entries require both `type` (one of `string`/`number`/`boolean`/`directory`/`file`)
+  and `title` (non-empty string).
 
 ## Important Workflows
 

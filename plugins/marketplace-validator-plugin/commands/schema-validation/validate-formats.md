@@ -46,9 +46,9 @@ Validate format compliance for semver, URLs, email addresses, and naming convent
 ### Format Validation Rules
 
 **Semantic Versioning (version field)**:
-- Pattern: `X.Y.Z` where X, Y, Z are non-negative integers
-- Valid: `1.0.0`, `2.5.3`, `10.20.30`
-- Invalid: `1.0`, `v1.0.0`, `1.0.0-beta` (pre-release allowed but optional)
+- Pattern: `X.Y.Z` with optional pre-release/build metadata
+- Valid: `1.0.0`, `2.5.3`, `10.20.30`, `1.0.0-beta`, `1.0.0+build.123`
+- Invalid: `1.0`, `v1.0.0`
 
 **Lowercase-Hyphen Naming (name field)**:
 - Pattern: `^[a-z0-9]+(-[a-z0-9]+)*$`
@@ -56,10 +56,13 @@ Validate format compliance for semver, URLs, email addresses, and naming convent
 - Invalid: `My-Plugin`, `test_plugin`, `plugin.name`, `-plugin`, `plugin-`
 
 **URL Format (homepage, repository fields)**:
-- Must start with `http://` or `https://`
+- Must be a **string** URL starting with `http://` or `https://`
+- The legacy `{"type": "git", "url": "..."}` object form for `repository` is
+  rejected by the current Claude Code validator — use a plain string URL.
 - Strict mode: Only `https://` allowed
 - Valid: `https://example.com`, `http://localhost:3000`
-- Invalid: `example.com`, `www.example.com`, `ftp://example.com`
+- Invalid: `example.com`, `www.example.com`, `ftp://example.com`,
+  `{"type": "git", "url": "..."}` (legacy object form)
 
 **Email Format (owner.email, author.email fields)**:
 - RFC 5322 compliant pattern

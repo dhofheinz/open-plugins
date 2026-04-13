@@ -60,33 +60,53 @@ Verify all required fields are present and non-empty in plugin or marketplace co
 
 ### Required Fields by Type
 
-**Plugin** (from plugin.json):
-- `name` (string, lowercase-hyphen format)
-- `version` (string, semver X.Y.Z)
-- `description` (string, 50-200 characters)
-- `author` (string or object with name field)
-- `license` (string, SPDX identifier)
+Per the current Claude Code plugin manifest schema
+(https://code.claude.com/docs/en/plugins-reference), `name` is the only truly
+required field in plugin.json. All other metadata is recommended but optional.
 
-**Marketplace** (from marketplace.json):
+**Plugin** (from `.claude-plugin/plugin.json`):
 - `name` (string, lowercase-hyphen format)
-- `owner` (object with name field)
+
+**Marketplace** (from `.claude-plugin/marketplace.json`):
+- `name` (string, lowercase-hyphen; not a reserved marketplace name)
+- `owner` (object)
 - `owner.name` (string)
-- `owner.email` (string, valid email format)
 - `plugins` (array, at least one entry)
 
 ### Recommended Fields
 
 **Plugin**:
-- `repository` (object or string, source code location)
+- `version` (string, semver X.Y.Z)
+- `description` (string, 50-200 characters)
+- `author` (string, or object `{name, email?, url?}`)
+- `license` (string, SPDX identifier)
+- `repository` (**string URL** — the legacy `{type, url}` object form is
+  rejected by the current Claude Code validator)
 - `homepage` (string, documentation URL)
 - `keywords` (array, 3-7 relevant keywords)
 - `category` (string, one of 10 approved categories)
 
+**Plugin `userConfig`** (if present, each entry requires):
+- `type` (one of `string`, `number`, `boolean`, `directory`, `file`)
+- `title` (non-empty string, user-facing label)
+- Optional: `description`, `default`, `sensitive`, `required`, `enum`
+
 **Marketplace**:
-- `version` (string, marketplace version)
+- `owner.email` (string, valid email format — optional per spec)
 - `metadata.description` (string, marketplace purpose)
+- `metadata.version` (string, marketplace version)
 - `metadata.homepage` (string, marketplace documentation)
 - `metadata.repository` (string, marketplace source)
+- `metadata.pluginRoot` (string, base dir prepended to relative plugin sources)
+
+**Plugin entry** (inside a marketplace `plugins[]` array):
+- Required: `name`, `source`
+- Recommended: `description`, `version`, `author`, `license`, `category`, `keywords`
+- `source` may be a relative-path string (`"./plugins/foo"`) or an object:
+  - `{"source": "github", "repo": "owner/repo", "ref?": "...", "sha?": "..."}`
+  - `{"source": "url", "url": "...", "ref?": "...", "sha?": "..."}`
+  - `{"source": "git-subdir", "url": "...", "path": "...", "ref?": "...", "sha?": "..."}`
+  - `{"source": "npm", "package": "...", "version?": "...", "registry?": "..."}`
 
 ### Examples
 

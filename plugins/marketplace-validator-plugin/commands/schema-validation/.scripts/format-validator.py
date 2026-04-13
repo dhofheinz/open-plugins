@@ -73,6 +73,27 @@ APPROVED_CATEGORIES = [
     'database', 'monitoring', 'productivity', 'quality', 'collaboration'
 ]
 
+# userConfig field types (from plugin.json schema)
+USERCONFIG_TYPES = ['string', 'number', 'boolean', 'directory', 'file']
+
+# Valid plugin source object types (marketplace plugin entry .source)
+SOURCE_OBJECT_TYPES = ['github', 'url', 'git-subdir', 'npm']
+
+# Required fields per source object type
+SOURCE_OBJECT_REQUIRED_FIELDS = {
+    'github': ['repo'],
+    'url': ['url'],
+    'git-subdir': ['url', 'path'],
+    'npm': ['package'],
+}
+
+# Reserved marketplace names (cannot be used by third-party marketplaces)
+RESERVED_MARKETPLACE_NAMES = [
+    'claude-code-marketplace', 'claude-code-plugins', 'claude-plugins-official',
+    'anthropic-marketplace', 'anthropic-plugins', 'agent-skills',
+    'knowledge-work-plugins', 'life-sciences'
+]
+
 
 # ====================
 # Validation Functions
@@ -239,6 +260,194 @@ class FormatValidator:
             ))
             return True
 
+    def validate_repository(self, field: str, value) -> bool:
+        """Validate repository field — must be a string URL per current schema.
+
+        The legacy {type, url} object form is rejected by the live Claude Code
+        validator and is now rejected here as well.
+        """
+        if value is None or value == '':
+            return True
+
+        if isinstance(value, str):
+            return self.validate_url(field, value)
+
+        if isinstance(value, dict):
+            error = (
+                field,
+                f'{type(value).__name__} {value!r}',
+                'Invalid: repository must be a string URL (legacy object form\n'
+                '     {"type": "git", "url": "..."} is rejected by the current\n'
+                '     Claude Code validator)\n'
+                '     Fix: "repository": "https://github.com/user/repo"'
+            )
+            self.errors.append(error)
+            return False
+
+        error = (
+            field,
+            f'{type(value).__name__}',
+            'Invalid: repository must be a string URL'
+        )
+        self.errors.append(error)
+        return False
+
+    def validate_userconfig(self, field: str, value) -> bool:
+        """Validate userConfig entries.
+
+        Each entry must have:
+        - type: one of string|number|boolean|directory|file
+        - title: non-empty string
+        Optional: description, default, sensitive, required, enum.
+        """
+        if value is None:
+            return True
+        if not isinstance(value, dict):
+            self.errors.append((
+                field,
+                f'{type(value).__name__}',
+                'Invalid: userConfig must be an object mapping keys to field definitions'
+            ))
+            return False
+
+        ok = True
+        allowed_keys = {'type', 'title', 'description', 'default', 'sensitive', 'required', 'enum'}
+        for key, entry in value.items():
+            subfield = f'{field}.{key}'
+            if not isinstance(entry, dict):
+                self.errors.append((
+                    subfield,
+                    f'{type(entry).__name__}',
+                    'Invalid: each userConfig entry must be an object with at\n'
+                    '     minimum {type, title}'
+                ))
+                ok = False
+                continue
+
+            # Required: type
+            entry_type = entry.get('type')
+            if entry_type is None:
+                self.errors.append((
+                    subfield + '.type',
+                    '(missing)',
+                    'Invalid: missing required field "type"\n'
+                    f'     Valid: {", ".join(USERCONFIG_TYPES)}'
+                ))
+                ok = False
+            elif entry_type not in USERCONFIG_TYPES:
+                self.errors.append((
+                    subfield + '.type',
+                    f'"{entry_type}"',
+                    f'Invalid: type must be one of {", ".join(USERCONFIG_TYPES)}'
+                ))
+                ok = False
+
+            # Required: title
+            entry_title = entry.get('title')
+            if not isinstance(entry_title, str) or not entry_title.strip():
+                self.errors.append((
+                    subfield + '.title',
+                    f'{entry_title!r}' if entry_title is not None else '(missing)',
+                    'Invalid: missing or empty required field "title" (non-empty string)'
+                ))
+                ok = False
+
+            # Optional: sensitive must be bool
+            if 'sensitive' in entry and not isinstance(entry['sensitive'], bool):
+                self.warnings.append((
+                    subfield + '.sensitive',
+                    f'{entry["sensitive"]!r} - should be boolean'
+                ))
+
+            # Optional: enum must be list
+            if 'enum' in entry and not isinstance(entry['enum'], list):
+                self.warnings.append((
+                    subfield + '.enum',
+                    f'{type(entry["enum"]).__name__} - should be an array of allowed values'
+                ))
+
+            # Unknown keys
+            unknown = set(entry.keys()) - allowed_keys
+            if unknown:
+                self.warnings.append((
+                    subfield,
+                    f'Unknown field(s): {", ".join(sorted(unknown))} '
+                    f'(recognized: {", ".join(sorted(allowed_keys))})'
+                ))
+
+            if ok:
+                self.passed.append((subfield, f'type={entry_type}, title set'))
+
+        return ok
+
+    def validate_source(self, field: str, value) -> bool:
+        """Validate marketplace plugin entry source.
+
+        Accepts:
+        - Relative path string starting with "./"
+        - Object: {source: "github", repo, ref?, sha?}
+        - Object: {source: "url", url, ref?, sha?}
+        - Object: {source: "git-subdir", url, path, ref?, sha?}
+        - Object: {source: "npm", package, version?, registry?}
+        """
+        if value is None:
+            return True
+
+        if isinstance(value, str):
+            if value.startswith('./'):
+                self.passed.append((field, f'"{value}" (relative path)'))
+                return True
+            # Legacy shorthand strings no longer documented — warn loudly.
+            if value.startswith('github:'):
+                self.warnings.append((
+                    field,
+                    f'"{value}" - legacy github: shorthand; migrate to '
+                    '{"source": "github", "repo": "owner/repo"}'
+                ))
+                return True
+            if re.match(r'^https?://', value):
+                self.warnings.append((
+                    field,
+                    f'"{value}" - legacy URL string; migrate to '
+                    '{"source": "url", "url": "..."} or {"source": "github", "repo": "..."}'
+                ))
+                return True
+            self.errors.append((
+                field,
+                f'"{value}"',
+                'Invalid source string: relative paths must start with "./".\n'
+                '     Use object form for git/npm sources: {"source": "github", "repo": "owner/repo"}'
+            ))
+            return False
+
+        if isinstance(value, dict):
+            src_type = value.get('source')
+            if src_type not in SOURCE_OBJECT_TYPES:
+                self.errors.append((
+                    field + '.source',
+                    f'"{src_type}"' if src_type else '(missing)',
+                    f'Invalid: source.source must be one of {", ".join(SOURCE_OBJECT_TYPES)}'
+                ))
+                return False
+            required = SOURCE_OBJECT_REQUIRED_FIELDS[src_type]
+            missing = [f for f in required if not value.get(f)]
+            if missing:
+                self.errors.append((
+                    field,
+                    f'source={src_type}',
+                    f'Invalid: {src_type} source missing required field(s): {", ".join(missing)}'
+                ))
+                return False
+            self.passed.append((field, f'{src_type} source'))
+            return True
+
+        self.errors.append((
+            field,
+            f'{type(value).__name__}',
+            'Invalid: source must be a relative path string ("./...") or an object'
+        ))
+        return False
+
 
 # ====================
 # Plugin Validation
@@ -268,13 +477,9 @@ def validate_plugin_formats(data: Dict, validator: FormatValidator) -> int:
     if 'homepage' in data:
         validator.validate_url('homepage', data['homepage'])
 
-    # repository: URL or object
+    # repository: string URL (legacy {type, url} object is rejected)
     if 'repository' in data:
-        repo = data['repository']
-        if isinstance(repo, str):
-            validator.validate_url('repository', repo)
-        elif isinstance(repo, dict) and 'url' in repo:
-            validator.validate_url('repository.url', repo['url'])
+        validator.validate_repository('repository', data['repository'])
 
     # category: approved list
     if 'category' in data:
@@ -285,6 +490,10 @@ def validate_plugin_formats(data: Dict, validator: FormatValidator) -> int:
         author = data['author']
         if isinstance(author, dict) and 'email' in author:
             validator.validate_email('author.email', author['email'])
+
+    # userConfig: validate each entry's schema
+    if 'userConfig' in data:
+        validator.validate_userconfig('userConfig', data['userConfig'])
 
     return 0 if not validator.errors else 1
 
@@ -297,13 +506,20 @@ def validate_marketplace_formats(data: Dict, validator: FormatValidator) -> int:
     """Validate marketplace format compliance"""
     print(f"{Colors.CYAN}Format Checks:{Colors.NC}\n")
 
-    # name: lowercase-hyphen
+    # name: lowercase-hyphen + reserved-name check
     if 'name' in data:
         validator.validate_lowercase_hyphen('name', data['name'])
+        if data['name'] in RESERVED_MARKETPLACE_NAMES:
+            validator.errors.append((
+                'name',
+                f'"{data["name"]}"',
+                'Invalid: this name is reserved for official Anthropic use.\n'
+                f'     Reserved: {", ".join(RESERVED_MARKETPLACE_NAMES)}'
+            ))
 
-    # owner.email: email
+    # owner.email: email (optional — only validate format if present)
     if 'owner' in data and isinstance(data['owner'], dict):
-        if 'email' in data['owner']:
+        if data['owner'].get('email'):
             validator.validate_email('owner.email', data['owner']['email'])
 
     # version: semver (if present)
@@ -322,6 +538,38 @@ def validate_marketplace_formats(data: Dict, validator: FormatValidator) -> int:
 
         if 'repository' in metadata:
             validator.validate_url('metadata.repository', metadata['repository'])
+
+    # plugin entries: validate each source + common format fields
+    if 'plugins' in data and isinstance(data['plugins'], list):
+        for idx, entry in enumerate(data['plugins']):
+            if not isinstance(entry, dict):
+                validator.errors.append((
+                    f'plugins[{idx}]',
+                    f'{type(entry).__name__}',
+                    'Invalid: plugin entry must be an object'
+                ))
+                continue
+            prefix = f'plugins[{idx}]'
+            entry_name = entry.get('name')
+            if entry_name:
+                prefix = f'plugins[{idx}:{entry_name}]'
+                validator.validate_lowercase_hyphen(f'{prefix}.name', entry_name)
+            if 'source' in entry:
+                validator.validate_source(f'{prefix}.source', entry['source'])
+            if 'version' in entry:
+                validator.validate_semver(f'{prefix}.version', entry['version'])
+            if 'description' in entry:
+                validator.validate_description_length(f'{prefix}.description', entry['description'])
+            if 'license' in entry:
+                validator.validate_license(f'{prefix}.license', entry['license'])
+            if 'category' in entry:
+                validator.validate_category(f'{prefix}.category', entry['category'])
+            if 'homepage' in entry:
+                validator.validate_url(f'{prefix}.homepage', entry['homepage'])
+            if 'repository' in entry:
+                validator.validate_repository(f'{prefix}.repository', entry['repository'])
+            if isinstance(entry.get('author'), dict) and entry['author'].get('email'):
+                validator.validate_email(f'{prefix}.author.email', entry['author']['email'])
 
     return 0 if not validator.errors else 1
 

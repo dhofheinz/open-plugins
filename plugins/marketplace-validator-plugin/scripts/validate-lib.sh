@@ -282,29 +282,126 @@ validate_category() {
 }
 
 validate_source_format() {
+    # Validate a plugin entry source provided as a STRING.
+    # Per current plugin-marketplaces spec, only relative paths starting with
+    # "./" are canonical string sources. Legacy shorthand strings (github:,
+    # https://...git, https://...zip) are accepted with a warning for
+    # migration.
     local source="$1"
 
-    # GitHub format
+    # Canonical: relative path starting with ./
+    if [[ "${source}" == ./* ]]; then
+        return 0
+    fi
+
+    # Legacy shorthands — still parseable but no longer in the docs.
     if [[ "${source}" =~ ^github: ]]; then
         return 0
     fi
-
-    # Git URL
     if [[ "${source}" =~ ^(https?|git):// ]] && [[ "${source}" =~ \.git$ ]]; then
         return 0
     fi
-
-    # Archive URL
     if [[ "${source}" =~ ^https?:// ]] && [[ "${source}" =~ \.(zip|tar\.gz|tgz)$ ]]; then
         return 0
     fi
 
-    # Relative path (./path or ../path)
-    if [[ "${source}" =~ ^\. ]]; then
-        return 0
+    return 1
+}
+
+validate_source_object() {
+    # Validate a plugin entry source provided as a JSON OBJECT.
+    # Accepts: {source: "github"|"url"|"git-subdir"|"npm", ...type-specific fields}
+    # Required fields per type:
+    #   github    -> repo
+    #   url       -> url
+    #   git-subdir -> url, path
+    #   npm       -> package
+    local source_json="$1"
+
+    if ! command -v jq &>/dev/null; then
+        # Without jq we can't reliably parse; fail closed.
+        return 1
     fi
 
+    local src_type
+    src_type=$(echo "${source_json}" | jq -r '.source // empty' 2>/dev/null || echo "")
+
+    case "${src_type}" in
+        github)
+            local repo
+            repo=$(echo "${source_json}" | jq -r '.repo // empty' 2>/dev/null || echo "")
+            [[ -n "${repo}" ]]
+            return $?
+            ;;
+        url)
+            local url
+            url=$(echo "${source_json}" | jq -r '.url // empty' 2>/dev/null || echo "")
+            [[ -n "${url}" ]]
+            return $?
+            ;;
+        git-subdir)
+            local url path
+            url=$(echo "${source_json}" | jq -r '.url // empty' 2>/dev/null || echo "")
+            path=$(echo "${source_json}" | jq -r '.path // empty' 2>/dev/null || echo "")
+            [[ -n "${url}" && -n "${path}" ]]
+            return $?
+            ;;
+        npm)
+            local package
+            package=$(echo "${source_json}" | jq -r '.package // empty' 2>/dev/null || echo "")
+            [[ -n "${package}" ]]
+            return $?
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
+validate_repository_field() {
+    # Validate a repository field. Must be a string URL; the legacy {type,url}
+    # object form is rejected by the current Claude Code plugin loader.
+    local repo_json="$1"
+
+    if ! command -v jq &>/dev/null; then
+        # Best effort: treat as string
+        [[ "${repo_json}" =~ ^https?:// ]]
+        return $?
+    fi
+
+    local field_type
+    field_type=$(echo "${repo_json}" | jq -r 'type' 2>/dev/null || echo "null")
+
+    if [[ "${field_type}" == "string" ]]; then
+        local url
+        url=$(echo "${repo_json}" | jq -r '.' 2>/dev/null)
+        validate_url "${url}"
+        return $?
+    fi
+
+    # Anything else (object, array, null) — invalid per current schema.
     return 1
+}
+
+validate_userconfig_entry() {
+    # Validate a single userConfig entry. Takes the JSON object.
+    # Required: type (string|number|boolean|directory|file), title (non-empty string)
+    local entry_json="$1"
+
+    if ! command -v jq &>/dev/null; then
+        return 1
+    fi
+
+    local entry_type entry_title
+    entry_type=$(echo "${entry_json}" | jq -r '.type // empty' 2>/dev/null || echo "")
+    entry_title=$(echo "${entry_json}" | jq -r '.title // empty' 2>/dev/null || echo "")
+
+    case "${entry_type}" in
+        string|number|boolean|directory|file) ;;
+        *) return 1 ;;
+    esac
+
+    [[ -n "${entry_title}" ]]
 }
 
 # ====================
@@ -444,6 +541,7 @@ export -f print_star_rating print_quality_rating
 export -f detect_json_tool json_get validate_json_syntax get_json_array_length
 export -f validate_semver validate_name_format validate_email validate_url validate_https_url
 export -f validate_license validate_category validate_source_format
+export -f validate_source_object validate_repository_field validate_userconfig_entry
 export -f check_for_secrets check_for_malicious_urls
 export -f calculate_quality_score
 export -f check_file_exists check_dir_exists check_file_executable get_file_size

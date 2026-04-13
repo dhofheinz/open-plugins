@@ -329,12 +329,11 @@ validate_required_fields() {
         print_success "owner.name: ${owner_name}"
     fi
 
-    # Check owner.email
+    # Check owner.email (optional per plugin-marketplaces spec)
     local owner_email
     owner_email=$(json_get "${MARKETPLACE_FILE}" ".owner.email")
-    if [[ -z "${owner_email}" ]]; then
-        print_error "Missing required field: 'owner.email'"
-        has_errors=true
+    if [[ -z "${owner_email}" ]] || [[ "${owner_email}" == "null" ]]; then
+        print_info "No 'owner.email' (optional but recommended)"
     else
         print_success "owner.email: ${owner_email}"
 
@@ -343,13 +342,15 @@ validate_required_fields() {
         fi
     fi
 
-    # Check description
+    # Marketplace description lives under metadata.description per spec, not
+    # at the root. Check both for compatibility with older marketplaces but
+    # treat as optional.
     local description
-    description=$(json_get "${MARKETPLACE_FILE}" ".description")
-    if [[ -z "${description}" ]]; then
-        print_error "Missing required field: 'description'"
-        has_errors=true
-    else
+    description=$(json_get "${MARKETPLACE_FILE}" ".metadata.description")
+    if [[ -z "${description}" ]] || [[ "${description}" == "null" ]]; then
+        description=$(json_get "${MARKETPLACE_FILE}" ".description")
+    fi
+    if [[ -n "${description}" ]] && [[ "${description}" != "null" ]]; then
         local desc_length=${#description}
         print_success "description: Present (${desc_length} characters)"
 
@@ -360,6 +361,8 @@ validate_required_fields() {
         if [[ ${desc_length} -gt 500 ]]; then
             print_warning "Description is long (> 500 chars). Consider being more concise."
         fi
+    else
+        print_info "No marketplace description (optional; goes in metadata.description)"
     fi
 
     # Check plugins array
@@ -461,8 +464,11 @@ validate_plugin_entries() {
 
         print_info "Plugin #$((i+1)): ${plugin_name}"
 
-        # Required fields
-        local required_fields=("name" "version" "description" "author" "source" "license")
+        # Required fields per plugin-marketplaces spec: name + source only.
+        # Everything else (description, version, author, license) is
+        # recommended but not required.
+        local required_fields=("name" "source")
+        local recommended_fields=("description" "version" "author" "license")
         local plugin_has_errors=false
 
         for field in "${required_fields[@]}"; do
@@ -473,16 +479,93 @@ validate_plugin_entries() {
                 print_error "  Missing required field: '${field}'"
                 plugin_has_errors=true
                 has_plugin_errors=true
-            else
-                print_verbose "  ${field}: Present"
+                continue
+            fi
 
-                # Field-specific validation
-                case "${field}" in
-                    name)
-                        if ! validate_name_format "${value}"; then
-                            print_warning "  Plugin name '${value}' should use lowercase-hyphen format"
+            print_verbose "  ${field}: Present"
+
+            case "${field}" in
+                name)
+                    if ! validate_name_format "${value}"; then
+                        print_warning "  Plugin name '${value}' should use lowercase-hyphen format"
+                    fi
+                    ;;
+                source)
+                    # Detect string vs object form
+                    local source_type
+                    source_type=$(json_get "${MARKETPLACE_FILE}" ".plugins[${i}].source | type")
+                    if [[ "${source_type}" == "string" ]]; then
+                        if [[ "${value}" == ./* ]]; then
+                            : # canonical relative path
+                        elif [[ "${value}" =~ ^github: ]] || [[ "${value}" =~ ^https?:// ]]; then
+                            print_warning "  Legacy source string '${value}' — migrate to object form"
+                            print_info "    {\"source\": \"github\", \"repo\": \"owner/repo\"} or {\"source\": \"url\", \"url\": \"...\"}"
+                        else
+                            print_warning "  Source format not recognized: ${value}"
                         fi
-                        ;;
+                    elif [[ "${source_type}" == "object" ]]; then
+                        local src_kind
+                        src_kind=$(json_get "${MARKETPLACE_FILE}" ".plugins[${i}].source.source")
+                        case "${src_kind}" in
+                            github)
+                                local repo
+                                repo=$(json_get "${MARKETPLACE_FILE}" ".plugins[${i}].source.repo")
+                                if [[ -z "${repo}" ]] || [[ "${repo}" == "null" ]]; then
+                                    print_error "  source.repo missing for github source"
+                                    plugin_has_errors=true
+                                    has_plugin_errors=true
+                                fi
+                                ;;
+                            url)
+                                local url
+                                url=$(json_get "${MARKETPLACE_FILE}" ".plugins[${i}].source.url")
+                                if [[ -z "${url}" ]] || [[ "${url}" == "null" ]]; then
+                                    print_error "  source.url missing for url source"
+                                    plugin_has_errors=true
+                                    has_plugin_errors=true
+                                fi
+                                ;;
+                            git-subdir)
+                                local gurl gpath
+                                gurl=$(json_get "${MARKETPLACE_FILE}" ".plugins[${i}].source.url")
+                                gpath=$(json_get "${MARKETPLACE_FILE}" ".plugins[${i}].source.path")
+                                if [[ -z "${gurl}" ]] || [[ "${gurl}" == "null" ]] || [[ -z "${gpath}" ]] || [[ "${gpath}" == "null" ]]; then
+                                    print_error "  git-subdir source requires both 'url' and 'path'"
+                                    plugin_has_errors=true
+                                    has_plugin_errors=true
+                                fi
+                                ;;
+                            npm)
+                                local pkg
+                                pkg=$(json_get "${MARKETPLACE_FILE}" ".plugins[${i}].source.package")
+                                if [[ -z "${pkg}" ]] || [[ "${pkg}" == "null" ]]; then
+                                    print_error "  source.package missing for npm source"
+                                    plugin_has_errors=true
+                                    has_plugin_errors=true
+                                fi
+                                ;;
+                            *)
+                                print_error "  Unknown source type: '${src_kind}' (valid: github, url, git-subdir, npm)"
+                                plugin_has_errors=true
+                                has_plugin_errors=true
+                                ;;
+                        esac
+                    else
+                        print_error "  source has invalid type: ${source_type} (must be string or object)"
+                        plugin_has_errors=true
+                        has_plugin_errors=true
+                    fi
+                    ;;
+            esac
+        done
+
+        for field in "${recommended_fields[@]}"; do
+            local value
+            value=$(json_get "${MARKETPLACE_FILE}" ".plugins[${i}].${field}")
+            if [[ -z "${value}" ]] || [[ "${value}" == "null" ]]; then
+                print_info "  No '${field}' (recommended)"
+            else
+                case "${field}" in
                     version)
                         if ! validate_semver "${value}"; then
                             print_warning "  Version '${value}' doesn't follow semver format"
@@ -493,18 +576,19 @@ validate_plugin_entries() {
                             print_info "  License '${value}' is not a known SPDX identifier"
                         fi
                         ;;
-                    source)
-                        if [[ "${value}" =~ ^https?:// ]]; then
-                            if ! validate_url "${value}"; then
-                                print_warning "  Source URL may be invalid: ${value}"
-                            fi
-                        elif [[ ! "${value}" =~ ^github: ]]; then
-                            print_warning "  Source format not recognized: ${value}"
-                        fi
-                        ;;
                 esac
             fi
         done
+
+        # repository: must be string URL (legacy {type, url} object rejected)
+        local repo_type
+        repo_type=$(json_get "${MARKETPLACE_FILE}" ".plugins[${i}].repository | type")
+        if [[ "${repo_type}" == "object" ]]; then
+            print_error "  repository: legacy {type, url} object form is rejected by current Claude Code"
+            print_info "    Migrate to: \"repository\": \"https://github.com/...\""
+            plugin_has_errors=true
+            has_plugin_errors=true
+        fi
 
         if [[ "${plugin_has_errors}" == false ]]; then
             print_success "  All required fields present"
