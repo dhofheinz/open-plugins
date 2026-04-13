@@ -140,7 +140,6 @@ gh release create v1.1.0 --title "v1.1.0" --notes "Release notes"
 
 - **Full Documentation**: [README.md](README.md)
 - **Contributing Guide**: [CONTRIBUTING.md](CONTRIBUTING.md)
-- **Setup Guide**: [SETUP_GUIDE.md](SETUP_GUIDE.md)
 - **Issues**: https://github.com/dhofheinz/open-plugins/issues
 - **Discussions**: https://github.com/dhofheinz/open-plugins/discussions
-- **Claude Code Docs**: https://docs.claude.com/en/docs/claude-code/plugins
+- **Claude Code Docs**: https://code.claude.com/docs/en/plugins
