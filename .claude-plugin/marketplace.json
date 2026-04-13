@@ -82,7 +82,7 @@
     },
     {
       "name": "git-commit-assistant",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "description": "Intelligent git commit helper with semantic commit message generation, change analysis, and atomic commit guidance using conventional commits format",
       "author": {
         "name": "Daniel Hofheinz",

@@ -1,6 +1,6 @@
 {
   "name": "git-commit-assistant",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Intelligent git commit helper with semantic commit message generation, change analysis, and atomic commit guidance using conventional commits format",
   "author": {
     "name": "Daniel Hofheinz",
@@ -8,10 +8,7 @@
     "url": "https://github.com/dhofheinz/open-plugins"
   },
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/dhofheinz/open-plugins"
-  },
+  "repository": "https://github.com/dhofheinz/open-plugins",
   "homepage": "https://github.com/dhofheinz/open-plugins/tree/main/plugins/git-commit-assistant",
   "keywords": [
     "git",
