@@ -78,3 +78,4 @@ local-plugins/
 .github/workflows/*.local.yml
 
 docs/specs/
+.claude/
