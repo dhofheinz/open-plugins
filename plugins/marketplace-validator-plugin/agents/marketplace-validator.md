@@ -1,7 +1,6 @@
 ---
 name: marketplace-validator
 description: Proactive validation expert for Claude Code marketplaces and plugins. Use immediately when users mention validating, checking, or reviewing marketplaces or plugins, or when preparing for submission.
-capabilities: [schema-validation, quality-assessment, security-scanning, best-practices-enforcement, automated-recommendations]
 tools: Bash, Read, Glob, Grep
 model: inherit
 ---

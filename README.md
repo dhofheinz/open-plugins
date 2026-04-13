@@ -66,14 +66,9 @@ List all plugins in the marketplace:
   /plugin install 10x-fullstack-engineer@open-plugins
   ```
 
-- **plugin-quickstart-generator** - Generate production-ready plugin structures with guided interactive setup
+- **refinery** - Unified specification refinement with greenfield architecture pipelines, feature specs, convergence loops, reviews, drift detection, finalization, and dispatch-compatible ticket decomposition
   ```bash
-  /plugin install plugin-quickstart-generator@open-plugins
-  ```
-
-- **spec-refine** - Iterative specification refinement for large features with automated codebase research and human-in-loop review
-  ```bash
-  /plugin install spec-refine@open-plugins
+  /plugin install refinery@open-plugins
   ```
 
 ### Productivity

@@ -35,29 +35,6 @@
   },
   "plugins": [
     {
-      "name": "plugin-quickstart-generator",
-      "version": "1.0.0",
-      "description": "Generate production-ready Claude Code plugin structures for OpenPlugins marketplace with guided interactive setup",
-      "author": {
-        "name": "Daniel Hofheinz",
-        "email": "daniel@danielhofheinz.com",
-        "url": "https://github.com/dhofheinz/open-plugins"
-      },
-      "source": "./plugins/plugin-quickstart-generator",
-      "license": "MIT",
-      "keywords": [
-        "scaffolding",
-        "generator",
-        "plugin-development",
-        "quickstart",
-        "template",
-        "marketplace"
-      ],
-      "category": "development",
-      "homepage": "https://github.com/dhofheinz/open-plugins/tree/main/plugins/plugin-quickstart-generator",
-      "repository": "https://github.com/dhofheinz/open-plugins"
-    },
-    {
       "name": "marketplace-validator-plugin",
       "version": "1.0.0",
       "description": "Comprehensive validation for Claude Code marketplaces and plugins with quality scoring, security scanning, and automated checks",
@@ -154,27 +131,6 @@
       ],
       "category": "productivity",
       "homepage": "https://github.com/dhofheinz/open-plugins/tree/main/plugins/afk-mode",
-      "repository": "https://github.com/dhofheinz/open-plugins"
-    },
-    {
-      "name": "spec-refine",
-      "version": "1.0.0",
-      "description": "Iterative specification refinement for large features. Creates detailed What (requirements) and How (implementation) specs through automated codebase research loops followed by human-in-loop review.",
-      "author": {
-        "name": "AgentSmith"
-      },
-      "source": "./plugins/spec-refine",
-      "license": "MIT",
-      "keywords": [
-        "specification",
-        "requirements",
-        "planning",
-        "tickets",
-        "brownfield",
-        "iterative"
-      ],
-      "category": "development",
-      "homepage": "https://github.com/dhofheinz/open-plugins/tree/main/plugins/spec-refine",
       "repository": "https://github.com/dhofheinz/open-plugins"
     },
     {

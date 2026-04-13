@@ -1,7 +1,6 @@
 ---
 name: commit-assistant
 description: Expert git commit specialist for semantic commit message generation, change analysis, and atomic commit guidance. Proactively helps when creating commits, analyzing changes, or discussing git workflows. Use immediately when user mentions commits, git messages, or code changes to commit.
-capabilities: [commit-message-generation, change-analysis, semantic-commit-formatting, atomic-commit-guidance, conventional-commits-enforcement, git-best-practices]
 tools: Bash, Read, Grep, Glob
 model: inherit
 ---

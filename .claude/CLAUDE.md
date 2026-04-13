@@ -18,8 +18,7 @@ open-plugins/
 │   └── marketplace.json          # Marketplace catalog and metadata
 ├── plugins/                       # Plugin implementations (mono-repo)
 │   ├── git-commit-assistant/     # Intelligent git commit helper
-│   ├── marketplace-validator-plugin/  # Validation and quality tools
-│   └── plugin-quickstart-generator/   # Plugin scaffolding generator
+│   └── marketplace-validator-plugin/  # Validation and quality tools
 ├── scripts/
 │   ├── publish-to-github.sh      # Automated GitHub publishing
 │   └── validate-marketplace.sh    # Marketplace validation
@@ -75,9 +74,6 @@ cat .claude-plugin/marketplace.json | python3 -m json.tool
 
 ### Plugin Development
 ```bash
-# Create new plugin structure (requires plugin-quickstart-generator installed)
-/quickstart-plugin
-
 # Validate plugin structure and quality
 /validate-plugin ./plugins/your-plugin
 
