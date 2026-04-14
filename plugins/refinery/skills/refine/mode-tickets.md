@@ -55,7 +55,7 @@ If any validation fails:
 
 ### Phase 4: Write tickets artifact
 
-Write to the resolved output path with universal frontmatter plus tickets-specific fields:
+Apply the graph-mutation procedure per `${CLAUDE_SKILL_DIR}/references/operation-bookkeeping.md §3` for the **new-artifact-initialization** half (§3.1). Tickets-specific frontmatter fields layer on top of the universal fields:
 
 ```yaml
 ---
@@ -63,7 +63,7 @@ artifact: tickets
 scope: <inherited from target>
 feature: <inherited>
 parent: <target path>
-status: finalized
+status: finalized                    # tickets jump directly to finalized (no iterating/reviewed)
 last_updated: <now>
 plugin_version: <version>
 ticket_count: N
@@ -74,6 +74,8 @@ blocked_count: N
 recommended_starting_ticket: T-NN
 ---
 ```
+
+The parent-update portion of §5 runs in Phase 5 below (not here — Phase 4 writes the tickets file; Phase 5 updates the target).
 
 Body sections per `references/ticket-format.md §10` (Summary block) and `§4` (wave organization):
 
@@ -111,13 +113,16 @@ Body sections per `references/ticket-format.md §10` (Summary block) and `§4` (
 | YYYY-MM-DD | (created) | Initial decomposition from <target> | tickets |
 ```
 
-Atomic write.
+Atomic write per `${CLAUDE_SKILL_DIR}/references/operation-bookkeeping.md §1`.
 
 ### Phase 5: Update target artifact
 
-Update target's `children` list to include the tickets artifact path. Update `last_updated`. Append Changelog entry: "<date> | (graph) | Added child: <tickets-path> | <N> tickets generated | tickets".
+Apply the parent-update half of the graph-mutation procedure per `${CLAUDE_SKILL_DIR}/references/operation-bookkeeping.md §3.2–§3.4`, with these parameters:
 
-Atomic write of the target.
+- **Parent:** the target artifact (plan / spec / feature-spec that sourced this tickets run)
+- **New child path:** the tickets artifact's relative path
+- **Parent Changelog reason:** `<N> tickets generated`
+- **Operation name:** `tickets`
 
 ### Phase 6: Report
 

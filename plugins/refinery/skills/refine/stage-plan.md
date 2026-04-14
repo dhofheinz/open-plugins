@@ -9,7 +9,7 @@
 
 ## Agent
 
-`refinery:spec-writer` (model: `${user_config.spec_writer_model}` or `opus`)
+`refinery:spec-writer` (model: `${user_config.spec_writer_model}` or `sonnet`)
 
 ## Template
 

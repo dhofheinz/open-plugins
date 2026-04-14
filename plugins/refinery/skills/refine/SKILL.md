@@ -25,7 +25,7 @@ Your responsibility on every invocation:
 
 1. Parse `$ARGUMENTS` to determine intent
 2. Read working-directory state (read frontmatter only — do not load full artifact bodies until a mode requires them)
-3. Resolve to one of ten modes
+3. Resolve to one of eleven modes
 4. Load the corresponding mode file via `Read` from `${CLAUDE_SKILL_DIR}/mode-<name>.md`
 5. Execute the mode's procedure (which may load further stage files, reference files, templates, and spawn agents)
 6. Report outcome and suggest next action
@@ -53,7 +53,7 @@ Process `$ARGUMENTS` in the following order. **First match wins.**
    - "Start a new system from an idea" → prompt for idea then `advance --stage=principles`
    - "Document an existing feature" → prompt for feature name then `advance --stage=feature-spec`
    - "Cancel"
-3. **Mode keyword as first argument** (`init`, `advance`, `iterate`, `review`, `finalize`, `check`, `tickets`, `update`, `status`, `archive`) → use that mode; remaining arguments are passed through to the mode file.
+3. **Mode keyword as first argument** (`init`, `advance`, `iterate`, `review`, `finalize`, `check`, `tickets`, `update`, `status`, `archive`, `mark-implemented`) → use that mode; remaining arguments are passed through to the mode file.
 4. **`--stage=<name>` flag present** → mode = `advance`; target stage = `<name>`
 5. **First argument is an existing file path** (matches `*.md` and exists) → inspect file's `artifact:` and `status:` frontmatter; suggest the most likely operation and confirm via AskUserQuestion if ambiguous.
 6. **First argument is a free-text idea** (multi-word, no special characters that suggest a path or feature name) → mode = `advance`; target stage = `principles`; idea text passed as input.
@@ -74,12 +74,55 @@ Once mode is resolved, load its procedure file via the `Read` tool:
 | check | `${CLAUDE_SKILL_DIR}/mode-check.md` |
 | tickets | `${CLAUDE_SKILL_DIR}/mode-tickets.md` |
 | update | `${CLAUDE_SKILL_DIR}/mode-update.md` |
-| status | `${CLAUDE_SKILL_DIR}/mode-status.md` |
+| status | **inline fast-path below** (only loads `${CLAUDE_SKILL_DIR}/mode-status.md` when `--verbose` is set) |
 | archive | `${CLAUDE_SKILL_DIR}/mode-archive.md` |
+| mark-implemented | `${CLAUDE_SKILL_DIR}/mode-mark-implemented.md` |
 
 Mode files are **procedural instructions, not skills.** Use `Read` (not `Skill`) to load them. Skills are reserved for invocable capabilities like the preloaded `specification-writing` reference (loaded by the spec-writer agent).
 
 After reading the mode file, follow its procedure to completion. The mode file may load further stage files, reference files, templates, and spawn specialist agents — do so on demand.
+
+### Fast-Path: `status` (default, terse)
+
+`status` is read-only (FR-040), produces no file changes, and is the most frequently invoked mode. The orchestrator runs a compressed in-line procedure for the default case to avoid the full ~110-line `mode-status.md` load. Only load `mode-status.md` when the user passes `--verbose`.
+
+**Procedure:**
+
+1. Scan working directory per §"State Detection" above (frontmatter-only reads).
+2. If working directory does not exist → print `no working directory; run /refine init` and exit.
+3. Build the artifact graph: for each `*.md` file with an `artifact:` field, record `{path, artifact_type, scope, status, iteration, parent, children, last_updated, convergence}`. Skip pointer files (`pointer: true`) and non-Refinery files.
+4. Apply the suggested-next-action priority order in `${CLAUDE_SKILL_DIR}/references/state-detection.md §4` to pick the top 1–3 suggestions.
+5. Print a compact report (symbols: `✓` finalized/implemented, `⚠` draft/iterating/reviewed/drifted/stale, `✗` missing, `■` archived/superseded):
+
+   ```
+   REFINERY STATUS
+   ===============
+   Working directory: <path>
+   Artifacts: <N> total (<breakdown by type>)
+
+   Pipeline:
+     Stage 1: principles    [<sym> <status>]    <path>
+     ... (one line per expected stage; show `[✗ missing]` for absent stages)
+
+   Features:
+     <feature>              [<sym> <status>]    <path>
+     ... (one line per feature-spec; indent nested sub-features with `└─`)
+
+   Drift:         (section omitted if no drifted artifacts)
+     <artifact>             <last-check summary>
+
+   Open Work:     (section omitted if no open questions)
+     <artifact>             <N open questions, high_confidence_ratio: <R>>
+
+   Suggested next:
+     <1-3 suggestions from step 4>
+   ```
+
+6. Exit. **No file changes.** No agents spawned. No further stage/reference files loaded.
+
+**When to fall back to full `mode-status.md`:** if `--verbose` is set, the inline fast-path is skipped entirely; load and follow `${CLAUDE_SKILL_DIR}/mode-status.md` instead (adds per-artifact convergence metrics, time-since-update, validation warnings, nested hierarchy trees, and priority-rule tracing).
+
+If the fast-path hits a validation error it cannot express compactly (e.g., malformed frontmatter that prevents building the graph), escalate to the full mode by reading `${CLAUDE_SKILL_DIR}/mode-status.md` and continuing from its Phase 1.
 
 ## State Detection
 
@@ -106,6 +149,8 @@ These conventions apply to every operation. Mode files **reference** but do not 
 - **Document format:** Every artifact uses the universal frontmatter and trailing sections defined in `${CLAUDE_SKILL_DIR}/references/document-format.md`.
 - **Requirement syntax:** EARS for functional requirements, Given/When/Then for acceptance criteria, RFC 2119 for system specs. Per `${CLAUDE_SKILL_DIR}/references/requirement-syntax.md`.
 - **Convergence metrics:** Per `${CLAUDE_SKILL_DIR}/references/convergence.md`.
+- **Agent handoffs:** Specialist agents exchange structured YAML handoff blocks per `${CLAUDE_SKILL_DIR}/references/agent-handoffs.md`. The orchestrator forwards these blocks verbatim between agents in the iterate loop — never paraphrase, never reorder.
+- **Operation bookkeeping:** Mode files share procedural patterns for status transitions, graph mutations on child creation, child-drift propagation, and post-write validation. Canonical procedures live in `${CLAUDE_SKILL_DIR}/references/operation-bookkeeping.md`; each mode declares the parameters it supplies to those procedures.
 - **Tickets format:** Per `${CLAUDE_SKILL_DIR}/references/ticket-format.md`.
 - **Commit hints:** When suggesting a commit message in any "Suggested next" output, follow `${CLAUDE_SKILL_DIR}/references/commit-protocol.md`.
 
@@ -115,7 +160,7 @@ The plugin ships six specialist agents under the `refinery` namespace. Spawn the
 
 | Agent | Role | Default model |
 |-------|------|---------------|
-| `refinery:spec-writer` | Authors specifications grounded in codebase + memory | opus (override via `${user_config.spec_writer_model}`) |
+| `refinery:spec-writer` | Authors specifications grounded in codebase + memory | sonnet (override via `${user_config.spec_writer_model}`; `principles` and `design` stages default to opus) |
 | `refinery:spec-critic` | Skeptically analyzes specs for gaps and ambiguities | sonnet (override via `${user_config.specialist_model}`) |
 | `refinery:spec-scribe` | Edits specs with tracked changes and ID discipline | sonnet |
 | `refinery:code-archaeologist` | Researches the codebase for evidence | sonnet |
@@ -160,7 +205,7 @@ When invoked alongside a personal `/refine` skill, this plugin's command is invo
 | `${CLAUDE_SKILL_DIR}` | Absolute path to this skill's directory (`<plugin>/skills/refine/`). Use for cross-file references within this skill. |
 | `${CLAUDE_PLUGIN_ROOT}` | Absolute path to the plugin's installation root. |
 | `${user_config.working_directory}` | User-set default working directory (may be unset). |
-| `${user_config.spec_writer_model}` | User-set default model for spec-writer agent (may be unset; default `opus`). |
+| `${user_config.spec_writer_model}` | User-set default model for spec-writer agent (may be unset; default `sonnet`; `principles` and `design` stages fall back to `opus` when this is unset). |
 | `${user_config.specialist_model}` | User-set default model for specialist agents (may be unset; default `sonnet`). |
 
 All cross-references in this skill use `${CLAUDE_SKILL_DIR}/<file>` to resolve correctly regardless of the current working directory.

@@ -9,7 +9,7 @@ description: >-
   requirements grounded in the actual codebase state. Authors all stage outputs in the
   Refinery pipeline (principles, design, stack, spec, feature-spec, plan).
 tools: Read, Write, Edit, Glob, Grep, AskUserQuestion, Bash
-model: opus
+model: sonnet
 memory: user
 skills:
   - specification-writing

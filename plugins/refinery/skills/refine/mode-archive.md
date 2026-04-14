@@ -40,44 +40,31 @@ If user cancels, exit without changes.
 
 ### Phase 3: Apply transition
 
-Update target's frontmatter:
+Apply the status-transition procedure per `${CLAUDE_SKILL_DIR}/references/operation-bookkeeping.md §2`, with these parameters:
 
-- `status` → `archived` or `superseded`
-- `last_updated` → now
-- If `--as superseded`, set `superseded_by: <relative path>`
-
-Append Changelog entry to target:
-
-```
-| <date> | (status) | Status → <archived|superseded>[; superseded by <path>] | <reason from --reason> | archive |
-```
-
-Atomic write of the target.
+- **New status:** `archived` or `superseded` (per `--as`)
+- **Additional frontmatter:** if `--as superseded`, set `superseded_by: <relative path>` alongside the status/last_updated changes
+- **Changelog change:** `Status: <prev> → <archived|superseded>[; superseded by <path>]`
+- **Changelog reason:** the `--reason` arg
+- **Operation name:** `archive`
 
 ### Phase 4: Optionally flag children
 
-Read target's frontmatter `children` list.
+Apply the child-drift-propagation procedure per `${CLAUDE_SKILL_DIR}/references/operation-bookkeeping.md §4`, with these parameters:
 
-If non-empty, AskUserQuestion:
+- **Propagation trigger:** Any non-terminal → `archived`/`superseded` flags all non-terminal children (per §4.1 matrix).
+- **AskUserQuestion prompt:**
+  ```
+  Question: "Target had <N> children deriving from it. Flag them as 'drifted' (they may need re-review against the replacement artifact, if any)?"
+  Options:
+    - "Yes, flag all <N> children as drifted"
+    - "No, leave children as-is"
+    - "Per-file (let me choose)" → followed by individual yes/no per child
+  ```
+- **Change summary for child Changelog rows:** `<archived|superseded> on <date>; review against <replacement or "no replacement">`
+- **Operation name:** `archive`
 
-```
-Question: "Target had <N> children deriving from it. Flag them as 'drifted' (they may need re-review against the replacement artifact, if any)?"
-Options:
-  - "Yes, flag all <N> children as drifted"
-  - "No, leave children as-is"
-  - "Per-file (let me choose)" → followed by individual yes/no per child
-```
-
-For each child the user opts to flag:
-
-- Update child's `status` to `drifted`
-- Append Changelog entry to child:
-
-```
-| <date> | (status) | Status → drifted | Parent <target> <archived|superseded> on <date>; review against <replacement or "no replacement"> | archive (parent propagation) |
-```
-
-- Atomic write of the child
+Skip the category classification step of §4.1 — archive unconditionally flags (modulo user choice); there is no Additive/Corrective escape hatch for terminal-state transitions.
 
 ### Phase 5: Update replacement (if --as superseded)
 

@@ -56,8 +56,17 @@ The loop stops after **at least 2 iterations** (minimum-iterations floor) if any
 | Stability | `questions_stable_count >= 2` | Question count unchanged for 2 consecutive iterations; research exhausted |
 | Low question count | `open_questions_count <= 3` | Few enough questions for direct human review |
 | High confidence | `high_confidence_ratio > 0.80` | 80%+ of tracked claims well-supported; remaining likely needs human judgment |
+| No new findings | critic reported empty RESEARCHABLE / HUMAN_NEEDED / DERIVABLE / OUT_OF_SCOPE tables this iteration | The spec-critic itself signals convergence: nothing to add beyond what's already tracked. Captures the case where HUMAN_NEEDED items carried over from prior iterations keep the numeric conditions from firing |
 
 The loop **always stops** at iteration `max_iterations` (default 5) regardless of whether any condition has been met (max-iterations cap).
+
+### 3.1 Why four conditions, not three
+
+The first three conditions are numeric (computed from artifact body metadata after scribe integration). They can all fail simultaneously when a prior iteration has queued HUMAN_NEEDED items for finalize: those items keep `open_questions_count` above `low_count`, keep the ratio denominator non-zero (so `high_confidence_ratio` stays below `0.80`), and if the count happens to fluctuate by ±1 across iterations, `stable_count` never reaches 2.
+
+In that steady state, the spec-critic repeatedly reports "nothing new" but the loop keeps running. The `no_new_findings` condition terminates it directly, using the critic's own signal. Under `--converge-on=any` this means the loop stops as soon as the critic is done — as intended.
+
+The `no_new_findings` signal is orthogonal to `questions_stable_count`: the former counts *critic* output, the latter counts *artifact* state. Both are useful; neither subsumes the other.
 
 ## 4. Configurable Thresholds
 
@@ -66,10 +75,11 @@ Via flags on `/refine iterate <path>`:
 | Flag | Default | Effect |
 |------|---------|--------|
 | `--max-iterations=N` | 5 | Override the iteration cap. Must be ≥ 2. |
-| `--converge-on=any` (default) | n/a | Stop on any of the three conditions. |
+| `--converge-on=any` (default) | n/a | Stop on any of the four conditions. |
 | `--converge-on=stable_count` | n/a | Stop only on stability (`questions_stable_count >= 2`). |
 | `--converge-on=low_count` | n/a | Stop only on low question count (`open_questions_count <= 3`). |
 | `--converge-on=high_confidence` | n/a | Stop only on high confidence ratio (`high_confidence_ratio > 0.80`). |
+| `--converge-on=no_new_findings` | n/a | Stop only when the spec-critic reports no new items (all four Mode A tables empty). |
 
 ## 5. Iteration Loop Procedure (recap)
 
@@ -80,6 +90,7 @@ WHILE iteration < max_iterations:
   iteration += 1
   
   # Phase 2a: spec-critic identifies ambiguities (RESEARCHABLE / HUMAN_NEEDED / DERIVABLE / OUT_OF_SCOPE)
+  #            + compute no_new_findings = all_four_tables_empty
   # Phase 2b: code-archaeologist researches RESEARCHABLE items (skip if no codebase)
   # Phase 2c: spec-scribe integrates findings, updates Open Questions, recalculates convergence
   
@@ -87,7 +98,7 @@ WHILE iteration < max_iterations:
   Recompute convergence metrics from artifact body.
   
   IF iteration < 2: continue  # Minimum-iterations floor
-  IF stop conditions met (per --converge-on): stop
+  IF stop conditions met (per --converge-on, including no_new_findings): stop
 ```
 
 After the loop terminates, transition status `iterating` → `reviewed`.
@@ -105,7 +116,7 @@ Every iteration appends one entry to the artifact's Iteration Log section. Forma
 - **New questions:** <N discovered (with brief description)>
 - **Still open:** <N questions remain>
 - **Convergence:** stable_count=N, open=N, ratio=N.NN
-- **Stop reason** (last iteration only): max_iterations | stable_count | low_count | high_confidence
+- **Stop reason** (last iteration only): max_iterations | stable_count | low_count | high_confidence | no_new_findings
 ```
 
 Iteration numbers are **monotonic**. Iteration 0 is reserved for "initial draft" (created by `mode-advance`). Iteration 1+ is for refinement operations. The artifact's `iteration` frontmatter field reflects the highest iteration number in the log.
@@ -140,10 +151,10 @@ In `--verbose` mode, after each iteration print:
 
 ```
 [Refinery] Iteration N: stable_count=A, open=B (was C), high_ratio=D.DD (was E.EE)
-[Refinery]   Critic flagged: X RESEARCHABLE, Y HUMAN_NEEDED, Z DERIVABLE
+[Refinery]   Critic flagged: X RESEARCHABLE, Y HUMAN_NEEDED, Z DERIVABLE  (no_new_findings=<true|false>)
 [Refinery]   Archaeologist resolved: P findings (Q High, R Medium, S Low)
 [Refinery]   Scribe applied: T edits (U new High, V new Medium, W moved to Open Questions)
-[Refinery]   Stop conditions: stability=<met|not>, low_count=<met|not>, high_ratio=<met|not>
+[Refinery]   Stop conditions: stability=<met|not>, low_count=<met|not>, high_ratio=<met|not>, no_new_findings=<met|not>
 ```
 
 In default (terse) mode, only print the per-iteration summary and the final stop reason.

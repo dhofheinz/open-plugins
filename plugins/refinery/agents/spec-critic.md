@@ -78,29 +78,58 @@ Items likely answerable by reading codebase.
 
 | ID | Question | Suggested search strategy |
 |----|----------|--------------------------|
-| Q1 | <specific question> | Glob: <pattern>; Grep: "<pattern>"; Read: <files> |
+| Q-1 | <specific question> | Glob: <pattern>; Grep: "<pattern>"; Read: <files> |
 
 ## HUMAN_NEEDED
 Items requiring human decision or clarification.
 
 | ID | Question | Why human-needed |
 |----|----------|-----------------|
-| Q2 | <specific question> | Requires business decision about X |
+| Q-2 | <specific question> | Requires business decision about X |
 
 ## DERIVABLE
 Items inferable from other spec content or upstream artifacts.
 
 | ID | Question | Source for derivation |
 |----|----------|----------------------|
-| Q3 | <specific question> | Implied by FR-NNN + design §X |
+| Q-3 | <specific question> | Implied by FR-NNN + design §X |
 
 ## OUT_OF_SCOPE
 Items that should be explicitly marked as not included.
 
 | ID | Item | Suggested scope decision |
 |----|------|-------------------------|
-| Q4 | <item> | Add to Out of Scope section with reason |
+| Q-4 | <item> | Add to Out of Scope section with reason |
 ```
+
+**Deduplication:** if an item is already tracked as OPEN in the artifact's Open Questions table (same question, same category), **omit it** from the new tables — do not re-list pre-existing items. Flag only new ambiguities or items whose classification should change. If you have nothing new to report, emit all four tables empty; that is a valid and informative signal (it triggers the `no_new_findings` stop condition in `mode-iterate`).
+
+#### Mode A handoff block
+
+After the four tables, **always** append the YAML handoff block defined in `references/agent-handoffs.md §3`:
+
+````markdown
+```yaml
+handoff:
+  schema_version: 1
+  agent: spec-critic
+  mode: A
+  no_new_findings: <true|false>
+  items:
+    - id: Q-1
+      category: RESEARCHABLE
+      question: "<verbatim>"
+      target_section: "<e.g. FR-005, §3.2, Open Questions>"
+      search_strategy: "Glob: ...; Grep: ..."
+      already_tracked_as: "OQ-NNN or null"
+      reasoning: "<short, optional>"
+    # ... one entry per row across all four tables
+```
+````
+
+IDs in the YAML must match the IDs in the markdown tables exactly (`Q-1`, `Q-2`, …). `no_new_findings` is `true` iff `items` is empty. See `references/agent-handoffs.md §3` for field invariants (e.g., RESEARCHABLE items require non-null `search_strategy`; HUMAN_NEEDED items require `why_human`).
+
+The orchestrator forwards this block verbatim to the code-archaeologist and spec-scribe. Do not paraphrase for any downstream agent — the block IS the contract.
 
 ### Mode B: Review Report (for mode-review)
 

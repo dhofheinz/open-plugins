@@ -6,7 +6,7 @@ The complete user-facing guide to Refinery. For first-run, see [GETTING_STARTED.
 
 1. [Mental model](#1-mental-model)
 2. [The pipeline](#2-the-pipeline)
-3. [The ten modes](#3-the-ten-modes)
+3. [The eleven modes](#3-the-eleven-modes) (incl. `mark-implemented`)
 4. [The document format](#4-the-document-format)
 5. [The artifact graph](#5-the-artifact-graph)
 6. [Confidence + Evidence discipline](#6-confidence--evidence-discipline)
@@ -14,7 +14,7 @@ The complete user-facing guide to Refinery. For first-run, see [GETTING_STARTED.
 8. [The ticket format](#8-the-ticket-format)
 9. [Drift detection](#9-drift-detection)
 10. [Configuration via userConfig](#10-configuration-via-userconfig)
-11. [Coexistence with legacy specs](#11-coexistence-with-legacy-specs)
+11. [Coexistence with legacy specs](#11-coexistence-with-legacy-specs) (incl. pointer files for glossary/conventions)
 12. [The agent system](#12-the-agent-system)
 13. [Recovery procedures](#13-recovery-procedures)
 14. [Troubleshooting](#14-troubleshooting)
@@ -33,7 +33,7 @@ Three more axioms:
 
 2. **Operations are state transitions on a typed state machine.** Every artifact has an explicit `status` (`draft → iterating → reviewed → finalized → implemented → drifted | superseded | archived`). Operations respect transitions; the plugin refuses invalid ones.
 
-3. **One entry point, many workflows.** `/refine` is the only user-invocable command. It dispatches to one of ten modes based on input shape. No menu of competing commands.
+3. **One entry point, many workflows.** `/refine` is the only user-invocable command. It dispatches to one of eleven modes based on input shape. No menu of competing commands.
 
 ---
 
@@ -94,7 +94,7 @@ You can skip stages, but the plugin warns. Common patterns:
 
 ---
 
-## 3. The ten modes
+## 3. The eleven modes
 
 ### 3.1 `init` — bootstrap project conventions
 
@@ -106,7 +106,9 @@ What it does: discovers existing spec directories (`docs/specs/`, `specs/`, etc.
 
 If existing artifacts exist, prompts for coexist (default), merge, or use as primary.
 
-Output: working directory + 9 templates + 2 convention files.
+**Glossary/conventions coexistence:** when you choose coexist and a canonical `_glossary.md` or `_conventions.md` already exists in a peer directory (typically `docs/specs/`), `init` writes a **pointer file** in the new working directory instead of duplicating the template. The pointer frontmatter (`pointer: true`, `canonical: ...`) directs Refinery agents to read the canonical — keeping one source of truth and avoiding drift between parallel copies. See §11.5 for details.
+
+Output: working directory + 9 templates + 2 convention files (or pointer files, when coexisting with canonical).
 
 ### 3.2 `advance` — progress the pipeline
 
@@ -254,6 +256,34 @@ What it does: validates current status permits transition, prompts for confirmat
 For `--as superseded`, also adds a backlink in the replacement's `references` list.
 
 `--dry-run` previews without writing.
+
+### 3.11 `mark-implemented` — close the implementation loop
+
+```bash
+# After you ship the feature, mark the artifact as implemented:
+/refine mark-implemented docs/refinery/features/auth-spec.md --commit=15d751f0
+
+# Optionally flip the tickets artifact's per-ticket status to complete:
+/refine mark-implemented docs/refinery/features/auth-plan.md \
+  --commit=15d751f0 \
+  --tickets=docs/refinery/features/auth-tickets.md
+
+# Preview without writing:
+/refine mark-implemented docs/refinery/features/auth-spec.md --commit=15d751f0 --dry-run
+```
+
+What it does: lightweight bookkeeping — transitions `finalized → implemented`, records the shipping commit hash in the Changelog for long-term provenance, optionally flips a tickets artifact's per-ticket bodies from `pending` / `in_progress` to `complete`. Does **not** run a drift check.
+
+This is the **trusted path** for the `finalized → implemented` transition: the author asserts implementation matches the spec and records the shipping commit as provenance. For the **verified path** (archaeologist runs a drift check first and transitions only on a clean report), use `/refine check`.
+
+Refuses by default if:
+
+- Target isn't `finalized` (must go through the state machine — `draft`/`iterating`/`reviewed` → `finalize` first).
+- Target is already `implemented` (use `--force` to re-record a new commit hash).
+- Target is `drifted` (use `/refine update` to realign first, or `--force` to bypass).
+- Target is `principles` or `design` (not directly executable — mark a downstream artifact instead).
+
+See `/refine check` for the drift-verified variant.
 
 ---
 
@@ -451,13 +481,14 @@ This is the **maturity signal**. A spec with ratio 0.45 is unrefined; a spec wit
 
 ## 7. The convergence model
 
-The iteration loop terminates at a point where additional automated research yields diminishing returns relative to human review. Three metrics drive the decision:
+The iteration loop terminates at a point where additional automated research yields diminishing returns relative to human review. Three numeric metrics — plus one signal from the spec-critic itself — drive the decision:
 
 | Metric | Definition | Indicates |
 |--------|------------|-----------|
 | `questions_stable_count` | Consecutive iterations with unchanged open question count | Research has plateaued |
 | `open_questions_count` | OPEN entries in Open Questions table | Residual uncertainty |
 | `high_confidence_ratio` | High / (High + Medium + Open) | Spec maturity |
+| `no_new_findings` | All four critic Mode A tables (RESEARCHABLE / HUMAN_NEEDED / DERIVABLE / OUT_OF_SCOPE) empty this iteration | Critic itself signals convergence (captures the case where persistent HUMAN_NEEDED items prevent the numeric conditions from firing) |
 
 ### 7.1 Stop conditions
 
@@ -468,6 +499,7 @@ After ≥2 iterations (minimum-iterations floor), stop if **any** of:
 | Stability | `questions_stable_count >= 2` |
 | Low question count | `open_questions_count <= 3` |
 | High confidence | `high_confidence_ratio > 0.80` |
+| No new findings | critic reports zero new items this iteration |
 
 Always stops at iteration 5 (max-iterations cap).
 
@@ -654,7 +686,7 @@ Three keys, all `sensitive: false`:
 | Key | Default | Purpose |
 |-----|---------|---------|
 | `working_directory` | `docs/refinery/` | Default output directory |
-| `spec_writer_model` | `opus` | Model for spec-writer agent |
+| `spec_writer_model` | `sonnet` | Model for spec-writer agent (principles/design stages fall back to `opus` when unset) |
 | `specialist_model` | `sonnet` | Model for the 5 specialist agents |
 
 ### 10.1 Resolution precedence
@@ -668,7 +700,7 @@ Highest to lowest:
 ### 10.2 When to set what
 
 - **`working_directory`**: set once if your team uses a non-default location (e.g., `specs/refinery/` or `architecture/refinery/`)
-- **`spec_writer_model`**: set to `sonnet` or `haiku` if you don't need opus-level reasoning and want faster/cheaper synthesis
+- **`spec_writer_model`**: defaults to `sonnet` (good for structured template-filling at the spec/feature-spec/plan/stack stages). Set to `opus` if you want opus across all stages (by default only `principles` and `design` use opus, because they synthesize structure from a seed idea). Set to `haiku` for cheapest/fastest synthesis.
 - **`specialist_model`**: rarely changed; sonnet is the right balance for the specialist roles
 
 ---
@@ -716,6 +748,36 @@ If you want to use `docs/specs/` as Refinery's working directory:
 
 v1.0.0 does **not** include `mode-migrate` (deferred to v1.1 per OQ-002). Coexistence handles the transition: keep old artifacts in `docs/specs/`, write new ones in `docs/refinery/`. Manual port the format (add universal frontmatter, rename sections to match the universal Open Questions / Iteration Log / Changelog) is the v1 path.
 
+### 11.5 Pointer files for `_glossary.md` / `_conventions.md`
+
+When `/refine init` runs with coexist selected and finds an existing canonical `_glossary.md` or `_conventions.md` in a peer directory (e.g. `docs/specs/_glossary.md`), it writes a **pointer file** in the new working directory rather than duplicating the template. This prevents the glossary/conventions from fragmenting across directories.
+
+Pointer file shape:
+
+```markdown
+---
+pointer: true
+kind: glossary        # or: conventions
+canonical: ../specs/_glossary.md
+generated_by: refinery init
+---
+
+# Glossary (pointer)
+
+**This file is a pointer.** The canonical glossary lives at [`../specs/_glossary.md`](../specs/_glossary.md).
+
+Refinery agents MUST read the canonical file when reasoning about domain terminology. Do not add entries here — edit the canonical file directly.
+```
+
+**Behavior:**
+
+- `spec-writer`, `spec-critic`, and `code-archaeologist` resolve the canonical automatically when they read a pointer file.
+- Pointer files are **not** Refinery artifacts (they have no `artifact:` field); `mode-status` skips them.
+- Pointers are **not** followed recursively: if the canonical resolves to another pointer, `init` refuses with a cycle error rather than chaining.
+- To migrate away from the pointer pattern, copy the canonical file's contents over the pointer (replacing the pointer header).
+
+When you prefer duplicating over pointing — for example, the target project will diverge from the legacy glossary — override by editing the generated pointer file manually and inlining the canonical's content.
+
 ---
 
 ## 12. The agent system
@@ -724,12 +786,23 @@ Six specialist agents handle the heavy lifting. Each is namespaced as `refinery:
 
 | Agent | Role | Default model | Tools |
 |-------|------|---------------|-------|
-| `spec-writer` | Authoring (all stages) | opus | Read, Write, Edit, Glob, Grep, AskUserQuestion, Bash |
+| `spec-writer` | Authoring (all stages) | sonnet (principles/design: opus) | Read, Write, Edit, Glob, Grep, AskUserQuestion, Bash |
 | `spec-critic` | Skeptical analysis | sonnet | Read |
 | `spec-scribe` | Tracked editing | sonnet | Read, Edit, Write |
 | `code-archaeologist` | Codebase research | sonnet | Glob, Grep, Read |
 | `requirements-interviewer` | Feature intake | sonnet | Read, Glob, Grep, AskUserQuestion |
 | `ticket-architect` | Decomposition | sonnet | Read, Write |
+
+### 12.0 Structured handoffs
+
+In the iterate loop (`mode-iterate.md`), the critic, archaeologist, and scribe exchange information via **YAML handoff blocks** with stable item IDs (`Q-N` for critic ambiguities, `F-N` for archaeologist findings, `C-N` for scribe changes). The orchestrator forwards these blocks verbatim between agents — it never paraphrases, reorders, or summarizes.
+
+Two invariants make this loop safe:
+
+1. **Coverage (archaeologist → scribe).** Every `Q-N` with `category: RESEARCHABLE` from the critic must appear exactly once across the archaeologist's `findings[].answers` or `unresolved[].id`. No silent drops.
+2. **Consumption (scribe → orchestrator).** Every `Q-N` and `F-N` must appear exactly once across the scribe's `changes[].consumed_from` or `refusals[].consumed_from`. Refusals are themselves surfaced as new Open Questions, never discarded.
+
+The orchestrator validates both invariants; violations surface to the user rather than being silently patched. See `skills/refine/references/agent-handoffs.md` for full schemas.
 
 ### 12.1 Memory in spec-writer
 

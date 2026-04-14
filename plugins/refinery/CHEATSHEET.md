@@ -1,6 +1,6 @@
 # Refinery Cheat Sheet
 
-One command. Ten modes. Six agents. Print and pin.
+One command. Eleven modes. Six agents. Print and pin.
 
 ## Commands at a glance
 
@@ -19,6 +19,7 @@ One command. Ten modes. Six agents. Print and pin.
 | update | `/refine update <path> "<change>"` | Traceable modification with Changelog entry |
 | status | `/refine status` | Pipeline state report (no file changes) |
 | archive | `/refine archive <path> --reason "..."` | `archived` or `superseded` (with `--as superseded --replaced-by <path>`) |
+| mark-implemented | `/refine mark-implemented <path> --commit=<hash>` | `finalized → implemented`; optionally `--tickets=<path>` to flip tickets to `complete` |
 
 ## Common flags
 
@@ -28,13 +29,15 @@ One command. Ten modes. Six agents. Print and pin.
 | `--stage=<name>` | advance | Force a specific stage: `principles`, `design`, `stack`, `spec`, `feature-spec`, `plan` |
 | `--scope=<name>` | advance | `system`, `subsystem`, `feature`, `component` |
 | `--max-iterations=<N>` | iterate | Override default 5 (must be ≥ 2) |
-| `--converge-on=<criterion>` | iterate | `any` (default), `stable_count`, `low_count`, `high_confidence` |
+| `--converge-on=<criterion>` | iterate | `any` (default), `stable_count`, `low_count`, `high_confidence`, `no_new_findings` |
 | `--as <archived\|superseded>` | archive | Default `archived` |
 | `--replaced-by <path>` | archive | Required when `--as superseded` |
 | `--reason "<text>"` | archive | Required for Changelog entry |
+| `--commit=<hash>` | mark-implemented | Shipping commit for provenance (strongly recommended) |
+| `--tickets=<path>` | mark-implemented | Also flip a tickets artifact's per-ticket bodies to `complete` |
+| `--dry-run` | archive, mark-implemented | Preview changes without writing |
 | `--force` | various | Override safety checks (use sparingly) |
 | `--verbose` | all | Detailed routing decisions and agent diagnostics |
-| `--dry-run` | various | Preview without writing files |
 
 ## Artifact types (7)
 
@@ -163,6 +166,7 @@ After ≥2 iterations, stop if **any** of:
 | Stability | `questions_stable_count >= 2` | Question count unchanged for 2 iterations |
 | Low count | `open_questions_count <= 3` | Few enough for direct human review |
 | High confidence | `high_confidence_ratio > 0.80` | Most claims well-supported |
+| No new findings | critic returns all four Mode A tables empty | Spec-critic itself signals convergence (independent of `open_questions_count`) |
 
 Always stops at iteration 5 (default `--max-iterations`).
 
@@ -217,7 +221,7 @@ status: pending | in_progress | complete | blocked
 
 | Agent | Role | Default model | Tools |
 |-------|------|---------------|-------|
-| `refinery:spec-writer` | Authoring (all stages) | opus | Read, Write, Edit, Glob, Grep, AskUserQuestion, Bash (stack only) |
+| `refinery:spec-writer` | Authoring (all stages) | sonnet (principles/design: opus) | Read, Write, Edit, Glob, Grep, AskUserQuestion, Bash (stack only) |
 | `refinery:spec-critic` | Skeptical analysis | sonnet | Read |
 | `refinery:spec-scribe` | Tracked editing | sonnet | Read, Edit, Write |
 | `refinery:code-archaeologist` | Codebase research | sonnet | Glob, Grep, Read |
@@ -240,7 +244,7 @@ status: pending | in_progress | complete | blocked
 | Key | Default | Purpose |
 |-----|---------|---------|
 | `working_directory` | `docs/refinery/` | Default output directory |
-| `spec_writer_model` | `opus` | Model for spec-writer agent |
+| `spec_writer_model` | `sonnet` | Model for spec-writer agent (principles/design fall back to `opus` when unset) |
 | `specialist_model` | `sonnet` | Model for the 5 specialist agents |
 
 Set via `/plugin config refinery`. Per-invocation flags override.
@@ -279,13 +283,15 @@ Refinery-Iteration: <N>
 - Plugin namespace: `/refinery:refine` (when invoked alongside a personal `/refine` skill)
 - Working dir: `docs/refinery/` (distinct from `docs/specs/`)
 - Legacy artifacts: untouched; `init` offers coexistence/merge/primary
+- Glossary/conventions coexistence: when canonical `_glossary.md` or `_conventions.md` exists in a peer dir, `init` writes a **pointer file** (`pointer: true`, `canonical: <path>`) rather than duplicating; agents resolve the canonical automatically
 
 ## Performance budgets
 
 | Budget | Limit | Source |
 |--------|-------|--------|
-| Always-loaded orchestrator | ≤ 400 lines | NFR-P-001 (actual: 170) |
-| `/refine status` total context | ≤ 600 lines | NFR-P-002 |
+| Always-loaded orchestrator | ≤ 400 lines | NFR-P-001 (actual: ~200 incl. status fast-path) |
+| `/refine status` total context (terse, default) | orchestrator only + per-artifact frontmatter (~30 lines each); fast-path is inline in SKILL.md | NFR-P-002 |
+| `/refine status` total context (`--verbose`) | ≤ 600 lines (loads `mode-status.md`) | NFR-P-002 |
 | Max iterations per `iterate` | 5 (configurable) | FR-013 |
 | AskUserQuestion batch max | 4 questions | NFR-U-003 |
 | Ticket file count default | ≤ 3 per ticket | FR-034 (exceptions documented) |

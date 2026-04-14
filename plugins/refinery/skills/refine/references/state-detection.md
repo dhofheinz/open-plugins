@@ -37,7 +37,7 @@ FOR each *.md file in working_dir (recursively):
       }
     Add to artifact_graph
   ELSE:
-    Skip (not a Refinery artifact; could be _conventions.md, _glossary.md, README.md, or unrelated)
+    Skip (not a Refinery artifact; could be _conventions.md, _glossary.md, a pointer file [frontmatter `pointer: true`], README.md, or unrelated)
 
 FOR each artifact in artifact_graph:
   Validate frontmatter required fields per `references/document-format.md §1`
@@ -101,8 +101,9 @@ Based on `needs_attention` flags, suggest the highest-priority next action. Prio
 4. Any artifact with `incomplete_stage` (status `draft` or `iterating`) → `/refine iterate <path>` (if convergence not yet reached) or `/refine review <path>` (if iterations exhausted) or `/refine finalize <path>` (if reviewed and questions remain).
 5. Any `missing_stage` in the expected pipeline → `/refine --stage=<name>` to advance.
 6. If everything finalized but no tickets exist for a finalized plan/spec → `/refine tickets <path>`.
-7. If everything implemented and no recent check → `/refine check <path>` to verify implementation matches.
-8. Otherwise → no action suggested; pipeline is healthy.
+7. If everything finalized, tickets are complete, but the artifact isn't yet `implemented` → `/refine mark-implemented <path> --commit=<hash>` (lightweight) or `/refine check <path>` (drift-verified).
+8. If everything implemented and no recent check → `/refine check <path>` to verify implementation matches.
+9. Otherwise → no action suggested; pipeline is healthy.
 
 ## 5. Validation Rules (formalized)
 

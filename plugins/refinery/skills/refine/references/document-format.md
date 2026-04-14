@@ -93,6 +93,37 @@ The iteration log is **append-only**. Each entry records a discrete operation an
 
 Every modification gets a Changelog entry: date | affected section | change description | reason | source operation.
 
+#### 2.3.1 Field conventions
+
+| Field | Convention | Examples |
+|-------|------------|----------|
+| date | ISO 8601 local date | `2026-04-13` |
+| section | Section bucket OR specific tracked ID | `(status)`, `(graph)`, `FR-007`, `Open Questions` |
+| change | One-line summary of what changed | `Status: finalized → implemented`, `Added FR-008: session token refresh at 80% TTL`, `Added child: docs/refinery/auth-tickets.md` |
+| reason | Why the change was made | `Shipped in 15d751f0`, `Drift check confirmed full implementation` |
+| operation | Mode name (kebab-case), with iteration suffix for iterate | `mark-implemented`, `check`, `archive`, `iterate (i3)`, `advance` |
+
+#### 2.3.2 Section bucket vocabulary
+
+Non-ID values in the section column use parenthesized buckets so filtering by bucket is mechanical:
+
+| Bucket | Meaning |
+|--------|---------|
+| `(status)` | Pure status transition (no body changes) |
+| `(graph)` | Parent/children/supersession relationship change |
+| `(propagation)` | Child record of a parent's action, or parent record of a child's state change |
+| `(ticket-status)` | Per-ticket body status change (within a tickets artifact) |
+| `(verification)` | No-op re-check that confirmed prior state (emits a row but changes nothing) |
+| `(created)` | Initial artifact creation row (iteration 0 only) |
+
+Otherwise the section is a specific tracked ID (`FR-NNN`, `NFR-NNN`, `OQ-NNN`, `INV-NNN`, `RD-NNN`, etc.) or a named section header (`Open Questions`, `Iteration Log`, `Overview`).
+
+#### 2.3.3 Atomicity
+
+Multi-part changes get **one row per discrete change**, not a single summary row. A `mode-update` call that adds FR-008 AND deletes FR-003 produces two rows. An iterate loop that resolves three open questions in one pass produces three rows, plus a status-transition row if the loop completes.
+
+The Iteration Log (§2.2) aggregates per-iteration; the Changelog atomizes per-edit. Both coexist — they answer different questions ("when did this change?" vs "how did this artifact evolve?").
+
 ## 3. Per-Artifact Body Sections
 
 The body sections between frontmatter and the universal trailing sections vary by artifact type. Templates in `${CLAUDE_SKILL_DIR}/templates/<artifact>.md` provide the full structural skeleton for each.

@@ -128,16 +128,13 @@ If any check fails:
 
 ### Phase 8: Transition status
 
-Transition status `<previous>` → `finalized` (per §10.2).
+Apply the status-transition procedure per `${CLAUDE_SKILL_DIR}/references/operation-bookkeeping.md §2`, with these parameters:
 
-Update:
-
-- `last_updated: <now>`
-- `iteration: iteration` (do **not** increment for finalize)
-- `convergence` recomputed
-- Append a Changelog entry: "<date> | (status) | Status → finalized | <count> items resolved (<R> via research, <D> via decision, <E> editorial, <X> deferred) | finalize"
-
-Atomic write.
+- **New status:** `finalized` (per `references/document-format.md §7` transition matrix)
+- **Additional frontmatter:** `iteration` **stays unchanged** (finalize does NOT increment iteration); `convergence` block recomputed per `references/convergence.md §2`
+- **Changelog change:** `Status → finalized`
+- **Changelog reason:** `<count> items resolved (<R> via research, <D> via decision, <E> editorial, <X> deferred)`
+- **Operation name:** `finalize`
 
 ### Phase 9: Report
 

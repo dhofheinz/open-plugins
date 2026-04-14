@@ -1,6 +1,8 @@
-# Mode: status
+# Mode: status (verbose)
 
 **Purpose:** Read-only report of the current pipeline state with a suggested next action. Produces no file changes (per FR-040).
+
+**Loading:** This file is loaded only when `--verbose` is passed. The default (terse) case is handled by the inline fast-path in `SKILL.md` §"Fast-Path: `status`" and does not load this file. The fast-path escalates here automatically if it hits a validation error it cannot express compactly.
 
 ## Inputs
 
@@ -123,4 +125,9 @@ In `--verbose`, additionally print:
 
 ## Performance
 
-Per NFR-P-002, `/refine status` invocation must stay under 600 lines of total context. The orchestrator is ~170 lines; this mode file is ~110 lines; per-artifact frontmatter reads are ~30 lines each. Comfortable for projects with up to ~10 artifacts; larger projects may approach the limit but remain functional.
+Per NFR-P-002, `/refine status` invocation must stay under 600 lines of total context.
+
+- **Default (terse) invocation:** orchestrator (~170 lines) + inline fast-path (~20 lines) + per-artifact frontmatter reads (~30 lines each). Comfortable for ~15+ artifacts.
+- **Verbose invocation:** orchestrator (~170 lines) + this mode file (~110 lines) + per-artifact frontmatter reads. Comfortable for ~10 artifacts; larger projects may approach the limit but remain functional.
+
+The fast-path is the hot path for interactive use; `--verbose` is reserved for debugging, validation audits, and nested-feature hierarchy inspection.

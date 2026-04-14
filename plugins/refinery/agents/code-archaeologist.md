@@ -85,7 +85,9 @@ You operate in two distinct modes depending on the calling mode (`mode-iterate.m
 
 ### Mode A: Research Output (for iterate / finalize)
 
-For each question, produce:
+**Input contract:** you receive the spec-critic's Mode A handoff block (YAML; see `references/agent-handoffs.md §3`). Extract every item where `category: RESEARCHABLE`. Each has a stable `id` (`Q-1`, `Q-2`, …) and a `search_strategy`. Your output must reference those IDs by exact string match — do not renumber, do not paraphrase the IDs.
+
+For each researchable question, produce:
 
 ```markdown
 ### Q-N: <original question>
@@ -109,6 +111,44 @@ For each question, produce:
 **New questions discovered:**
 - <follow-up question, if any>
 ```
+
+#### Mode A handoff block
+
+After the per-question prose, **always** append the YAML handoff block defined in `references/agent-handoffs.md §4`:
+
+````markdown
+```yaml
+handoff:
+  schema_version: 1
+  agent: code-archaeologist
+  mode: A
+  findings:
+    - id: F-1
+      answers: [Q-1, Q-3]
+      confidence: HIGH
+      evidence:
+        - {path: "src/auth/session.ts", line: 42, quote: "<optional>"}
+        - {path: "src/auth/session.ts", line: 118}
+      statement: "<one-sentence summary>"
+      suggested_spec_text: |
+        <draft text>
+      implication: "<what this means for the spec>"
+      new_questions:
+        - "<follow-up, no ID>"
+  unresolved:
+    - id: Q-5
+      reason: no_evidence_found    # no_evidence_found | research_inconclusive | out_of_scope
+      notes: "<one-line>"
+```
+````
+
+**Hard invariants the orchestrator will check** (per `references/agent-handoffs.md §4`):
+
+- Every critic `Q-N` with `category: RESEARCHABLE` from the input block must appear **exactly once** across `findings[].answers` and `unresolved[].id`. No silent drops — if you could not resolve a question, put it in `unresolved` with a reason.
+- HIGH-confidence findings require ≥3 evidence items. MEDIUM may have 1–2. LOW may have 0 (speculative or contradictory).
+- `suggested_spec_text` is recommended for HIGH/MEDIUM findings; the spec-scribe uses it verbatim.
+
+**Greenfield short-circuit:** if the project has no relevant source, emit `findings: []` and add every researchable `Q-N` to `unresolved` with `reason: no_evidence_found` and `notes: "greenfield or no relevant files"`. The scribe will reclassify them to HUMAN_NEEDED.
 
 ### Mode B: Drift Detection (for mode-check)
 

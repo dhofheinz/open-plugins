@@ -13,7 +13,7 @@
 Two-phase agent flow:
 
 1. **Intake:** `refinery:requirements-interviewer` (model: `${user_config.specialist_model}` or `sonnet`)
-2. **Synthesis:** `refinery:spec-writer` (model: `${user_config.spec_writer_model}` or `opus`)
+2. **Synthesis:** `refinery:spec-writer` (model: `${user_config.spec_writer_model}` or `sonnet`)
 
 ## Template
 

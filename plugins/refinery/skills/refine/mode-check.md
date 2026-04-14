@@ -171,21 +171,27 @@ For each undocumented item:
 
 ### Phase 6: Update target artifact's status
 
-If any drift was found (any PARTIAL, MISSING, DIVERGED, or undocumented behavior items):
+Each of the three cases below applies the status-transition procedure per `${CLAUDE_SKILL_DIR}/references/operation-bookkeeping.md §2` (case 3 only appends a Changelog row; no status change).
 
-- Transition target's status to `drifted` (per FR-027)
-- Append Changelog entry: "<date> | (status) | Status → drifted (<N> findings) | Drift check found <breakdown> | check"
-- Atomic write
+**Case A — drift found** (any PARTIAL, MISSING, DIVERGED, or undocumented behavior items, per FR-027):
 
-If **no drift** found and target's previous status was `finalized`:
+- New status: `drifted`
+- Changelog change: `Status → drifted (<N> findings)`
+- Changelog reason: `Drift check found <breakdown>`
+- Operation name: `check`
 
-- Optionally transition to `implemented`
-- Append Changelog entry: "<date> | (status) | Status → implemented | Drift check confirmed full implementation | check"
-- Atomic write
+**Case B — no drift + target was `finalized`:**
 
-If target's previous status was `implemented` and check is clean:
+- New status: `implemented` (optional — confirm if any user-facing ambiguity)
+- Changelog change: `Status → implemented`
+- Changelog reason: `Drift check confirmed full implementation`
+- Operation name: `check`
 
-- No status change; append Changelog entry: "<date> | (verification) | Re-checked: still implemented | check"
+> **Alternative path:** `mode-mark-implemented.md` provides a faster way to make this transition when you trust the implementation and don't need a drift check first. Use `check` when you want the archaeologist to verify; use `mark-implemented` when you just need the bookkeeping closed.
+
+**Case C — target was already `implemented` and check is clean:**
+
+No status change. Append a Changelog row per `${CLAUDE_SKILL_DIR}/references/document-format.md §2.3` with section `(verification)`, change `Re-checked: still implemented`, operation `check`. Atomic write per `operation-bookkeeping.md §1`.
 
 ### Phase 7: Report
 

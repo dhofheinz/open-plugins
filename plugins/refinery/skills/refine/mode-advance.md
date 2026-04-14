@@ -97,29 +97,22 @@ If the agent's output fails the stage-specific quality checks (per FR-011), requ
 
 ### Phase 6: Set graph relationships
 
-After the agent completes:
+Apply the graph-mutation procedure per `${CLAUDE_SKILL_DIR}/references/operation-bookkeeping.md §3`, with these parameters:
 
-- Set the new artifact's frontmatter:
-  - `parent` = path to the input artifact (or `null` for the seed `principles` case)
-  - `children: []`
-  - `iteration: 0`
-  - `status: draft`
-  - `last_updated: <now>`
-  - `convergence: { questions_stable_count: 0, open_questions_count: <count>, high_confidence_ratio: <computed> }`
-  - `plugin_version: <current refinery version>`
-- Update the parent artifact's `children` list to include the new artifact's path (per FR-010)
-- Update the parent's `last_updated` to now
-- Append a Changelog entry to the parent: "<date> | (graph) | Added child: <new-artifact-path> | New stage advanced | advance"
+- **New artifact type + scope:** inherited from the current stage (per Phase 4's stage file)
+- **Initial status:** `draft` (stage files override only where documented)
+- **Parent:** path to the input artifact, or `null` for the seed `principles` case (standalone creation — skip the parent-update substeps of §3.2/§3.3 when parent is null)
+- **Parent Changelog reason:** `New stage advanced`
+- **Operation name:** `advance`
+
+Stage-specific initial frontmatter (e.g., feature-spec's `feature:` field, tickets-like special fields) is layered on per §3.1.
 
 ### Phase 7: Validate output
 
-Run universal post-write validation:
+Run universal post-write validation per `${CLAUDE_SKILL_DIR}/references/operation-bookkeeping.md §5.1` (always-on checks) plus these advance-specific additions:
 
-- Frontmatter required fields per `references/document-format.md §1`
-- Status compatibility per §1.7
-- Bidirectional graph integrity (INV-001)
 - All tracked claims have Confidence + Evidence (or appear in Open Questions)
-- Universal sections present (Open Questions, Iteration Log with iteration 0 entry, Changelog with creation entry)
+- Universal sections present include an Iteration Log with iteration-0 entry and a Changelog with a creation entry
 
 If any validation fails, refuse the write and report. (The agent should have caught these; if it didn't, ask for revision.)
 

@@ -148,7 +148,12 @@ If the target's current status is `draft` or `iterating` AND the review found **
 - AskUserQuestion: "Review found no Critical findings. Transition target's status from `<current>` to `reviewed`?"
 - Options: "Yes (update status)" / "No (keep current status)"
 
-If user accepts, update the target's frontmatter `status` to `reviewed`, append a Changelog entry, and write atomically.
+If user accepts, apply the status-transition procedure per `${CLAUDE_SKILL_DIR}/references/operation-bookkeeping.md §2` with:
+
+- **New status:** `reviewed`
+- **Changelog change:** `Status → reviewed`
+- **Changelog reason:** `Review report <review-report-path> found no Critical issues`
+- **Operation name:** `review`
 
 This is the **only** target modification this mode performs, and it is gated on user confirmation.
 

@@ -55,39 +55,19 @@ Validate the spec-scribe's output:
 - Universal sections still present
 - Convergence metrics match recomputation
 
-Atomic write of the updated artifact.
+Atomic write of the updated artifact per `${CLAUDE_SKILL_DIR}/references/operation-bookkeeping.md §1`.
 
 ### Phase 4: Cross-artifact propagation
 
-Read target's frontmatter `children` list.
+Apply the child-drift-propagation procedure per `${CLAUDE_SKILL_DIR}/references/operation-bookkeeping.md §4`, with these parameters:
 
-For each child, classify whether the parent change likely invalidates it:
+- **Parent change type:** whichever artifact type the target is (use §4.1's parent-type matrix).
+- **Change category:** the Additive / Modificative / Subtractive / Corrective classification spec-scribe produced in Phase 2 (use §4.1's category matrix — skip children when the change is Additive or Corrective).
+- **Change summary (for child Changelog rows):** the user-supplied change description from the invocation's second argument.
+- **Operation name:** `update`
+- **Prompt variant:** Phase 1's AskUserQuestion already captured the user's choice between auto-flag, per-file confirm, and cancel. §4.2's prompt is suppressed when Phase 1 said "Yes, and auto-flag" (user already consented); it's invoked when Phase 1 said "Yes, proceed (I will handle downstream propagation)" to let the user choose per-file; and Phase 4 is skipped entirely if Phase 1 said "No, cancel" (the mode won't reach this phase).
 
-| Parent type changed | Children to flag |
-|---------------------|------------------|
-| `principles` | All `design`, `spec`, downstream artifacts (most disruptive) |
-| `design` | `stack`, `spec`, `plan` |
-| `spec` | `feature-spec` (descendants), `plan`, `tickets` |
-| `feature-spec` | `plan`, `tickets`, nested `feature-spec` children (per OQ-010) |
-| `plan` | `tickets` |
-| `stack` | (rarely affects others; mostly self-contained) |
-
-For each likely-affected child, evaluate the change category:
-
-- **Additive** (new requirement, new section): children may need extension but not invalidation; flag is `optional review` rather than `drifted`
-- **Modificative** (changed requirement statement): children referencing this requirement need re-review; flag as `drifted`
-- **Subtractive** ([DELETED]): children referencing this requirement need updating; flag as `drifted` and surface the reference
-- **Corrective** (typo/clarification): children typically unaffected unless they quote the corrected text
-
-Print: "Children that may need re-review: <list of paths and reason per child>"
-
-Per the user's choice in Phase 1:
-
-- If "Yes, and auto-flag children as drifted" → for each likely-affected child, update `status` to `drifted` and append Changelog entry: "<date> | (status) | Status → drifted | Parent <target> updated on <date>: <change description> | update (parent propagation)"
-- If "Yes, proceed (I will handle downstream propagation)" → AskUserQuestion: "Mark these children as drifted? (yes / no / per-file)" and apply per their selection
-- If user chose "No, cancel" earlier — we won't reach this phase
-
-For each child that was NOT flagged (user said no), record in target's Changelog: "Note: Child <path> not flagged despite parent change."
+Print after propagation: `"Children that may need re-review: <list of paths and reason per child>"`.
 
 ### Phase 5: Report
 

@@ -31,6 +31,13 @@ Think like a legal document editor or technical writer. Precision matters. Every
 
 ## Integration Rules (for findings integration in mode-iterate)
 
+**Input contract:** you receive two structured handoff blocks (YAML; see `references/agent-handoffs.md §3 and §4`):
+
+1. The spec-critic's Mode A block, with `items[]` keyed by `Q-N` IDs.
+2. The code-archaeologist's Mode A block, with `findings[]` keyed by `F-N` IDs and `unresolved[]` referencing the critic's `Q-N` IDs.
+
+Consume these by ID. Do not paraphrase; do not re-interpret the critic's categorization. The orchestrator has already validated that every RESEARCHABLE `Q-N` is accounted for — your job is to decide, for each critic item and each archaeologist finding, what change (if any) lands in the artifact.
+
 ### Adding High Confidence Items
 
 ```markdown
@@ -120,6 +127,57 @@ Append a new entry after each operation:
 - **Still Open:** N questions remain
 - **Convergence:** stable_count=N, open=N, ratio=N.NN
 ```
+
+## Integrate Handoff Block
+
+After all Edits/Writes complete, emit the scribe integrate handoff block (YAML; see `references/agent-handoffs.md §5`). This is a **receipt** the orchestrator consumes — it lets the orchestrator build the iteration log entry without re-reading the artifact, and verify the no-silent-drops invariant.
+
+````markdown
+```yaml
+handoff:
+  schema_version: 1
+  agent: spec-scribe
+  mode: integrate
+  iteration: <N>
+  changes:
+    - id: C-1
+      kind: add_requirement        # add_requirement | add_open_question | resolve_open_question | move_to_oq | modify | mark_deleted
+      consumed_from: [F-1, Q-3]    # upstream handoff IDs acted on
+      target_section: "FR-008"
+      new_id: FR-008
+      confidence: High
+      summary: "<one-line what-changed>"
+      evidence: [{path: "src/...", line: N}]
+    - id: C-2
+      kind: resolve_open_question
+      consumed_from: [F-2]
+      target_section: "Open Questions"
+      new_id: null
+      resolved_oq_id: OQ-004
+      confidence: High
+      summary: "<...>"
+      evidence: [{...}]
+  refusals:
+    - id: C-N
+      kind: refuse
+      consumed_from: [Q-8]
+      reason: would_violate_INV-004   # would_violate_INV-NNN | ambiguous_resolution | conflicting_evidence
+      surfaced_as: OQ-013             # refusals become OQs; never silently dropped
+      notes: "<short>"
+  convergence_after:
+    open_questions_count: <N>
+    high_confidence_ratio: <R>
+    questions_stable_count: <N>
+    high_count: <N>
+    medium_count: <N>
+```
+````
+
+**Hard invariants the orchestrator will check** (per `references/agent-handoffs.md §5`):
+
+- Every `F-N` (from the archaeologist's findings) and every `Q-N` (from the critic's items) must appear in **exactly one** of `changes[].consumed_from` or `refusals[].consumed_from`. No silent drops, no double-consumption.
+- Every refusal MUST set `surfaced_as` to a newly assigned `OQ-NNN`. The artifact's OQ table must contain that OQ after your write.
+- `convergence_after` values must match the frontmatter you wrote. The orchestrator reads these directly rather than re-counting.
 
 ## Frontmatter Updates
 

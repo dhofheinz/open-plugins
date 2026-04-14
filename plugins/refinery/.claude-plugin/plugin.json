@@ -1,6 +1,6 @@
 {
   "name": "refinery",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Unified specification refinement plugin. Single entry point for all spec operations: greenfield architecture pipelines (principles → design → stack → spec → plan), feature spec creation, iterative convergence loops, quality reviews, drift detection, finalization, and dispatch-compatible ticket decomposition. Treats specifications as typed nodes in an artifact graph with first-class confidence and evidence.",
   "author": {
     "name": "Daniel Hofheinz",
@@ -35,7 +35,7 @@
     "spec_writer_model": {
       "type": "string",
       "title": "Spec writer model",
-      "description": "Model alias used by the spec-writer agent (sonnet, opus, haiku, or full model ID). Spec authoring is the highest-stakes operation; defaults to opus. Set to sonnet for faster/cheaper synthesis if your specs are smaller in scope.",
+      "description": "Model alias used by the spec-writer agent (sonnet, opus, haiku, or full model ID). Defaults to sonnet, which handles structured template-filling (spec/feature-spec/plan/stack) well. The principles and design stages use opus by default (overridable by this setting) because they synthesize structure from a seed idea.",
       "sensitive": false
     },
     "specialist_model": {

@@ -135,7 +135,7 @@
     },
     {
       "name": "refinery",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "description": "Unified specification refinement plugin. Single entry point for all spec operations: greenfield architecture pipelines (principles, design, stack, spec, plan), feature spec creation, iterative convergence loops, quality reviews, drift detection, finalization, and dispatch-compatible ticket decomposition. Treats specifications as typed nodes in an artifact graph with first-class confidence and evidence.",
       "author": {
         "name": "Daniel Hofheinz",

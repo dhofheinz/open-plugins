@@ -83,17 +83,19 @@ refinery/
 ├── skills/
 │   ├── refine/                     # The orchestrator (the only user-invocable skill)
 │   │   ├── SKILL.md
-│   │   ├── mode-*.md               # 10 mode files (init, advance, iterate, review,
-│   │   │                           #   finalize, check, tickets, update, status, archive)
+│   │   ├── mode-*.md               # 11 mode files (init, advance, iterate, review,
+│   │   │                           #   finalize, check, tickets, update, status, archive,
+│   │   │                           #   mark-implemented)
 │   │   ├── stage-*.md              # 6 stage files (principles, design, stack, spec,
 │   │   │                           #   feature-spec, plan)
 │   │   ├── templates/              # 9 templates (one per artifact type + _conventions, _glossary)
-│   │   └── references/             # 6 references (document-format, convergence,
+│   │   └── references/             # 8 references (document-format, convergence,
 │   │                               #   requirement-syntax, state-detection,
-│   │                               #   ticket-format, commit-protocol)
+│   │                               #   ticket-format, commit-protocol,
+│   │                               #   agent-handoffs, operation-bookkeeping)
 │   └── specification-writing/      # Reference skill (preloaded by spec-writer)
 └── agents/                         # 6 specialist agents
-    ├── spec-writer.md              # Authoring (opus, memory: user, color: purple)
+    ├── spec-writer.md              # Authoring (sonnet default; principles/design → opus, memory: user, color: purple)
     ├── spec-critic.md              # Skeptical analysis (sonnet)
     ├── spec-scribe.md              # Tracked editing (sonnet)
     ├── code-archaeologist.md       # Codebase research (sonnet)
@@ -116,7 +118,7 @@ Three keys (all optional):
 | Key | Default | Purpose |
 |-----|---------|---------|
 | `working_directory` | `docs/refinery/` | Default working directory for artifacts |
-| `spec_writer_model` | `opus` | Model alias for the spec-writer agent |
+| `spec_writer_model` | `sonnet` | Model alias for the spec-writer agent (principles/design stages fall back to `opus` when unset) |
 | `specialist_model` | `sonnet` | Model alias for the five specialist agents |
 
 Per-invocation flags (`--output-dir`, etc.) override user config.
