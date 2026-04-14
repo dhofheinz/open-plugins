@@ -135,7 +135,7 @@ Suggested next:
   /refine --stage=<next-stage>           (continue pipeline; warns about draft status)
 ```
 
-Commit hint per `${CLAUDE_SKILL_DIR}/references/commit-protocol.md`:
+Commit hint per `${CLAUDE_SKILL_DIR}/references/commit-protocol.md` (see §9 on commit granularity for when to bundle):
 
 ```
 spec(<basename>): seed from <source>

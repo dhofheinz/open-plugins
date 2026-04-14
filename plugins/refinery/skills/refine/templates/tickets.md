@@ -9,7 +9,8 @@ status: finalized
 parent: {{PLAN_OR_SPEC_PATH}}
 children: []
 references: []
-plugin_version: 1.0.0
+plugin_version: 1.2.0
+format: waves                   # waves | sequence — see references/ticket-format.md §11
 ticket_count: 0
 wave_count: 0
 flash_eligible_count: 0
@@ -17,6 +18,14 @@ core_required_count: 0
 blocked_count: 0
 recommended_starting_ticket: T-01
 ---
+
+<!--
+Template shows the waves-format skeleton. For linear ticket chains
+(every non-blocked ticket has ≤1 predecessor and ≤1 successor), emit
+the sequence format per references/ticket-format.md §11 instead:
+drop the Dependency Graph section, replace per-wave headers with a
+single `## 2. Steps` section, trim the Summary table.
+-->
 
 # Tickets: {{PROJECT_NAME_OR_FEATURE}}
 

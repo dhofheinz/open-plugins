@@ -177,7 +177,7 @@ Suggested next:
   /refine iterate <target-path>             (more research before finalize, if convergence not reached)
 ```
 
-Commit hint:
+Commit hint per `${CLAUDE_SKILL_DIR}/references/commit-protocol.md` (see §9 on commit granularity for when to bundle):
 
 ```
 spec(<basename>): review report <YYYY-MM-DD>

@@ -32,6 +32,7 @@ Spawn agent `refinery:ticket-architect` via the `Agent` tool with:
   6. Recommend a starting ticket (typically a Wave 1 root, smallest size, lowest risk)
   7. Per FR-034, no ticket should span more than ~3 files unless natural cohesion requires more (e.g., implementation + test files for a single component); document the exception in `technical_notes` when it applies
   8. Per FR-032, any size: XL ticket should emit a warning to the artifact's Open Questions section suggesting decomposition
+  9. **Select the artifact format** per `references/ticket-format.md §11`: emit `format: sequence` (no Dependency Graph, single `## 2. Steps` section) when the non-blocked tickets form a linear chain; emit `format: waves` (full Dependency Graph, per-wave section headers) when any parallelism exists. The per-ticket schema is identical across formats.
 
 Receive the tickets artifact content (full markdown).
 
@@ -47,6 +48,15 @@ Per `references/ticket-format.md §9`:
 - All tickets have non-empty `files` list with valid `status` markers (NEW/MODIFY/EXISTS)
 - All tickets have non-empty `acceptance` list with independently-testable assertions
 - All tickets have `spec_ref` pointing to source artifact items
+
+**Format-consistency check** (per `references/ticket-format.md §11.1`): compute `is_linear_chain` from the ticket graph (ignoring blocked tickets). Compare to the architect's emitted `format:` frontmatter value:
+
+| Emitted | Graph shape | Verdict |
+|---------|-------------|---------|
+| `sequence` | linear chain | Valid — artifact uses the terser format correctly |
+| `sequence` | has parallelism | **Invalid** — refuse and request revision; sequence format would erase the `depends_on` fan-in/fan-out that dispatchers need |
+| `waves` | linear chain | Permitted — waves on a linear chain is verbose but not wrong; accept with an info-level note in the Phase 6 report |
+| `waves` | has parallelism | Valid — artifact uses waves correctly |
 
 If any validation fails:
 
@@ -66,45 +76,56 @@ parent: <target path>
 status: finalized                    # tickets jump directly to finalized (no iterating/reviewed)
 last_updated: <now>
 plugin_version: <version>
+format: waves                        # waves | sequence — per ticket-format.md §11
 ticket_count: N
-wave_count: N
+wave_count: N                        # 1 for sequence format (the chain is one implicit wave)
 flash_eligible_count: N
 core_required_count: N
 blocked_count: N
-recommended_starting_ticket: T-NN
+recommended_starting_ticket: T-NN    # T-01 for sequence format
 ---
 ```
 
 The parent-update portion of §5 runs in Phase 5 below (not here — Phase 4 writes the tickets file; Phase 5 updates the target).
 
-Body sections per `references/ticket-format.md §10` (Summary block) and `§4` (wave organization):
+Body sections depend on the format the architect emitted:
+
+- **Waves format:** per `references/ticket-format.md §10` (Summary block) and `§4` (wave organization):
+
+  ```markdown
+  # Tickets: <Feature/System Name>
+
+  ## 1. Summary             (table of metrics)
+  ## 2. Dependency Graph    (textual graph)
+  ## 3. Wave 1: <theme>     (all Wave 1 tickets, full format)
+  ## 4. Wave 2: <theme>     (all Wave 2 tickets)
+  ## 5. Wave N: ...
+
+  ## Appendix A: Ticket Index
+  ## Appendix B: Blocked Tickets
+  ## Open Questions
+  ## Iteration Log
+  ## Changelog
+  ```
+
+- **Sequence format:** per `references/ticket-format.md §11.3`:
+
+  ```markdown
+  # Tickets: <Feature/System Name>
+
+  ## 1. Summary             (trimmed table — `Format: sequence (linear chain)` row)
+  ## 2. Steps               (all tickets in dependency order, full ticket bodies, no wave headers)
+
+  ## Appendix A: Ticket Index
+  ## Appendix B: Blocked Tickets
+  ## Open Questions
+  ## Iteration Log
+  ## Changelog
+  ```
+
+Both formats end with the same universal trailing sections:
 
 ```markdown
-# Tickets: <Feature/System Name>
-
-## 1. Summary
-(table of metrics)
-
-## 2. Dependency Graph
-(textual graph)
-
-## 3. Wave 1: <theme>
-(all Wave 1 tickets, full format)
-
-## 4. Wave 2: <theme>
-(all Wave 2 tickets)
-
-## 5. Wave N: ...
-
-## Appendix A: Ticket Index
-(quick-reference table: ID, title, size, layer, status)
-
-## Appendix B: Blocked Tickets
-(full format of any BLOCKED tickets, with "What unblocks this")
-
-## Open Questions
-(empty unless XL warnings or other ticket-level questions)
-
 ## Iteration Log
 ### Iteration 0 — Initial draft (YYYY-MM-DD)
 - **Created via:** tickets <target>
@@ -129,7 +150,8 @@ Apply the parent-update half of the graph-mutation procedure per `${CLAUDE_SKILL
 ```
 [Refinery] tickets complete.
 [Refinery] Wrote: <output-path>
-[Refinery]   <T> tickets, <W> waves
+[Refinery]   Format: <waves | sequence (linear chain)>
+[Refinery]   <T> tickets<, across <W> waves | in 1 linear sequence>
 [Refinery]   Sizes: S=<S>, M=<M>, L=<L>, XL=<XL>  (XL warnings: <X>)
 [Refinery]   Layers: frontend=<F>, backend=<B>, data=<D>, infra=<I>, docs=<DC>, test=<TT>
 [Refinery]   FLASH-eligible: <FL>, CORE-required: <CR>, Blocked: <BL>
@@ -143,11 +165,13 @@ Suggested next:
   /refine update <tickets-path> "..."     (refine specific tickets if needed)
 ```
 
-Commit hint:
+Commit hint per `${CLAUDE_SKILL_DIR}/references/commit-protocol.md` (see §9 on commit granularity for when to bundle):
 
 ```
-spec(<basename>): tickets (<T> across <W> waves)
+spec(<basename>): tickets (<T> <waves|steps>)
 ```
+
+Subject-line suffix reads `<T> across <W> waves` for branched graphs, `<T> steps (linear)` for sequence-format artifacts.
 
 ## Edge Cases
 

@@ -91,7 +91,7 @@ Suggested next:
   /refine update <child-path> "retarget to <replacement>"   (per flagged child)
 ```
 
-Commit hint per `references/commit-protocol.md`:
+Commit hint per `${CLAUDE_SKILL_DIR}/references/commit-protocol.md` (see §9 on commit granularity for when to bundle):
 
 ```
 spec(<basename>): archive (<reason short form>)

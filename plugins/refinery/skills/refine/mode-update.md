@@ -88,7 +88,7 @@ Suggested next:
   /refine check <target-path>            (re-validate against codebase)
 ```
 
-Commit hint per `references/commit-protocol.md`:
+Commit hint per `${CLAUDE_SKILL_DIR}/references/commit-protocol.md` (see §9 on commit granularity for when to bundle):
 
 ```
 spec(<basename>): <change description short form>

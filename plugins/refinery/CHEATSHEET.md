@@ -202,7 +202,7 @@ Always stops at iteration 5 (default `--max-iterations`).
 ```yaml
 id: T-NN
 title: <Action verb> <thing>
-wave: <integer ≥ 1>
+wave: <integer ≥ 1>                 # always 1 in sequence format
 size: S | M | L | XL                # XL emits decomposition warning
 layer: frontend | backend | data | infra | docs | test
 depends_on: [<ticket IDs>]
@@ -216,6 +216,15 @@ technical_notes: <multi-line>
 anti_patterns: [<forbidden approaches>]
 status: pending | in_progress | complete | blocked
 ```
+
+## Tickets artifact formats
+
+| `format:` | When used | Body structure |
+|-----------|-----------|----------------|
+| `waves` | Graph has parallelism (fan-in, fan-out, or disconnected subgraphs) | Summary + Dependency Graph ASCII + per-wave sections |
+| `sequence` | Linear chain (every non-blocked ticket has ≤1 predecessor and ≤1 successor, single connected path) | Summary (trimmed) + single `## Steps` section, no Dependency Graph |
+
+`mode-tickets` auto-detects. Per-ticket schema is identical across formats. Full spec: `references/ticket-format.md §11`.
 
 ## Specialist agents (6)
 
@@ -277,6 +286,21 @@ Changelog entries:
 Refinery-Op: <op>
 Refinery-Iteration: <N>
 ```
+
+## Commit granularity
+
+Per `references/commit-protocol.md §9`: a Refinery commit represents one **vertical slice** of change to the artifact graph, not one mode operation. Common slices:
+
+| Slice | Operations bundled | Example subject |
+|-------|--------------------|-----------------|
+| Feature introduction | `advance(feature-spec)` + `iterate` + `finalize` | `feat(spec): introduce <feature>` |
+| Pipeline advancement | `advance(<stage>)` + `iterate` + `finalize` | `feat(spec): finalize <stage>` |
+| Feature decomposition | `plan` + `tickets` | `feat(plan): decompose <feature>` |
+| Feature shipping | impl commits (external) + `mark-implemented` | `feat(<area>): ship <feature>` |
+| Drift realignment | `check` + `update` | `fix(spec): address drift` |
+| Archive | `archive` + child propagation | `chore(spec): archive <artifact>` |
+
+Per-operation hints are **ingredients**, not commands. Bundle at the vertical-slice boundary. Litmus test: "Could this commit be cleanly reverted to undo one coherent change?" Branch-workflow users rely on squash-on-merge; main-workflow users bundle manually. See §9 for the full framing.
 
 ## Coexistence
 

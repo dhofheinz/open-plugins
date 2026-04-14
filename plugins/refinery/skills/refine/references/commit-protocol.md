@@ -1,8 +1,8 @@
 # Reference: Commit Protocol
 
-Recommended commit-message convention for spec changes. **Reference only — the plugin does not execute commits.** Mode files cite this reference in their "Suggested next" output, providing users a copy-pasteable commit message they can apply via their preferred commit workflow (`/commit`, the OpenPlugins `git-commit-assistant` plugin, or manual `git`).
+Recommended commit-message convention for spec changes. **Reference only — the plugin does not execute commits and installs no hooks that would** (per OQ-009 deferring hooks to a later version; per OQ-012 reserving commit-execution for dedicated commit tooling). Users apply messages via their preferred commit workflow (slash-command helpers, external commit tooling, or manual `git`).
 
-Per OQ-012 resolution: spec changes should be versioned, but auto-execution belongs to dedicated commit tooling, not Refinery.
+Mode files cite this reference in their "Suggested next" output to provide copy-pasteable subject lines. The message shape defined here is a recommendation, not an enforcement — any commit format that communicates the change is acceptable.
 
 ## 1. Subject Line
 
@@ -28,7 +28,8 @@ spec(<artifact-basename>): <imperative summary>
 | `update` | `spec(<basename>): <change description>` | `spec(system-spec): add rate limiting requirement` |
 | `check` (no drift) | `spec(<basename>): check (clean)` | `spec(system-spec): check (clean)` |
 | `check` (drift detected) | `spec(<basename>): drift (<N> findings)` | `spec(system-spec): drift (4 findings)` |
-| `tickets` | `spec(<basename>): tickets (<N> across <M> waves)` | `spec(billing-plan): tickets (23 across 4 waves)` |
+| `tickets` (waves) | `spec(<basename>): tickets (<N> across <M> waves)` | `spec(billing-plan): tickets (23 across 4 waves)` |
+| `tickets` (sequence) | `spec(<basename>): tickets (<N> steps, linear)` | `spec(auth-plan): tickets (5 steps, linear)` |
 | `archive` | `spec(<basename>): archive (<reason>)` | `spec(legacy-spec): archive (superseded by system-spec v2)` |
 | `init` | `spec: init refinery working directory` | `spec: init refinery working directory` |
 
@@ -105,10 +106,10 @@ The Iteration Log preserves the per-iteration history within the artifact; git h
 
 ## 7. Integration with Other Workflows
 
-The `git-commit-assistant` plugin in this same marketplace can read the artifact's Changelog and Iteration Log to auto-generate a commit message in the format above. Mode files MAY suggest:
+This reference defines the message format; other tools consume it. Any commit-authoring workflow — a dedicated commit-assistant plugin, an editor helper, or plain `git commit` — can read the artifact's Changelog and Iteration Log to generate a commit message in the format above. Mode files MAY suggest:
 
 ```
-Suggested commit message (use /commit or git-commit-assistant):
+Suggested commit message:
 
   spec(<basename>): <subject>
 
@@ -117,7 +118,7 @@ Suggested commit message (use /commit or git-commit-assistant):
   Refinery-Op: <op>
 ```
 
-But the plugin itself never runs `git commit`. The user invokes their commit workflow when ready.
+Refinery does not execute commits itself. This file says how messages should look; the user's chosen commit workflow handles the `git commit` execution.
 
 ## 8. Examples
 
@@ -172,9 +173,83 @@ Refinery-Op: archive
 Refinery-Status-Transition: finalized -> superseded
 ```
 
-## 9. What This Reference Is NOT
+## 9. Commit Granularity: Vertical Slicing
 
-- Not an automation. The plugin does not execute `git commit`.
-- Not a hook. There is no PostToolUse hook that auto-commits (per OQ-009 deferring hooks).
-- Not enforced. Users may use any commit format they prefer; this is a recommendation that mode files cite for users who want consistency.
-- Not a replacement for `git-commit-assistant`. That plugin handles the actual commit workflow; this reference defines the message format it can consume.
+A Refinery commit represents one coherent change to the artifact graph, not one mode's bookkeeping. Each mode emits a per-operation **subject-line hint** (per §1's special-case table) that is useful as an *ingredient* for a commit message — but a commit typically bundles several operations that together complete a logical unit.
+
+### 9.1 Why not commit per operation
+
+Two parallel histories already exist:
+
+- The artifact's **Changelog** records every modification — one row per discrete edit, per `document-format.md §2.3`.
+- The artifact's **Iteration Log** records each iterate-loop invocation with its convergence delta, per `convergence.md §6`.
+
+Git history does not need to duplicate either. Its role is different: it records when *features*, *fixes*, and *decisions* landed in the repository, not when the bookkeeping happened. A commit message that says `spec(X): iterate (i3)` tells the reader nothing the Iteration Log didn't already; a commit that says `feat(X): introduce rate-limited auth flow` tells the reader what the repository gained.
+
+### 9.2 Common Refinery vertical slices
+
+| Vertical slice | Operations bundled | Example subject |
+|----------------|--------------------|-----------------|
+| **Feature introduction** | `advance(feature-spec)` + `iterate` + `finalize` (maybe `review`) | `feat(spec): introduce rate-limited auth flow` |
+| **Pipeline advancement** | `advance(<stage>)` + `iterate` + `finalize` at one stage | `feat(spec): finalize system design` |
+| **Feature decomposition** | `plan` + `tickets` from a finalized spec | `feat(plan): decompose rate-limited auth into 7 tickets` |
+| **Feature shipping** | Implementation commits (outside Refinery) + `mark-implemented` | `feat(auth): ship rate-limited auth flow` (mark-implemented records this commit's hash) |
+| **Drift realignment** | `check` + `update` | `fix(spec): address drift in rate-limit middleware` |
+| **Traceable refinement** | `update` (with any child-drift propagation) | `refactor(spec): replace Redis with in-memory token bucket` |
+| **Archive / supersession** | `archive` + any child-drift propagation | `chore(spec): archive v1 auth spec (superseded by v2)` |
+
+These are patterns, not rules. The right slice is whatever "change of state to the repository" the commit represents.
+
+### 9.3 Litmus test
+
+Before committing, ask: **"Could this commit be cleanly reverted to undo one coherent change?"**
+
+- If reverting would remove **half a feature**, the commit is too granular — combine it with the adjacent operation.
+- If reverting would remove **two unrelated features**, the commit is too broad — split it.
+- If reverting would remove **exactly one coherent thing** (one feature introduced, one drift fixed, one artifact archived), the granularity is right.
+
+### 9.4 Anti-pattern: horizontal slicing
+
+A Refinery pipeline (`advance → iterate → finalize → tickets → mark-implemented`) naturally produces per-operation commit hints. Following them literally yields **horizontal slicing**: one commit per layer of the pipeline, none of which corresponds to a coherent feature in the repository.
+
+```
+# Horizontal (anti-pattern)
+spec(auth-spec): seed from design
+spec(auth-spec): iterate (i2)
+spec(auth-spec): finalize
+spec(auth-plan): seed from auth-spec
+spec(auth-plan): finalize
+spec(auth-tickets): tickets (7 across 3 waves)
+
+# Vertical (preferred)
+feat(spec): introduce rate-limited auth flow
+feat(plan): decompose rate-limited auth into 7 tickets
+```
+
+The pipeline's per-operation history lives in the artifacts themselves (Changelog + Iteration Log). The repository's history is about features, fixes, and decisions — not how the AI organized its writing.
+
+### 9.5 Branch-workflow users: squash does the bundling
+
+In a feature-branch workflow with squash-on-merge, per-operation commits are fine *inside the feature branch* — the squash step at merge produces the vertical slice automatically. In that case, follow the per-operation hints as you go; the final merge commit is where vertical slicing matters.
+
+§6 covers the squash-merge convention; think of this section (§9) as the principle, and §6 as its instantiation for branch workflows.
+
+### 9.6 Main-workflow users: bundle manually
+
+Committing directly to `main`/`master`/`trunk`, or on a feature branch that will merge via rebase (preserving commits), means there is no squash step to consolidate. The vertical-slicing bundling has to happen before `git commit`:
+
+- Run multiple Refinery operations without committing between them.
+- At the logical boundary, review the accumulated `git status` / `git diff` and commit once.
+- Derive the commit message from the operations' per-operation hints (pick the dominant one, or compose a new subject that captures the bundle).
+
+The Refinery Changelog still records each operation individually; the commit captures the external consequence.
+
+### 9.7 Manual workflow detection (optional)
+
+Users who want to self-check their current workflow can run:
+
+```bash
+git symbolic-ref --short HEAD
+```
+
+If the output matches `main`, `master`, `trunk` (or the team's integration branch), apply §9.6. Otherwise apply §9.5. This plugin does not run the check automatically — the recommendation is advisory.

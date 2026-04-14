@@ -549,13 +549,21 @@ anti_patterns:
 status: pending | in_progress | complete | blocked
 ```
 
-### 8.2 Wave organization
+### 8.2 Wave organization (branched graphs)
 
 - **Wave 1**: no `depends_on`; can start immediately
 - **Wave N (N>1)**: depends on tickets in Wave N-1 or earlier
 - Within a wave, tickets can run in parallel
 
 The tickets artifact includes a textual dependency graph in §2.
+
+### 8.2.1 Sequence format (linear chains)
+
+When the ticket dependency graph is a **linear chain** — every non-blocked ticket has ≤ 1 predecessor and ≤ 1 successor, single connected path from root to tail — the tickets artifact uses the terser **sequence format** instead of the full wave machinery. The per-ticket schema is identical; only the artifact-level scaffolding differs.
+
+Sequence-format artifacts have `format: sequence` in frontmatter, a single `## 2. Steps` section in place of per-wave headers, and no Dependency Graph ASCII diagram (linearity is implicit in ticket order).
+
+`mode-tickets` auto-detects: emits `format: sequence` when the graph is a linear chain, `format: waves` when any parallelism is present. Dispatchers read `format:` from frontmatter to know which structure to parse. See `references/ticket-format.md §11` for the full specification.
 
 ### 8.3 Size classification
 
@@ -955,6 +963,6 @@ https://github.com/dhofheinz/open-plugins/issues
 - **[CHEATSHEET.md](CHEATSHEET.md)** — single-page reference
 - **[GETTING_STARTED.md](GETTING_STARTED.md)** — first-experience guide
 - **[docs/specs/refinery.md](../../docs/specs/refinery.md)** — formal v1.0.0 specification
-- **`skills/refine/references/`** — canonical reference files for document format, convergence, requirement syntax, state detection, ticket format, commit protocol
+- **`skills/refine/references/`** — canonical reference files for document format, convergence, requirement syntax, state detection, ticket format, commit protocol (incl. §9 commit-granularity / vertical-slicing guidance), agent handoffs, operation bookkeeping
 - **`skills/refine/templates/`** — artifact templates (also installed to `<working-dir>/_templates/` by `init`)
 - **`agents/`** — six specialist agent definitions

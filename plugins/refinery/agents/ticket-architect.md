@@ -59,7 +59,7 @@ Foundation → Core → Integration → Polish
 - **Integration:** connecting pieces
 - **Polish:** edge cases, error handling, UX
 
-### Create Waves
+### Create Waves (branched / parallel graphs)
 
 ```
 Wave 1: [T-01, T-02, T-03]   ← No dependencies, start immediately
@@ -68,6 +68,20 @@ Wave 2: [T-04, T-05]          ← Depend on Wave 1
    ↓
 Wave 3: [T-06]                ← Depends on Wave 2
 ```
+
+### Detect Linear Chain → Emit Sequence Format
+
+If the final ticket graph is a **linear chain** (every non-blocked ticket has ≤1 predecessor and ≤1 successor, exactly one root, exactly one tail, single connected path), emit the **sequence format** per `references/ticket-format.md §11` instead of waves format. The wave machinery adds noise when there is no parallelism to organize.
+
+Linearity check (ignoring blocked tickets):
+
+- every ticket has `len(depends_on) ≤ 1`
+- every ticket has `len(blocks) ≤ 1`
+- exactly one ticket has `depends_on: []`
+- exactly one ticket has no successor
+- tickets form a single connected path
+
+The per-ticket schema and content are unchanged between formats. Only the artifact-level scaffolding differs.
 
 ## Ticket Format
 
@@ -127,15 +141,30 @@ Then <observable outcome>
 
 ## Output Structure
 
+Two variants, selected by the graph's shape:
+
+### Waves format (default — any parallelism present)
+
 Per the tickets template (`templates/tickets.md`):
 
-1. Universal frontmatter with ticket-specific fields (`ticket_count`, `wave_count`, etc.)
+1. Universal frontmatter with ticket-specific fields (`format: waves`, `ticket_count`, `wave_count`, etc.)
 2. Section 1: Summary table
 3. Section 2: Dependency Graph (textual / ASCII)
 4. Sections 3+: One section per wave, full ticket format
 5. Appendix A: Ticket Index (quick-reference table)
 6. Appendix B: Blocked Tickets (if any)
 7. Universal Open Questions, Iteration Log, Changelog
+
+### Sequence format (linear chains only — per `references/ticket-format.md §11`)
+
+1. Universal frontmatter with `format: sequence`, `wave_count: 1`, `recommended_starting_ticket: T-01`
+2. Section 1: Summary table (reduced — `Format: sequence (linear chain)` row replaces `Waves: N`; `Recommended starting ticket` row omitted)
+3. Section 2: `Steps` — all tickets in dependency order, full ticket format, with `**Wave:** N` line omitted from per-ticket headers
+4. Appendix A: Ticket Index (unchanged)
+5. Appendix B: Blocked Tickets (if any)
+6. Universal Open Questions, Iteration Log, Changelog
+
+Dependency Graph ASCII and per-wave headers are **not emitted** in sequence format — linearity is implicit in ticket order + `depends_on`.
 
 ## Quality Checks (before returning)
 
@@ -156,6 +185,7 @@ For the ticket set:
 - [ ] Every spec item maps to at least one ticket?
 - [ ] Every ticket maps to at least one spec item?
 - [ ] All tickets have size in {S, M, L, XL}; XL emit warning to Open Questions
+- [ ] Format matches graph shape: `format: sequence` iff the non-blocked tickets form a linear chain per `references/ticket-format.md §11.1`; `format: waves` if any parallelism exists
 
 ## Handling Uncertainty
 

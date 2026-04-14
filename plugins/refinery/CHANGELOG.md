@@ -2,6 +2,35 @@
 
 All notable changes to the Refinery plugin are documented here. Format follows [Keep a Changelog](https://keepachangelog.com/). This project uses [Semantic Versioning](https://semver.org/).
 
+## [1.2.0] — 2026-04-13
+
+Additive release. No removals or breaking changes. Adds a terser tickets format for linear chains and reframes the commit protocol around vertical slicing.
+
+### Added
+
+- **Sequence-format ticket artifacts** — when the ticket dependency graph is a linear chain (every non-blocked ticket has ≤1 predecessor and ≤1 successor, single connected path), `mode-tickets` now emits a terser `format: sequence` artifact instead of the full wave machinery. No Dependency Graph ASCII, no per-wave section headers — a single `## 2. Steps` section with per-ticket bodies intact. Non-linear graphs continue to use the waves format unchanged. A new `format:` frontmatter field (`waves | sequence`) lets dispatchers read the variant without parsing the body. Specification: `references/ticket-format.md §11`.
+
+- **Commit granularity as vertical slicing** — `references/commit-protocol.md §9` reframes commit cadence around coherent changes to the artifact graph, not per-operation bookkeeping. Defines common Refinery vertical slices (feature introduction, pipeline advancement, feature decomposition, feature shipping, drift realignment, archive), the litmus test ("could this commit be cleanly reverted to undo one coherent change?"), and names the horizontal-slicing anti-pattern that AI-assisted pipelines naturally produce. Branch vs main workflows become sub-cases of the same principle (§9.5 / §9.6).
+
+### Changed
+
+- **`mode-tickets` Phase 2** now instructs the ticket-architect to select format per `ticket-format.md §11`; **Phase 3** adds a format-consistency check (sequence-on-branched is invalid and triggers revision; waves-on-linear is permitted but flagged); **Phase 6** reports the format in the summary output.
+
+- **`ticket-architect` agent** teaches both format variants with the detection rule; Quality Check list gains a format-matches-graph-shape item.
+
+- **All 9 write-operation mode files** normalize their "Commit hint" section to reference `commit-protocol.md §9` for granularity guidance. Per-operation subject lines are retained as ingredients for a potential commit message.
+
+- **`commit-protocol.md`** — dropped §9 "What This Reference Is NOT" (defensive meta-framing); useful bullets migrated into the file intro (no-hooks clarification, no-automation, recommendation-not-enforcement) and §7 (complementarity with external commit-execution tooling). §10 renumbered to §9.
+
+- **`templates/tickets.md`** — adds `format: waves` default in the skeleton frontmatter plus a pointer comment to §11 for the sequence variant.
+
+- **`references/commit-protocol.md` §1 subject-line table** — `tickets` row split into two rows for waves vs sequence formats.
+
+### Documentation
+
+- USER_GUIDE.md §8.2.1 (new): sequence-format explanation. §15 reference list extended.
+- CHEATSHEET.md: ticket-schema note clarifies `wave: 1` for sequence; new "Tickets artifact formats" table; new "Commit granularity" section with the vertical-slice table.
+
 ## [1.1.0] — 2026-04-13
 
 Batch of first-principles improvements informed by a full end-to-end workflow retrospective. All changes are additive — no removals or breaking changes to the document format, state machine, or user-invocable command surface.

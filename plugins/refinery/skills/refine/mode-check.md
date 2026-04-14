@@ -209,7 +209,7 @@ Suggested next:
   (no action needed)                                       (if clean)
 ```
 
-Commit hint:
+Commit hint per `${CLAUDE_SKILL_DIR}/references/commit-protocol.md` (see §9 on commit granularity for when to bundle):
 
 ```
 spec(<basename>): drift (<N> findings)    [if drift found]

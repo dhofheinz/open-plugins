@@ -154,7 +154,7 @@ Suggested next:
   /refine --stage=<next>              (advance pipeline; will warn if questions remain)
 ```
 
-Commit hint:
+Commit hint per `${CLAUDE_SKILL_DIR}/references/commit-protocol.md` (see §9 on commit granularity for when to bundle):
 
 ```
 spec(<basename>): iterate (i<N>)
